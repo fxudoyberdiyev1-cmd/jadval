@@ -3,171 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Ta'lim Control Panel</title>
+    <title>Professional Ta'lim Jadvallari</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    
     <style>
-        :root { 
-            --primary: #2563eb; --dark: #0f172a; --accent: #10b981; 
-            --danger: #ef4444; --warning: #f59e0b;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f1f5f9; margin: 0; padding: 20px;
-            display: flex; justify-content: center;
-        }
-        .container { width: 100%; max-width: 1200px; display: flex; gap: 20px; flex-wrap: wrap; }
+        :root { --primary: #2563eb; --dark: #1e293b; --success: #10b981; }
+        body { font-family: 'Inter', sans-serif; background: #f1f5f9; margin: 0; padding: 20px; color: var(--dark); }
+        .container { max-width: 1100px; margin: 0 auto; }
         
-        /* Dashboard Card */
-        .main-card {
-            flex: 3; min-width: 700px; background: white; border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden;
+        /* Юқори панель */
+        .top-bar { 
+            background: white; padding: 20px; border-radius: 15px; 
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px;
+            flex-wrap: wrap; gap: 15px;
         }
-        .header { background: var(--dark); color: white; padding: 25px; }
-        .search-box {
-            width: 100%; padding: 12px; border-radius: 10px; border: none;
-            margin-top: 15px; font-size: 14px; outline: none;
+        .search-input { 
+            padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 8px; width: 300px; outline: none;
         }
+        .stat-badge { background: var(--primary); color: white; padding: 8px 15px; border-radius: 8px; font-weight: bold; }
 
-        /* Status Badges */
-        .status-pill {
-            padding: 4px 10px; border-radius: 50px; font-size: 11px; font-weight: bold; color: white;
-        }
-        .st-online { background: var(--accent); }
-        .st-ended { background: var(--danger); }
-        .st-waiting { background: var(--warning); }
-
+        /* Жадвал */
+        .table-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
         table { width: 100%; border-collapse: collapse; }
-        th { background: #f8fafc; color: #64748b; font-size: 11px; text-transform: uppercase; padding: 15px; text-align: left; }
-        tr:hover { background: #f1f5f9; cursor: pointer; transition: 0.2s; }
-        td { padding: 15px; border-bottom: 1px solid #f1f5f9; }
+        th { background: #f8fafc; padding: 15px; text-align: left; font-size: 12px; color: #64748b; border-bottom: 2px solid #edf2f7; }
+        td { padding: 15px; border-bottom: 1px solid #edf2f7; }
+        tr:hover { background: #f8fafc; }
 
-        .editable { 
-            padding: 8px; background: #fff; border: 1px solid #e2e8f0; 
-            border-radius: 8px; font-size: 13px;
-        }
-
-        /* Sidebar Widgets */
-        .sidebar { flex: 1; min-width: 280px; display: flex; flex-direction: column; gap: 20px; }
-        .widget { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .stat-val { font-size: 24px; font-weight: bold; color: var(--primary); }
+        /* Тугмалар */
+        .btn { border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; transition: 0.2s; }
+        .btn-excel { background: #dcfce7; color: #166534; margin-right: 5px; }
+        .btn-pdf { background: #fee2e2; color: #991b1b; }
+        .btn-edit { background: #f1f5f9; color: var(--primary); border: 1px solid #e2e8f0; }
         
-        .timer-display { font-size: 18px; font-weight: bold; color: var(--danger); margin-top: 5px; }
-
-        @media (max-width: 800px) { .container { flex-direction: column; } .main-card { min-width: 100%; } }
+        .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="main-card">
-        <div class="header">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2 style="margin:0">SMART DARSLAR</h2>
-                <span id="autoTimer" style="font-size:11px; opacity:0.7">Yangilanish: 30s</span>
-            </div>
-            <input type="text" id="searchInput" class="search-box" placeholder="🔍 Фан ёки ўқитувчи бўйича қидириш..." onkeyup="filterTable()">
+    <div class="top-bar">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Фан ёки ўқитувчи бўйича қидириш..." onkeyup="filterTable()">
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <div class="stat-badge">Ўтилган дарслар: <span id="doneCount">0</span></div>
+            <button class="btn btn-excel" onclick="exportToExcel()">Excel</button>
+            <button class="btn btn-pdf" onclick="exportToPDF()">PDF</button>
         </div>
-        
-        <table>
+    </div>
+
+    <div class="table-card">
+        <table id="mainTable">
             <thead>
                 <tr>
-                    <th>Статус</th>
+                    <th>№</th>
                     <th>Фан ва Ўқитувчи</th>
                     <th>Мавзу ва Сана</th>
+                    <th>Ҳолати</th>
                     <th>Бошқарув</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
         </table>
     </div>
-
-    <div class="sidebar">
-        <div class="widget" style="text-align:center">
-            <div id="clock" style="font-size:28px; font-weight:bold; color:var(--dark)">00:00:00</div>
-            <div id="fullDate" style="color: #64748b; font-size:13px"></div>
-        </div>
-
-        <div class="widget">
-            <div style="font-size:12px; color:#64748b">Фаол дарслар:</div>
-            <div class="stat-val" id="activeCount">0</div>
-            <hr style="opacity:0.1">
-            <div style="font-size:12px; color:#64748b">Кўришлар:</div>
-            <div class="stat-val" style="color:var(--accent)" id="viewStats">0 / 20</div>
-        </div>
-
-        <div class="widget" id="nextLessonBox">
-            <div style="font-size:12px; color:#64748b">Дарс тугашига:</div>
-            <div class="timer-display" id="countdown">45:00</div>
-        </div>
-    </div>
 </div>
 
 <script>
+    // Ҳар бир фан учун алоҳида пароль белгиланган
     const subjects = [
-        { n: "Iqtisodiyot nazariyasi 2", t: "S. Karimov" },
-        { n: "Xorijiy til 2", t: "A. Rahimova" },
-        { n: "O‘zbek (rus) tili", t: "M. G'afforov" },
-        { n: "Dinshunoslik", t: "N. Olimov" },
-        { n: "Jismoniy madaniyat", t: "V. Ivanov" }
+        { id: 0, n: "Iqtisodiyot nazariyasi 2", t: "S. Karimov", pass: "pass1" },
+        { id: 1, n: "Xorijiy til 2", t: "A. Rahimova", pass: "pass2" },
+        { id: 2, n: "O‘zbek (rus) tili", t: "M. G'afforov", pass: "pass3" },
+        { id: 3, n: "Dinshunoslik", t: "N. Olimov", pass: "pass4" },
+        { id: 4, n: "Jismoniy madaniyat", t: "V. Ivanov", pass: "pass5" },
+        { id: 5, n: "Akademik ko‘nikmalar", t: "D. Zokirova", pass: "pass6" },
+        { id: 6, n: "Amaliy matematika 2", t: "P. Qosimov", pass: "pass7" }
     ];
-
-    const ADMIN_PASS = "2026";
-    let views = parseInt(localStorage.getItem('v_count')) || 0;
-    views++;
-    if(views > 20) { views = 1; subjects.forEach((_,i) => localStorage.removeItem('topic_'+i)); }
-    localStorage.setItem('v_count', views);
 
     function render() {
         const body = document.getElementById('tableBody');
         body.innerHTML = '';
-        let activeLessons = 0;
+        let done = 0;
 
-        subjects.forEach((s, i) => {
-            const topic = localStorage.getItem('topic_'+i) || "Киритилмаган";
-            const time = localStorage.getItem('time_'+i) || "--:--";
-            const status = localStorage.getItem('status_'+i) || "waiting";
+        subjects.forEach((s) => {
+            const topic = localStorage.getItem('topic_'+s.id) || "Мавзу киритилмаган";
+            const time = localStorage.getItem('time_'+s.id) || "--.--.---- | --:--";
+            const status = localStorage.getItem('status_'+s.id) || "waiting";
             
-            if(status === 'online') activeLessons++;
-
-            let statusClass = status === 'online' ? 'st-online' : (status === 'ended' ? 'st-ended' : 'st-waiting');
-            let statusText = status === 'online' ? '🟢 Онлайн' : (status === 'ended' ? '🔴 Якунланган' : '🟡 Кутилаяпти');
+            if(status === 'done') done++;
 
             body.innerHTML += `
                 <tr>
-                    <td><span class="status-pill ${statusClass}" onclick="changeStatus(${i})">${statusText}</span></td>
+                    <td style="font-weight:bold; color:var(--primary)">${s.id + 1}</td>
+                    <td><b>${s.n}</b><br><small style="color:#64748b">${s.t}</small></td>
+                    <td><span style="font-size:13px">${topic}</span><br><small style="color:#94a3b8">${time}</small></td>
                     <td>
-                        <b style="color:var(--dark)">${s.n}</b><br>
-                        <small style="color:#64748b">👤 ${s.t}</small>
+                        <select onchange="updateStatus(${s.id}, this.value)" style="border:none; background:#f1f5f9; padding:5px; border-radius:5px; font-size:11px">
+                            <option value="waiting" ${status === 'waiting' ? 'selected' : ''}>🟡 Кутилаяпти</option>
+                            <option value="done" ${status === 'done' ? 'selected' : ''}>🟢 Ўтилди</option>
+                        </select>
                     </td>
-                    <td>
-                        <div class="editable" onclick="edit(${i})">${topic}</div>
-                        <small style="color:#94a3b8">🗓 ${time}</small>
-                    </td>
-                    <td>
-                        <button onclick="edit(${i})" style="border:none; background:none; cursor:pointer">⚙️</button>
-                    </td>
+                    <td><button class="btn btn-edit" onclick="editSubject(${s.id})">Таҳрир</button></td>
                 </tr>`;
         });
-        document.getElementById('activeCount').innerText = activeLessons;
-        document.getElementById('viewStats').innerText = views + " / 20";
+        document.getElementById('doneCount').innerText = done;
     }
 
-    function edit(i) {
-        if(prompt("Пароль:") === ADMIN_PASS) {
-            const val = prompt("Мавзу:");
-            if(val) {
+    function editSubject(id) {
+        const pass = prompt("Ушбу фан учун паролни киритинг:");
+        if (pass === subjects[id].pass) {
+            const val = prompt("Янги мавзуни киритинг:");
+            if (val) {
                 const now = new Date();
-                localStorage.setItem('topic_'+i, val);
-                localStorage.setItem('time_'+i, now.toLocaleDateString() + " " + now.getHours() + ":" + now.getMinutes());
+                const fullDate = now.toLocaleDateString() + " | " + now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+                localStorage.setItem('topic_'+id, val.trim());
+                localStorage.setItem('time_'+id, fullDate);
                 render();
             }
-        }
+        } else if (pass !== null) alert("Хато пароль!");
     }
 
-    function changeStatus(i) {
-        if(prompt("Статус ўзгартириш учун пароль:") === ADMIN_PASS) {
-            const s = prompt("Статус: 1 (Online), 2 (Ended), 3 (Waiting)");
-            const map = {"1": "online", "2": "ended", "3": "waiting"};
-            if(map[s]) { localStorage.setItem('status_'+i, map[s]); render(); }
+    function updateStatus(id, newStatus) {
+        const pass = prompt("Ҳолатни ўзгартириш учун ушбу фан паролини киритинг:");
+        if (pass === subjects[id].pass) {
+            localStorage.setItem('status_'+id, newStatus);
+            render();
+        } else {
+            alert("Хато пароль!");
+            render(); // Жадвални қайта чиқариш (селектни қайтариш учун)
         }
     }
 
@@ -179,21 +143,22 @@
         }
     }
 
-    function updateTime() {
-        const now = new Date();
-        document.getElementById('clock').innerText = now.toLocaleTimeString();
-        document.getElementById('fullDate').innerText = now.toLocaleDateString('uz-UZ', {weekday:'long', day:'numeric', month:'long'});
+    // EXPORT EXCEL
+    function exportToExcel() {
+        const table = document.getElementById("mainTable");
+        const wb = XLSX.utils.table_to_book(table);
+        XLSX.writeFile(wb, "Dars_Jadvali.xlsx");
     }
 
-    // Авто-янгиланиш симуляцияси
-    let refreshSec = 30;
-    setInterval(() => {
-        refreshSec--;
-        document.getElementById('autoTimer').innerText = `Yangilanish: ${refreshSec}s`;
-        if(refreshSec <= 0) { refreshSec = 30; render(); }
-    }, 1000);
+    // EXPORT PDF
+    function exportToPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.text("Dars Jadvali", 14, 15);
+        doc.autoTable({ html: '#mainTable', startY: 20 });
+        doc.save("Dars_Jadvali.pdf");
+    }
 
-    setInterval(updateTime, 1000);
     render();
 </script>
 
