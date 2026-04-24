@@ -3,59 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Jadval Pro</title>
+    <title>Professional Smart Jadval</title>
     <style>
-        :root { --primary: #6366f1; --dark: #0f172a; --bg: rgba(255, 255, 255, 0.95); }
+        :root { 
+            --primary: #6366f1; 
+            --secondary: #4f46e5;
+            --dark: #0f172a; 
+            --bg: rgba(255, 255, 255, 0.98); 
+        }
         
         body { 
-            font-family: 'Inter', sans-serif; 
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                        url('https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1950&q=80');
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), 
+                        url('https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=1950&q=80');
             background-size: cover; background-attachment: fixed; margin: 0; padding: 20px;
         }
 
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container { max-width: 1300px; margin: 0 auto; }
 
-        /* Календарь ва Жонли Вақт */
+        /* Юқори қисм (Header) */
         .header-section {
-            background: var(--bg); padding: 25px; border-radius: 25px;
+            background: var(--bg); padding: 30px; border-radius: 30px;
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            margin-bottom: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border-bottom: 5px solid var(--primary);
         }
-        .cal-big { font-size: 50px; font-weight: 900; color: var(--primary); line-height: 1; }
-        .time-big { font-size: 45px; font-weight: 900; color: var(--dark); }
+        .cal-big { font-size: 55px; font-weight: 900; color: var(--primary); line-height: 1; }
+        .time-big { font-size: 50px; font-weight: 900; color: var(--dark); letter-spacing: -2px; }
 
-        /* Жадвал Дизайни */
-        .table-card { background: var(--bg); border-radius: 25px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+        /* Жадвал сарлавҳаси ва картаси */
+        .table-card { 
+            background: var(--bg); border-radius: 30px; overflow: hidden; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5); 
+        }
+        
         table { width: 100%; border-collapse: collapse; }
-        th { background: #f8fafc; padding: 20px; text-align: left; font-size: 14px; color: #475569; text-transform: uppercase; letter-spacing: 1px; }
-        td { padding: 25px; border-bottom: 2px solid #f1f5f9; }
 
-        /* Ёзувларни кўзга ташланадиган қилиш */
-        .subject-name { font-size: 20px; font-weight: 900; color: var(--dark); display: block; margin-bottom: 5px; }
-        .teacher-box { 
-            display: inline-block; background: #f1f5f9; color: #475569; 
-            padding: 5px 12px; border-radius: 8px; font-weight: 700; font-size: 14px; border: 1px solid #e2e8f0;
+        /* Сарлавҳа дизайни */
+        thead tr {
+            background: var(--dark);
+        }
+        th { 
+            padding: 25px 20px; text-align: left; font-size: 16px; 
+            color: #ffffff; text-transform: uppercase; letter-spacing: 2px;
+            font-weight: 800; border: none;
+        }
+
+        /* Қаторлар дизайни */
+        td { padding: 20px; border-bottom: 2px solid #f1f5f9; vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background: #f8fafc; }
+
+        /* Маълумотлар кўриниши */
+        .subject-text { font-size: 19px; font-weight: 900; color: var(--dark); line-height: 1.2; }
+        .teacher-text { 
+            font-size: 17px; font-weight: 700; color: #4338ca; 
+            background: #eef2ff; padding: 8px 15px; border-radius: 10px;
+            display: inline-block; border: 1px solid #c7d2fe;
         }
         .current-topic { 
-            font-size: 18px; font-weight: 700; color: #1e293b; background: #fff; 
-            padding: 15px; border-radius: 12px; border-left: 6px solid var(--primary);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: block;
+            font-size: 17px; font-weight: 700; color: #1e293b; background: #ffffff; 
+            padding: 15px; border-radius: 15px; border-left: 8px solid var(--primary);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); display: block;
         }
-        .date-badge { font-size: 12px; font-weight: 800; color: var(--primary); margin-top: 10px; display: block; }
+        .date-badge { font-size: 12px; font-weight: 800; color: #64748b; margin-top: 10px; display: block; }
 
-        /* Архив Модал */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); }
-        .modal-content { background: white; margin: 2% auto; padding: 30px; border-radius: 30px; width: 70%; max-height: 90vh; overflow-y: auto; }
-        .history-item { 
-            padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; 
-            font-size: 16px; font-weight: 600;
+        /* Тугмалар */
+        .btn { 
+            border: none; padding: 14px; border-radius: 12px; cursor: pointer; 
+            font-weight: 900; transition: 0.3s; text-transform: uppercase; width: 100%;
+            font-size: 12px; letter-spacing: 1px;
         }
+        .btn-edit { background: var(--primary); color: white; margin-bottom: 8px; }
+        .btn-history { background: #334155; color: white; }
+        .btn:hover { transform: scale(1.02); filter: brightness(1.1); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
-        .btn { border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: 900; transition: 0.3s; text-transform: uppercase; }
-        .btn-edit { background: var(--primary); color: white; margin-bottom: 10px; width: 100%; }
-        .btn-history { background: #1e293b; color: white; width: 100%; }
-        .btn-edit:hover, .btn-history:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        /* Модаль (Архив) */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(15px); }
+        .modal-content { background: white; margin: 3% auto; padding: 35px; border-radius: 35px; width: 60%; max-height: 85vh; overflow-y: auto; }
+        .history-item { padding: 18px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
 
     </style>
 </head>
@@ -64,9 +90,9 @@
 <div class="container">
     <div class="header-section">
         <div>
-            <span id="monthName" style="font-weight: 800; color: #64748b; letter-spacing: 2px;"></span>
+            <span id="monthName" style="font-weight: 800; color: #64748b; letter-spacing: 3px; font-size: 14px;"></span>
             <div class="cal-big" id="dayNum"></div>
-            <span id="weekDay" style="font-weight: 800; color: #64748b;"></span>
+            <span id="weekDay" style="font-weight: 800; color: #64748b; font-size: 14px;"></span>
         </div>
         <div class="time-big" id="liveTime"></div>
     </div>
@@ -75,10 +101,11 @@
         <table>
             <thead>
                 <tr>
-                    <th style="width: 50px;">№</th>
-                    <th style="width: 300px;">Фан ва Ўқитувчи</th>
-                    <th>Жорий Мавзу</th>
-                    <th style="width: 150px;">Бошқарув</th>
+                    <th style="width: 60px; text-align: center;">№</th>
+                    <th style="width: 250px;">Фан Номи</th>
+                    <th style="width: 220px;">Ўқитувчи</th>
+                    <th>Жорий Мавзу ва Сана</th>
+                    <th style="width: 180px;">Бошқарув</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -88,11 +115,11 @@
 
 <div id="historyModal" class="modal">
     <div class="modal-content">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid #f1f5f9; padding-bottom:15px;">
-            <h2 id="historyTitle" style="margin:0; color:var(--primary); font-size: 24px;">Мавзулар Архиди</h2>
-            <button onclick="closeHistory()" class="btn" style="background:#ef4444; color:white;">Ёпиш</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:4px solid #f1f5f9; padding-bottom:20px; margin-bottom: 20px;">
+            <h2 id="historyTitle" style="margin:0; color:var(--primary); font-size: 26px;"></h2>
+            <button onclick="closeHistory()" class="btn" style="background:#ef4444; color:white; width: 120px;">Ёпиш</button>
         </div>
-        <div id="historyList" style="margin-top:20px;"></div>
+        <div id="historyList"></div>
     </div>
 </div>
 
@@ -117,17 +144,15 @@
 
             body.innerHTML += `
                 <tr>
-                    <td style="font-size: 24px; font-weight: 900; color: var(--primary); text-align: center;">${s.id + 1}</td>
-                    <td>
-                        <span class="subject-name">${s.n}</span>
-                        <div class="teacher-box">👤 ${s.t}</div>
-                    </td>
+                    <td style="font-size: 26px; font-weight: 900; color: var(--primary); text-align: center;">${s.id + 1}</td>
+                    <td><span class="subject-text">${s.n}</span></td>
+                    <td><span class="teacher-text">👤 ${s.t}</span></td>
                     <td>
                         <span class="current-topic">${last.topic}</span>
-                        <span class="date-badge">📅 КИРИТИЛДИ: ${last.date} | 🕒 ${last.time}</span>
+                        <span class="date-badge">📅 ${last.date} | 🕒 ${last.time}</span>
                     </td>
                     <td>
-                        <button class="btn btn-edit" onclick="editSubject(${s.id})">ЎЗГАРТИРИШ</button>
+                        <button class="btn btn-edit" onclick="editSubject(${s.id})">ТАҲРИРЛАШ</button>
                         <button class="btn btn-history" onclick="showHistory(${s.id})">АРХИВ (40)</button>
                     </td>
                 </tr>`;
@@ -135,8 +160,8 @@
     }
 
     function editSubject(id) {
-        if (prompt("Ушбу фан паролини киритинг:") === subjects[id].pass) {
-            const val = prompt("Янги дарс мавзусини киритинг:");
+        if (prompt("Паролни киритинг:") === subjects[id].pass) {
+            const val = prompt("Янги мавзуни киритинг:");
             if (val) {
                 const now = new Date();
                 const entry = {
@@ -144,31 +169,28 @@
                     date: now.toLocaleDateString('uz-UZ'),
                     time: now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0')
                 };
-
                 let history = JSON.parse(localStorage.getItem('h40_'+id)) || [];
                 history.unshift(entry);
-                if (history.length > 40) history.pop(); // 40 ТА МАВЗУ ЧЕГАРАСИ
-
+                if (history.length > 40) history.pop();
                 localStorage.setItem('h40_'+id, JSON.stringify(history));
                 render();
             }
-        } else { alert("Хато пароль!"); }
+        } else { alert("Пароль хато!"); }
     }
 
     function showHistory(id) {
         const history = JSON.parse(localStorage.getItem('h40_'+id)) || [];
         const list = document.getElementById('historyList');
-        document.getElementById('historyTitle').innerText = subjects[id].n + " — Мавзулар тарихи";
+        document.getElementById('historyTitle').innerText = subjects[id].n + " тарихи";
         list.innerHTML = '';
-        
-        history.forEach((h, index) => {
+        history.forEach((h, i) => {
             list.innerHTML += `
                 <div class="history-item">
-                    <span style="color:var(--dark)"><b>${index + 1}.</b> ${h.topic}</span>
-                    <span style="color:var(--primary); font-size:14px;">${h.date} | ${h.time}</span>
+                    <span style="font-size: 17px; font-weight: 700; color: var(--dark)">${i+1}. ${h.topic}</span>
+                    <span style="font-weight: 800; color: var(--primary); font-size: 14px;">${h.date} | ${h.time}</span>
                 </div>`;
         });
-        if(!history.length) list.innerHTML = "<center>Архив бўш</center>";
+        if(!history.length) list.innerHTML = "<center>Архив ҳозирча бўш</center>";
         document.getElementById('historyModal').style.display = 'block';
     }
 
