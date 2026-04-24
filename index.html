@@ -3,61 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Интерактив Жадвал</title>
+    <title>Интерактив Кундалик v3</title>
     <style>
         :root { --primary: #4f46e5; --dark: #1e293b; --bg: #f1f5f9; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; }
-        .card { width: 100%; max-width: 500px; background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background: var(--primary); color: white; padding: 20px; text-align: center; }
-        .editable-date { background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 14px; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; margin: 0; }
+        .card { width: 100%; max-width: 650px; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; }
+        .header { background: var(--dark); color: white; padding: 25px; text-align: center; }
+        .editable-date { background: var(--primary); padding: 6px 15px; border-radius: 50px; cursor: pointer; font-size: 14px; font-weight: bold; }
         table { width: 100%; border-collapse: collapse; }
-        td { padding: 15px; border-bottom: 1px solid #e2e8f0; }
-        .tr-col { width: 30px; font-weight: bold; color: var(--primary); text-align: center; }
-        .subject { font-weight: 600; display: block; color: var(--dark); }
-        .topic { font-size: 13px; color: #64748b; font-style: italic; cursor: pointer; display: block; }
-        .topic:hover { color: var(--primary); background: #f8fafc; }
-        input { width: 90%; padding: 5px; border: 2px solid var(--primary); border-radius: 5px; outline: none; }
+        th { background: #f8fafc; color: #64748b; font-size: 12px; text-transform: uppercase; padding: 12px; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 12px 15px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
+        .tr-col { width: 30px; font-weight: bold; color: var(--primary); text-align: center; border-right: 1px solid #f1f5f9; }
+        .subject-title { font-weight: 700; color: #1e293b; font-size: 15px; display: block; margin-bottom: 5px; }
+        
+        .label { font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: bold; margin-top: 5px; display: block; }
+        .editable-box { 
+            display: block; 
+            font-size: 13px; 
+            color: #475569; 
+            padding: 4px 8px; 
+            background: #f8fafc; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            border: 1px solid transparent;
+            margin-bottom: 5px;
+        }
+        .editable-box:hover { border-color: var(--primary); background: #eff6ff; color: var(--primary); }
+        .footer { text-align: center; padding: 15px; font-size: 11px; color: #94a3b8; background: #f8fafc; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <div class="header">
-        <span class="editable-date" id="mainDate" onclick="editDate()">САНАНИ ЎЗГАРТИРИШ</span>
-        <h2 style="margin:10px 0 0 0;">📓 ДАРС ЖАДВАЛИ</h2>
+        <span class="editable-date" id="topDate" onclick="changeField('topDate', 'date')">САНАНИ КИРИТИНГ</span>
+        <h2 style="margin:15px 0 0 0; letter-spacing: 1px;">📓 ТАҲРИРЛАНУВЧИ ЖАДВАЛ</h2>
     </div>
+
     <table>
-        <tbody id="tableBody"></tbody>
+        <thead>
+            <tr>
+                <th>№</th>
+                <th style="text-align: left;">Дарс маълумотлари</th>
+            </tr>
+        </thead>
+        <tbody id="mainTable"></tbody>
     </table>
+    
+    <div class="footer">Маълумотни ўзгартириш учун устига бир марта босинг.</div>
 </div>
 
 <script>
-    const subjs = ["Iqtisodiyot nazariyasi 2", "Xorijiy til 2", "O‘zbek (rus) tili", "Dinshunoslik", "Jismoniy madaniyat", "Akademik ko‘nikmalar", "Amaliy matematika 2"];
+    const subjects = [
+        "Iqtisodiyot nazariyasi 2",
+        "Xorijiy til 2",
+        "O‘zbek (rus) tili",
+        "Dinshunoslik",
+        "Jismoniy madaniyat va sport",
+        "Akademik ko‘nikmalar",
+        "Amaliy matematika 2"
+    ];
 
-    function render() {
-        const date = localStorage.getItem('myDate') || "24-АПРЕЛЬ, 2026";
-        document.getElementById('mainDate').innerText = date;
+    function init() {
+        // Санани юклаш
+        document.getElementById('topDate').innerText = localStorage.getItem('topDate') || "24-APREL, 2026";
 
-        const body = document.getElementById('tableBody');
-        body.innerHTML = '';
-        subjs.forEach((s, i) => {
-            const t = localStorage.getItem('t_'+i) || "Мавзуни ёзиш учун босинг...";
-            body.innerHTML += `<tr><td class="tr-col">${i+1}</td><td><span class="subject">${s}</span><span class="topic" onclick="editTopic(${i})">${t}</span></td></tr>`;
+        const table = document.getElementById('mainTable');
+        table.innerHTML = '';
+
+        subjects.forEach((s, i) => {
+            const savedTopic = localStorage.getItem('topic_' + i) || "Мавзу киритилмаган...";
+            const savedTeacher = localStorage.getItem('teacher_' + i) || "Устоз И.Ф.О. киритилмаган...";
+
+            table.innerHTML += `
+                <tr>
+                    <td class="tr-col">${i + 1}</td>
+                    <td>
+                        <span class="subject-title">${s}</span>
+                        
+                        <span class="label">📚 Мавзу:</span>
+                        <span class="editable-box" onclick="changeField('topic_${i}')">${savedTopic}</span>
+                        
+                        <span class="label">👨‍🏫 Устоз (И.Ф.О.):</span>
+                        <span class="editable-box" onclick="changeField('teacher_${i}')">${savedTeacher}</span>
+                    </td>
+                </tr>
+            `;
         });
     }
 
-    function editDate() {
-        const old = document.getElementById('mainDate').innerText;
-        const val = prompt("Янги санани ёзинг:", old);
-        if(val) { localStorage.setItem('myDate', val); render(); }
+    function changeField(key) {
+        const oldValue = localStorage.getItem(key) || (key === 'topDate' ? "Санани киритинг" : "Маълумотни киритинг");
+        const newValue = prompt("Янги маълумотни киритинг:", oldValue);
+        
+        if (newValue !== null && newValue.trim() !== "") {
+            localStorage.setItem(key, newValue);
+            init();
+        }
     }
 
-    function editTopic(i) {
-        const val = prompt("Мавзуни ўзгартиринг:");
-        if(val) { localStorage.setItem('t_'+i, val); render(); }
-    }
-
-    render();
+    init();
 </script>
+
 </body>
 </html>
