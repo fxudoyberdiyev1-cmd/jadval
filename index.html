@@ -3,48 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Интерактив Кундалик v4</title>
+    <title>Дарс Жадвали</title>
     <style>
-        :root { --primary: #4f46e5; --dark: #0f172a; --border: #e2e8f0; }
-        body { font-family: 'Inter', system-ui, sans-serif; background: #f1f5f9; margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .card { width: 100%; max-width: 900px; background: white; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background: var(--dark); color: white; padding: 20px; text-align: center; }
-        .editable-date { background: var(--primary); padding: 5px 15px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; }
+        :root { 
+            --primary: #6366f1; 
+            --secondary: #4338ca;
+            --dark: #1e1b4b; 
+            --light-bg: #eef2ff; 
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            margin: 0; 
+            padding: 20px; 
+            display: flex; 
+            justify-content: center; 
+            min-height: 100vh;
+        }
+        .card { 
+            width: 100%; 
+            max-width: 950px; 
+            background: rgba(255, 255, 255, 0.95); 
+            border-radius: 20px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
+            overflow: hidden; 
+            backdrop-filter: blur(10px);
+        }
+        .header { 
+            background: var(--dark); 
+            color: white; 
+            padding: 30px; 
+            text-align: center; 
+            border-bottom: 5px solid var(--primary);
+        }
+        .editable-date { 
+            background: var(--primary); 
+            padding: 8px 20px; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-size: 15px; 
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .header h2 { margin: 0; font-size: 28px; letter-spacing: 2px; text-transform: uppercase; }
         
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { background: #f8fafc; color: #64748b; font-size: 12px; text-transform: uppercase; padding: 15px; border-bottom: 2px solid var(--border); text-align: left; }
-        td { padding: 12px 15px; border-bottom: 1px solid var(--border); font-size: 14px; color: #334155; }
+        .table-container { overflow-x: auto; padding: 10px; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+        th { 
+            color: var(--dark); 
+            font-size: 13px; 
+            text-transform: uppercase; 
+            padding: 15px; 
+            text-align: left; 
+            letter-spacing: 1px;
+        }
+        td { 
+            padding: 15px; 
+            background: white; 
+            font-size: 14px; 
+            color: #334155;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        td:first-child { border-left: 1px solid #e2e8f0; border-radius: 12px 0 0 12px; }
+        td:last-child { border-right: 1px solid #e2e8f0; border-radius: 0 12px 12px 0; }
         
-        .tr-col { width: 40px; font-weight: bold; color: var(--primary); text-align: center; background: #f8fafc; }
-        .subject-col { font-weight: 600; color: var(--dark); width: 25%; }
+        .tr-col { width: 50px; font-weight: bold; color: var(--primary); text-align: center; font-size: 16px; }
+        .day-col { font-weight: 700; color: #ef4444; width: 100px; }
+        .subject-col { font-weight: 600; color: var(--dark); width: 200px; }
         
         .editable-cell { 
             display: block; 
-            padding: 8px; 
-            background: #f9fafb; 
-            border-radius: 6px; 
+            padding: 10px; 
+            background: #f1f5f9; 
+            border-radius: 8px; 
             cursor: pointer; 
+            transition: all 0.3s ease;
             border: 1px solid transparent;
-            transition: 0.2s;
-            min-height: 20px;
         }
-        .editable-cell:hover { border-color: var(--primary); background: #eff6ff; color: var(--primary); }
-        .footer { text-align: center; padding: 15px; font-size: 12px; color: #94a3b8; }
+        .editable-cell:hover { 
+            background: #e0e7ff; 
+            border-color: var(--primary); 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .footer { text-align: center; padding: 20px; font-size: 13px; color: #64748b; font-weight: 500; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <div class="header">
-        <span class="editable-date" id="topDate" onclick="changeField('topDate')">САНАНИ КИРИТИНГ</span>
-        <h2 style="margin:10px 0 0 0;">📓 ТАҲРИРЛАНУВЧИ ДАРС ЖАДВАЛИ</h2>
+        <div class="editable-date" id="topDate" onclick="changeField('topDate')">САНАНИ ТАНЛАНГ</div>
+        <h2>ДАРС ЖАДВАЛИ</h2>
     </div>
 
-    <div style="overflow-x: auto;">
+    <div class="table-container">
         <table>
             <thead>
                 <tr>
-                    <th>Т/Р</th>
+                    <th>№</th>
+                    <th>Ҳафта куни</th>
                     <th>Фан номи</th>
                     <th>Дарс мавзуси</th>
                     <th>Устоз (И.Ф.О.)</th>
@@ -53,18 +114,18 @@
             <tbody id="tableBody"></tbody>
         </table>
     </div>
-    <div class="footer">Ўзгартириш учун катаклар устига бир марта босинг.</div>
+    <div class="footer">💡 Маълумотни ўзгартириш учун катак устига босинг.</div>
 </div>
 
 <script>
-    const subjects = [
-        "Iqtisodiyot nazariyasi 2",
-        "Xorijiy til 2",
-        "O‘zbek (rus) tili",
-        "Dinshunoslik",
-        "Jismoniy madaniyat",
-        "Akademik ko‘nikmalar",
-        "Amaliy matematika 2"
+    const dataRows = [
+        { day: "Душанба", sub: "Iqtisodiyot nazariyasi 2" },
+        { day: "Сешанба", sub: "Xorijiy til 2" },
+        { day: "Чоршанба", sub: "O‘zbek (rus) tili" },
+        { day: "Пайшанба", sub: "Dinshunoslik" },
+        { day: "Жума", sub: "Jismoniy madaniyat" },
+        { day: "Шанба", sub: "Akademik ko‘nikmalar" },
+        { day: "Якшанба", sub: "Amaliy matematika 2" }
     ];
 
     function render() {
@@ -72,14 +133,15 @@
         const body = document.getElementById('tableBody');
         body.innerHTML = '';
 
-        subjects.forEach((s, i) => {
-            const topic = localStorage.getItem('t_'+i) || "Мавзу...";
+        dataRows.forEach((item, i) => {
+            const topic = localStorage.getItem('t_'+i) || "Мавзу киритинг...";
             const teacher = localStorage.getItem('teach_'+i) || "Устоз исми...";
 
             body.innerHTML += `
                 <tr>
                     <td class="tr-col">${i + 1}</td>
-                    <td class="subject-col">${s}</td>
+                    <td class="day-col">${item.day}</td>
+                    <td class="subject-col">${item.sub}</td>
                     <td><span class="editable-cell" onclick="changeField('t_${i}')">${topic}</span></td>
                     <td><span class="editable-cell" onclick="changeField('teach_${i}')">${teacher}</span></td>
                 </tr>`;
@@ -88,7 +150,7 @@
 
     function changeField(key) {
         const current = localStorage.getItem(key) || "";
-        const next = prompt("Янги маълумотни киритинг:", current);
+        const next = prompt("Маълумотни янгиланг:", current);
         if (next !== null) {
             localStorage.setItem(key, next.trim() || "...");
             render();
