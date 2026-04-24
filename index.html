@@ -3,52 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Смарт Жадвал Pro</title>
+    <title>Смарт Жадвал Pro+</title>
     <style>
-        :root {
-            --primary: #4f46e5;
-            --dark: #0f172a;
-            --bg: #f8fafc;
-        }
+        :root { --primary: #4f46e5; --dark: #0f172a; --bg: #f8fafc; }
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #1e293b 0%, #4338ca 100%);
             margin: 0; padding: 20px;
             display: flex; justify-content: center; min-height: 100vh;
         }
-        .main-container {
-            width: 100%; max-width: 1200px;
-            display: flex; gap: 20px; flex-wrap: wrap;
-        }
+        .main-container { width: 100%; max-width: 1200px; display: flex; gap: 20px; flex-wrap: wrap; }
         .app-card {
-            flex: 3; min-width: 700px;
-            background: white; border-radius: 20px;
+            flex: 3; min-width: 700px; background: white; border-radius: 20px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.3); overflow: hidden;
         }
         .sidebar { flex: 1; min-width: 280px; display: flex; flex-direction: column; gap: 20px; }
         .header { background: var(--dark); color: white; padding: 30px; text-align: center; }
         
         table { width: 100%; border-collapse: collapse; }
-        th { background: #f1f5f9; color: #64748b; font-size: 12px; text-transform: uppercase; padding: 18px; text-align: left; }
+        th { background: #f1f5f9; color: #64748b; font-size: 11px; text-transform: uppercase; padding: 18px; text-align: left; }
         td { padding: 15px; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
         
         .tr-col { width: 50px; font-weight: 800; color: var(--primary); text-align: center; }
         .editable { 
             padding: 10px; background: #f8fafc; border-radius: 8px; 
-            cursor: pointer; border: 1px solid #e2e8f0; display: block;
-            transition: 0.3s;
+            cursor: pointer; border: 1px solid #e2e8f0; display: block; transition: 0.3s;
         }
         .editable:hover { border-color: var(--primary); background: #eff6ff; }
         
-        .view-badge {
-            background: #fee2e2; color: #ef4444;
-            padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;
+        .time-badge {
+            font-size: 11px; background: #e0e7ff; color: #4338ca;
+            padding: 2px 6px; border-radius: 4px; font-weight: bold;
         }
 
-        /* Календарь ва Таймер */
         .widget { background: white; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .cal-day { font-size: 50px; font-weight: 900; color: var(--dark); }
-        .counter-box { background: #10b981; color: white; padding: 10px; border-radius: 10px; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -57,14 +46,14 @@
     <div class="app-card">
         <div class="header">
             <h2 style="margin:0">УНИВЕРСИТЕТ ДАРС ЖАДВАЛИ</h2>
-            <p style="font-size: 12px; opacity: 0.7; margin-top: 10px;">Мавзулар 20 та кўришдан сўнг автоматик ўчади</p>
+            <p id="viewStatus" style="font-size: 12px; opacity: 0.7; margin-top: 10px;"></p>
         </div>
         <table>
             <thead>
                 <tr>
                     <th>№</th>
                     <th>Фан номи</th>
-                    <th>Вақт (Киритиш)</th>
+                    <th>Киритилган вақт</th>
                     <th>Дарс мавзуси</th>
                     <th>Устоз И.Ф.О.</th>
                 </tr>
@@ -79,32 +68,26 @@
             <div class="cal-day" id="calDay">24</div>
             <div id="calWeekday" style="color: #64748b;">ЖУМА</div>
         </div>
-
         <div class="widget" style="background: var(--dark); color: white;">
-            <div style="font-size: 12px; opacity: 0.6;">Кўришлар сони:</div>
-            <div id="viewCounter" style="font-size: 30px; font-weight: bold; color: #10b981;">0</div>
-            <div style="font-size: 10px; margin-top: 5px;">20 га етганда мавзулар тозаланади</div>
+            <div style="font-size: 12px; opacity: 0.6;">Кўришлар:</div>
+            <div id="viewCounter" style="font-size: 30px; font-weight: bold; color: #10b981;">0 / 20</div>
         </div>
     </div>
 </div>
 
 <script>
-    const subjects = [
-        "Iqtisodiyot nazariyasi 2", "Xorijiy til 2", "O‘zbek (rus) tili",
-        "Dinshunoslik", "Jismoniy madaniyat", "Akademik ko‘nikmalar", "Amaliy matematika 2"
-    ];
+    const subjects = ["Iqtisodiyot nazariyasi 2", "Xorijiy til 2", "O‘zbek (rus) tili", "Dinshunoslik", "Jismoniy madaniyat", "Akademik ko‘nikmalar", "Amaliy matematika 2"];
 
-    // Кўришлар сонини бошқариш
+    // Кўришларни ҳисоблаш
     let views = parseInt(localStorage.getItem('page_views')) || 0;
     views++;
-    
     if (views > 20) {
-        // 20 тадан ошса, мавзуларни ўчириш
-        subjects.forEach((_, i) => {
-            localStorage.removeItem('t_' + i);
-            localStorage.removeItem('time_' + i);
+        subjects.forEach((_, i) => { 
+            localStorage.removeItem('t_'+i); 
+            localStorage.removeItem('time_'+i); 
+            localStorage.removeItem('teach_'+i);
         });
-        views = 1; // Ҳисоблагични қайта бошлаш
+        views = 1;
     }
     localStorage.setItem('page_views', views);
 
@@ -114,7 +97,7 @@
         body.innerHTML = '';
 
         subjects.forEach((s, i) => {
-            const time = localStorage.getItem('time_' + i) || "--:--";
+            const savedTime = localStorage.getItem('time_' + i) || "--:--";
             const topic = localStorage.getItem('t_' + i) || "Мавзу киритинг...";
             const teacher = localStorage.getItem('teach_' + i) || "Устоз...";
 
@@ -122,17 +105,30 @@
                 <tr>
                     <td class="tr-col">${i + 1}</td>
                     <td style="font-weight:bold">${s}</td>
-                    <td><span class="editable" onclick="edit('time_${i}', 'Вақтни киритинг (мас: 09:00)')">${time}</span></td>
-                    <td><span class="editable" onclick="edit('t_${i}', 'Мавзуни киритинг')">${topic}</span></td>
-                    <td><span class="editable" onclick="edit('teach_${i}', 'Устозни киритинг')">${teacher}</span></td>
+                    <td><span class="time-badge">${savedTime}</span></td>
+                    <td><span class="editable" onclick="updateTopic(${i})">${topic}</span></td>
+                    <td><span class="editable" onclick="editTeacher(${i})">${teacher}</span></td>
                 </tr>`;
         });
     }
 
-    function edit(key, msg) {
-        const val = prompt(msg, localStorage.getItem(key) || "");
+    // Мавзуни ўзгартириш ва вақтни АВТОМАТИК ёзиш
+    function updateTopic(i) {
+        const val = prompt("Янги мавзуни киритинг:");
+        if (val !== null && val.trim() !== "") {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+            
+            localStorage.setItem('t_' + i, val.trim());
+            localStorage.setItem('time_' + i, timeStr); // Вақтни сақлаш
+            render();
+        }
+    }
+
+    function editTeacher(i) {
+        const val = prompt("Устоз исмини киритинг:", localStorage.getItem('teach_'+i) || "");
         if (val !== null) {
-            localStorage.setItem(key, val.trim() || "...");
+            localStorage.setItem('teach_' + i, val.trim() || "...");
             render();
         }
     }
