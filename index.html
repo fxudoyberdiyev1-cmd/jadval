@@ -3,102 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Masofaviy Jadvallari</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
-    
+    <title>Smart Jadval Pro</title>
     <style>
-        :root { --primary: #4f46e5; --dark: #1e293b; --bg-soft: rgba(255, 255, 255, 0.9); }
+        :root { --primary: #6366f1; --dark: #0f172a; --bg: rgba(255, 255, 255, 0.95); }
         
         body { 
             font-family: 'Inter', sans-serif; 
-            /* Ёқимли ва хотиржам қилувчи фон */
-            background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), 
-                        url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
-            background-size: cover;
-            background-attachment: fixed;
-            margin: 0; padding: 20px; color: var(--dark);
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1950&q=80');
+            background-size: cover; background-attachment: fixed; margin: 0; padding: 20px;
         }
 
-        .container { max-width: 1100px; margin: 0 auto; }
+        .container { max-width: 1200px; margin: 0 auto; }
 
-        /* Календарь ва Юқори қисм */
-        .calendar-widget {
-            background: var(--bg-soft); padding: 20px; border-radius: 20px;
-            display: flex; justify-content: space-around; align-items: center;
-            margin-bottom: 20px; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        .cal-box { text-align: center; }
-        .cal-day { font-size: 40px; font-weight: 900; color: var(--primary); display: block; line-height: 1; }
-        .cal-info { font-size: 14px; color: #64748b; font-weight: bold; text-transform: uppercase; }
-
-        .top-bar { 
-            background: var(--bg-soft); padding: 20px; border-radius: 15px; 
+        /* Календарь ва Жонли Вақт */
+        .header-section {
+            background: var(--bg); padding: 25px; border-radius: 25px;
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; backdrop-filter: blur(5px);
+            margin-bottom: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
-        .search-input { 
-            padding: 12px 20px; border: 1px solid #ddd; border-radius: 10px; width: 350px; outline: none; transition: 0.3s;
-        }
-        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(79, 70, 229, 0.2); }
+        .cal-big { font-size: 50px; font-weight: 900; color: var(--primary); line-height: 1; }
+        .time-big { font-size: 45px; font-weight: 900; color: var(--dark); }
 
-        /* Жадвал дизайни */
-        .table-card { background: var(--bg-soft); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        /* Жадвал Дизайни */
+        .table-card { background: var(--bg); border-radius: 25px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
         table { width: 100%; border-collapse: collapse; }
-        th { background: #f1f5f9; padding: 18px; text-align: left; font-size: 12px; color: #475569; text-transform: uppercase; }
-        td { padding: 18px; border-bottom: 1px solid #e2e8f0; }
-        tr:hover { background: rgba(241, 245, 249, 0.5); }
+        th { background: #f8fafc; padding: 20px; text-align: left; font-size: 14px; color: #475569; text-transform: uppercase; letter-spacing: 1px; }
+        td { padding: 25px; border-bottom: 2px solid #f1f5f9; }
 
-        .subject-title { font-weight: 800; color: #1e293b; font-size: 15px; }
-        .topic-text { font-size: 14px; color: #334155; display: block; margin-bottom: 5px; background: #fff; padding: 8px; border-radius: 8px; border-left: 4px solid var(--primary); }
-        .date-badge { font-size: 11px; color: #6366f1; font-weight: bold; background: #eef2ff; padding: 2px 8px; border-radius: 4px; }
+        /* Ёзувларни кўзга ташланадиган қилиш */
+        .subject-name { font-size: 20px; font-weight: 900; color: var(--dark); display: block; margin-bottom: 5px; }
+        .teacher-box { 
+            display: inline-block; background: #f1f5f9; color: #475569; 
+            padding: 5px 12px; border-radius: 8px; font-weight: 700; font-size: 14px; border: 1px solid #e2e8f0;
+        }
+        .current-topic { 
+            font-size: 18px; font-weight: 700; color: #1e293b; background: #fff; 
+            padding: 15px; border-radius: 12px; border-left: 6px solid var(--primary);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: block;
+        }
+        .date-badge { font-size: 12px; font-weight: 800; color: var(--primary); margin-top: 10px; display: block; }
 
-        .btn { border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px; transition: 0.2s; }
-        .btn-excel { background: #22c55e; color: white; }
-        .btn-pdf { background: #ef4444; color: white; }
-        .btn-edit { background: var(--primary); color: white; }
+        /* Архив Модал */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); }
+        .modal-content { background: white; margin: 2% auto; padding: 30px; border-radius: 30px; width: 70%; max-height: 90vh; overflow-y: auto; }
+        .history-item { 
+            padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; 
+            font-size: 16px; font-weight: 600;
+        }
+
+        .btn { border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: 900; transition: 0.3s; text-transform: uppercase; }
+        .btn-edit { background: var(--primary); color: white; margin-bottom: 10px; width: 100%; }
+        .btn-history { background: #1e293b; color: white; width: 100%; }
+        .btn-edit:hover, .btn-history:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="calendar-widget">
-        <div class="cal-box">
-            <span class="cal-info" id="monthName">АПРЕЛЬ</span>
-            <span class="cal-day" id="dayNum">24</span>
-            <span class="cal-info" id="weekDay">ЖУМА</span>
+    <div class="header-section">
+        <div>
+            <span id="monthName" style="font-weight: 800; color: #64748b; letter-spacing: 2px;"></span>
+            <div class="cal-big" id="dayNum"></div>
+            <span id="weekDay" style="font-weight: 800; color: #64748b;"></span>
         </div>
-        <div style="border-left: 1px solid #ddd; height: 50px;"></div>
-        <div class="cal-box">
-            <span class="cal-info">ЖОРИЙ ВАҚТ</span>
-            <span class="cal-day" id="liveTime" style="font-size: 30px; margin-top: 5px;">19:40</span>
-        </div>
-    </div>
-
-    <div class="top-bar">
-        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Фан ёки ўқитувчини топиш..." onkeyup="filterTable()">
-        <div style="display: flex; gap: 10px;">
-            <div style="padding: 10px; font-weight: bold; color: var(--primary);">Ўтилди: <span id="doneCount">0</span></div>
-            <button class="btn btn-excel" onclick="exportToExcel()">Excel</button>
-            <button class="btn btn-pdf" onclick="exportToPDF()">PDF</button>
-        </div>
+        <div class="time-big" id="liveTime"></div>
     </div>
 
     <div class="table-card">
-        <table id="mainTable">
+        <table>
             <thead>
                 <tr>
-                    <th>№</th>
-                    <th>Фан ва Ўқитувчи</th>
-                    <th>Дарс Мавзуси</th>
-                    <th>Киритилган Сана</th>
-                    <th>Ҳолат</th>
-                    <th></th>
+                    <th style="width: 50px;">№</th>
+                    <th style="width: 300px;">Фан ва Ўқитувчи</th>
+                    <th>Жорий Мавзу</th>
+                    <th style="width: 150px;">Бошқарув</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
         </table>
+    </div>
+</div>
+
+<div id="historyModal" class="modal">
+    <div class="modal-content">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid #f1f5f9; padding-bottom:15px;">
+            <h2 id="historyTitle" style="margin:0; color:var(--primary); font-size: 24px;">Мавзулар Архиди</h2>
+            <button onclick="closeHistory()" class="btn" style="background:#ef4444; color:white;">Ёпиш</button>
+        </div>
+        <div id="historyList" style="margin-top:20px;"></div>
     </div>
 </div>
 
@@ -116,81 +110,81 @@
     function render() {
         const body = document.getElementById('tableBody');
         body.innerHTML = '';
-        let done = 0;
 
         subjects.forEach((s) => {
-            const topic = localStorage.getItem('topic_'+s.id) || "Мавзу киритилмаган...";
-            const date = localStorage.getItem('date_'+s.id) || "--.--.----";
-            const time = localStorage.getItem('time_'+s.id) || "--:--";
-            const status = localStorage.getItem('status_'+s.id) || "waiting";
-            
-            if(status === 'done') done++;
+            const history = JSON.parse(localStorage.getItem('h40_'+s.id)) || [];
+            const last = history[0] || { topic: "Мавзу киритилмаган", date: "--.--.----", time: "--:--" };
 
             body.innerHTML += `
                 <tr>
-                    <td style="font-weight:900; color:var(--primary)">${s.id + 1}</td>
-                    <td><span class="subject-title">${s.n}</span><br><small style="color:#64748b">👤 ${s.t}</small></td>
-                    <td><span class="topic-text">${topic}</span></td>
-                    <td><span class="date-badge">📅 ${date}</span><br><small style="color:#94a3b8; margin-left:5px;">🕒 ${time}</small></td>
+                    <td style="font-size: 24px; font-weight: 900; color: var(--primary); text-align: center;">${s.id + 1}</td>
                     <td>
-                        <select onchange="updateStatus(${s.id}, this.value)" style="padding:5px; border-radius:5px; border:1px solid #ddd; font-size:11px;">
-                            <option value="waiting" ${status === 'waiting' ? 'selected' : ''}>🟡 Кутмоқда</option>
-                            <option value="done" ${status === 'done' ? 'selected' : ''}>🟢 Ўтилди</option>
-                        </select>
+                        <span class="subject-name">${s.n}</span>
+                        <div class="teacher-box">👤 ${s.t}</div>
                     </td>
-                    <td><button class="btn btn-edit" onclick="editSubject(${s.id})">⚙️</button></td>
+                    <td>
+                        <span class="current-topic">${last.topic}</span>
+                        <span class="date-badge">📅 КИРИТИЛДИ: ${last.date} | 🕒 ${last.time}</span>
+                    </td>
+                    <td>
+                        <button class="btn btn-edit" onclick="editSubject(${s.id})">ЎЗГАРТИРИШ</button>
+                        <button class="btn btn-history" onclick="showHistory(${s.id})">АРХИВ (40)</button>
+                    </td>
                 </tr>`;
         });
-        document.getElementById('doneCount').innerText = done;
     }
 
     function editSubject(id) {
-        const pass = prompt("Ушбу фан паролини киритинг:");
-        if (pass === subjects[id].pass) {
-            const val = prompt("Янги мавзуни киритинг:");
+        if (prompt("Ушбу фан паролини киритинг:") === subjects[id].pass) {
+            const val = prompt("Янги дарс мавзусини киритинг:");
             if (val) {
                 const now = new Date();
-                localStorage.setItem('topic_'+id, val.trim());
-                localStorage.setItem('date_'+id, now.toLocaleDateString('uz-UZ'));
-                localStorage.setItem('time_'+id, now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0'));
+                const entry = {
+                    topic: val.trim(),
+                    date: now.toLocaleDateString('uz-UZ'),
+                    time: now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0')
+                };
+
+                let history = JSON.parse(localStorage.getItem('h40_'+id)) || [];
+                history.unshift(entry);
+                if (history.length > 40) history.pop(); // 40 ТА МАВЗУ ЧЕГАРАСИ
+
+                localStorage.setItem('h40_'+id, JSON.stringify(history));
                 render();
             }
-        } else if (pass !== null) alert("Хато пароль!");
+        } else { alert("Хато пароль!"); }
     }
 
-    function updateStatus(id, newStatus) {
-        if (prompt("Паролни киритинг:") === subjects[id].pass) {
-            localStorage.setItem('status_'+id, newStatus);
-            render();
-        } else { alert("Хато пароль!"); render(); }
+    function showHistory(id) {
+        const history = JSON.parse(localStorage.getItem('h40_'+id)) || [];
+        const list = document.getElementById('historyList');
+        document.getElementById('historyTitle').innerText = subjects[id].n + " — Мавзулар тарихи";
+        list.innerHTML = '';
+        
+        history.forEach((h, index) => {
+            list.innerHTML += `
+                <div class="history-item">
+                    <span style="color:var(--dark)"><b>${index + 1}.</b> ${h.topic}</span>
+                    <span style="color:var(--primary); font-size:14px;">${h.date} | ${h.time}</span>
+                </div>`;
+        });
+        if(!history.length) list.innerHTML = "<center>Архив бўш</center>";
+        document.getElementById('historyModal').style.display = 'block';
     }
 
-    function updateWidgets() {
+    function closeHistory() { document.getElementById('historyModal').style.display = 'none'; }
+
+    function updateTime() {
         const now = new Date();
         document.getElementById('dayNum').innerText = now.getDate();
         document.getElementById('monthName').innerText = now.toLocaleDateString('uz-UZ', {month: 'long'}).toUpperCase();
         document.getElementById('weekDay').innerText = now.toLocaleDateString('uz-UZ', {weekday: 'long'}).toUpperCase();
-        document.getElementById('liveTime').innerText = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+        document.getElementById('liveTime').innerText = now.toLocaleTimeString('uz-UZ', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
     }
 
-    function filterTable() {
-        let input = document.getElementById('searchInput').value.toLowerCase();
-        let rows = document.getElementById('tableBody').getElementsByTagName('tr');
-        for (let row of rows) row.style.display = row.innerText.toLowerCase().includes(input) ? "" : "none";
-    }
-
-    function exportToExcel() { XLSX.writeFile(XLSX.utils.table_to_book(document.getElementById("mainTable")), "Jadval.xlsx"); }
-    function exportToPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.autoTable({ html: '#mainTable' });
-        doc.save("Jadval.pdf");
-    }
-
-    setInterval(updateWidgets, 1000);
+    setInterval(updateTime, 1000);
+    updateTime();
     render();
-    updateWidgets();
 </script>
-
 </body>
 </html>
