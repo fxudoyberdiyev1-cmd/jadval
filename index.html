@@ -3,102 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Smart Jadval - Admin Edition</title>
-    
+    <title>Smart Jadval - Edit Mode</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
     <style>
         :root { --primary: #6366f1; --dark: #0f172a; --admin-gold: #fbbf24; }
         body { font-family: 'Inter', sans-serif; background: #f1f5f9; margin: 0; padding: 10px; }
+        .app-header { background: var(--dark); padding: 20px 15px; border-radius: 0 0 25px 25px; color: white; margin: -10px -10px 20px -10px; position: relative; }
+        .time-box { font-size: 26px; font-weight: 800; }
+        .settings-btn { position: absolute; right: 15px; bottom: 20px; background: rgba(255,255,255,0.1); border: none; color: white; padding: 10px; border-radius: 50%; font-size: 20px; cursor: pointer; }
         
-        .app-header {
-            background: var(--dark); padding: 20px 15px; border-radius: 0 0 25px 25px;
-            color: white; margin: -10px -10px 20px -10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .header-top { display: flex; justify-content: space-between; align-items: center; }
-        .time-box { font-size: 28px; font-weight: 800; }
-
-        .card {
-            background: white; border-radius: 20px; margin-bottom: 15px;
-            padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0; position: relative;
-        }
-        .num { font-size: 22px; font-weight: 900; color: var(--primary); }
-        .subject-title { font-size: 18px; font-weight: 800; color: var(--dark); margin-left: 10px; }
+        .card { background: white; border-radius: 20px; margin-bottom: 15px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .num { font-size: 20px; font-weight: 900; color: var(--primary); }
+        .subject-title { font-size: 17px; font-weight: 800; color: var(--dark); margin-left: 10px; }
+        .teacher-name { background: #f8fafc; color: #4338ca; padding: 6px 12px; border-radius: 10px; font-size: 14px; font-weight: 700; margin: 10px 0; display: inline-block; }
+        .topic-area { background: #f1f5f9; padding: 15px; border-radius: 15px; font-size: 15px; font-weight: 700; color: #1e293b; border-left: 5px solid var(--primary); margin: 10px 0; }
         
-        .teacher-name { 
-            background: #f8fafc; color: #4338ca; padding: 6px 12px; 
-            border-radius: 10px; font-size: 14px; font-weight: 700; margin: 10px 0; display: inline-block;
-        }
-        
-        .topic-area {
-            background: #f1f5f9; padding: 15px; border-radius: 15px;
-            font-size: 15px; font-weight: 700; color: #1e293b;
-            border-left: 5px solid var(--primary); margin: 10px 0;
-        }
-
         .btn-group { display: flex; gap: 8px; }
-        .btn {
-            flex: 1; border: none; padding: 12px; border-radius: 12px;
-            font-weight: 800; font-size: 11px; cursor: pointer;
-        }
+        .btn { flex: 1; border: none; padding: 12px; border-radius: 12px; font-weight: 800; font-size: 11px; cursor: pointer; }
         .btn-edit { background: var(--primary); color: white; }
         .btn-history { background: #e2e8f0; color: var(--dark); }
 
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 9999; }
-        .modal-content { background: white; margin: 15% auto; width: 85%; border-radius: 25px; padding: 25px; max-height: 70vh; overflow-y: auto; }
-        
-        .admin-badge {
-            position: absolute; top: 15px; right: 15px;
-            font-size: 10px; background: var(--admin-gold); color: #000;
-            padding: 2px 8px; border-radius: 5px; font-weight: 900;
-        }
+        .modal-content { background: white; margin: 15% auto; width: 85%; border-radius: 25px; padding: 25px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; font-weight: 600; }
     </style>
 </head>
 <body>
 
 <div class="app-header">
-    <div class="header-top">
-        <div>
-            <div id="monthName" style="font-size: 12px; color: #94a3b8; font-weight: bold;"></div>
-            <div id="liveTime" class="time-box"></div>
-        </div>
-        <div style="text-align: right;">
-            <div id="dayNum" style="font-size: 30px; font-weight: 900;"></div>
-            <div id="weekDay" style="font-size: 12px; color: #94a3b8; font-weight: bold;"></div>
-        </div>
-    </div>
+    <div id="liveTime" class="time-box">00:00</div>
+    <div id="fullDate" style="font-size: 12px; color: #94a3b8; font-weight: bold;"></div>
+    <button class="settings-btn" onclick="openSettings()">⚙️</button>
 </div>
 
 <div id="mainContainer"></div>
 
-<div id="historyModal" class="modal">
+<div id="settingsModal" class="modal">
     <div class="modal-content">
-        <h2 id="historyTitle" style="color:var(--primary); margin-top:0; font-size: 20px;"></h2>
-        <div id="historyList"></div>
-        <button onclick="closeHistory()" class="btn" style="background:var(--dark); color:white; width:100%; margin-top:20px;">ЁПИШ</button>
+        <h3 style="margin-top:0">⚙️ Созламалар</h3>
+        <p style="font-size: 12px; color: #64748b;">Устоз ёки фанни ўзгартириш учун аввал паролни киритинг:</p>
+        <input type="password" id="adminPass" placeholder="Паролни ёзинг...">
+        <button onclick="checkAdmin()" class="btn btn-edit" style="width:100%; font-size:14px">КИРИШ</button>
+        <button onclick="closeModal('settingsModal')" class="btn" style="width:100%; margin-top:10px">ЁПИШ</button>
     </div>
 </div>
 
 <script>
-    // 1. СУПЕР ПАРОЛЬ (Фақат сиз учун)
-    const SUPER_ADMIN_PASSWORD = "admin777";
+    // АСОСИЙ ПАРОЛЬ (Устозларни ўзгартириш учун)
+    const MASTER_KEY = "admin777"; 
 
-    // 2. УСТОЗЛАР ВА ФАНЛАР РЎЙХАТИ
-    // Бу ерда исмларни ва фанларни бемалол ўзгартиришингиз мумкин
-    const subjects = [
+    // Маълумотларни браузер хотирасидан олиш ёки бошланғич ҳолат
+    let subjects = JSON.parse(localStorage.getItem('my_subjects')) || [
         { id: 0, n: "Iqtisodiyot nazariyasi 2", t: "S. Karimov", pass: "1111" },
         { id: 1, n: "Xorijiy til 2", t: "A. Rahimova", pass: "2222" },
         { id: 2, n: "O‘zbek (rus) tili", t: "M. G'afforov", pass: "3333" },
         { id: 3, n: "Dinshunoslik", t: "N. Olimov", pass: "4444" },
-        { id: 4, n: "Jismoniy madaniyat", t: "V. Ivanov", pass: "5555" },
-        { id: 5, n: "Akademik ko‘nikmalar", t: "D. Zokirova", pass: "6666" },
-        { id: 6, n: "Amaliy matematika 2", t: "P. Qosimov", pass: "7777" }
+        { id: 4, n: "Jismoniy madaniyat", t: "V. Ivanov", pass: "5555" }
     ];
-
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.ready();
 
     function render() {
         const container = document.getElementById('mainContainer');
@@ -108,70 +69,62 @@
             const last = history[0] || { topic: "Мавзу киритилмаган", date: "--.--.----", time: "--:--" };
             container.innerHTML += `
                 <div class="card">
-                    <span class="admin-badge">ADMIN MODE</span>
                     <div style="display:flex; align-items:center;">
                         <span class="num">${s.id + 1}</span>
                         <span class="subject-title">${s.n}</span>
                     </div>
                     <div class="teacher-name">👤 ${s.t}</div>
                     <div class="topic-area">${last.topic}</div>
-                    <div style="font-size:11px; color:#64748b; margin-bottom:10px; font-weight:700;">
-                        📅 ${last.date} • 🕒 ${last.time}
-                    </div>
                     <div class="btn-group">
-                        <button class="btn btn-edit" onclick="editSubject(${s.id})">ЎЗГАРТИРИШ</button>
-                        <button class="btn btn-history" onclick="showHistory(${s.id})">АРХИВ (40)</button>
+                        <button class="btn btn-edit" onclick="editTopic(${s.id})">МАВЗУНИ ЁЗИШ</button>
                     </div>
                 </div>`;
         });
     }
 
-    function editSubject(id) {
-        const inputPass = prompt("Фан паролини ёки Супер Паролни киритинг:");
-        
-        if (inputPass === subjects[id].pass || inputPass === SUPER_ADMIN_PASSWORD) {
-            const val = prompt(`${subjects[id].n}\nЯнги мавзуни киритинг:`);
-            if (val) {
+    // МАВЗУНИ ЎЗГАРТИРИШ (Фан пароли билан)
+    function editTopic(id) {
+        const p = prompt("Фан паролини киритинг:");
+        if(p === subjects[id].pass || p === MASTER_KEY) {
+            const val = prompt("Янги мавзу:");
+            if(val) {
                 const now = new Date();
-                const entry = { 
-                    topic: val.trim(), 
-                    date: now.toLocaleDateString('uz-UZ'), 
-                    time: now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0') 
-                };
+                const entry = { topic: val, date: now.toLocaleDateString(), time: now.getHours() + ":" + now.getMinutes() };
                 let history = JSON.parse(localStorage.getItem('h40_'+id)) || [];
                 history.unshift(entry);
-                if (history.length > 40) history.pop();
                 localStorage.setItem('h40_'+id, JSON.stringify(history));
                 render();
             }
-        } else { 
-            alert("Пароль хато!"); 
-        }
+        } else { alert("Пароль хато!"); }
     }
 
-    function showHistory(id) {
-        const history = JSON.parse(localStorage.getItem('h40_'+id)) || [];
-        const list = document.getElementById('historyList');
-        document.getElementById('historyTitle').innerText = subjects[id].n + " тарихи";
-        list.innerHTML = '';
-        history.forEach((h, i) => {
-            list.innerHTML += `<div style="padding:12px 0; border-bottom:1px solid #eee;">
-                <div style="font-weight:700; color:var(--dark)">${i+1}. ${h.topic}</div>
-                <div style="font-size:11px; color:var(--primary); font-weight:800; margin-top:5px;">${h.date} | ${h.time}</div>
-            </div>`;
-        });
-        if(!history.length) list.innerHTML = "<center>Архив бўш</center>";
-        document.getElementById('historyModal').style.display = 'block';
-    }
+    // СОЗЛАМАЛАРНИ ОЧИШ (Устозларни алмаштириш)
+    function openSettings() { document.getElementById('settingsModal').style.display = 'block'; }
+    function closeModal(id) { document.getElementById('settingsModal').style.display = 'none'; }
 
-    function closeHistory() { document.getElementById('historyModal').style.display = 'none'; }
+    function checkAdmin() {
+        const pass = document.getElementById('adminPass').value;
+        if(pass === MASTER_KEY) {
+            const id = prompt("Қайси тартиб рақамдаги фанни ўзгартирмоқчисиз? (1-5)");
+            const idx = parseInt(id) - 1;
+            if(subjects[idx]) {
+                const newName = prompt("Янги фан номи:", subjects[idx].n);
+                const newTeacher = prompt("Янги устоз исми:", subjects[idx].t);
+                if(newName && newTeacher) {
+                    subjects[idx].n = newName;
+                    subjects[idx].t = newTeacher;
+                    localStorage.setItem('my_subjects', JSON.stringify(subjects));
+                    alert("Муваффақиятли ўзгарди!");
+                    location.reload();
+                }
+            }
+        } else { alert("Супер пароль хато!"); }
+    }
 
     function updateTime() {
         const now = new Date();
-        document.getElementById('dayNum').innerText = now.getDate();
-        document.getElementById('monthName').innerText = now.toLocaleDateString('uz-UZ', {month: 'long'}).toUpperCase();
-        document.getElementById('weekDay').innerText = now.toLocaleDateString('uz-UZ', {weekday: 'long'}).toUpperCase();
         document.getElementById('liveTime').innerText = now.toLocaleTimeString('uz-UZ', {hour:'2-digit', minute:'2-digit'});
+        document.getElementById('fullDate').innerText = now.toLocaleDateString('uz-UZ', {weekday:'long', day:'numeric', month:'long'}).toUpperCase();
     }
 
     setInterval(updateTime, 1000);
