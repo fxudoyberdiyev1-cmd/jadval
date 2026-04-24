@@ -2,46 +2,46 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from tkcalendar import DateEntry
 
-# Oyna
+# Асосий ойна
 root = tk.Tk()
 root.title("Dars Jadvali")
-root.geometry("700x500")
+root.geometry("700x550")
+root.configure(bg="#f0f2f5")
 
-# Sana tanlash
-tk.Label(root, text="Sanani tanlang:", font=("Arial", 12)).pack(pady=5)
-
-date_entry = DateEntry(root, width=15)
+# Сана танлаш қисми
+tk.Label(root, text="Sanani tanlang:", font=("Arial", 12, "bold"), bg="#f0f2f5").pack(pady=5)
+date_entry = DateEntry(root, width=15, background='darkblue', foreground='white', borderwidth=2)
 date_entry.pack(pady=5)
 
-# Inputlar (dars qo‘shish uchun)
-frame = tk.Frame(root)
+# Киритиш майдонлари (Inputlar)
+frame = tk.Frame(root, bg="#f0f2f5")
 frame.pack(pady=10)
 
-tk.Label(frame, text="Kun").grid(row=0, column=0)
-tk.Label(frame, text="Fan").grid(row=0, column=1)
-tk.Label(frame, text="O‘qituvchi").grid(row=0, column=2)
+tk.Label(frame, text="Kun", bg="#f0f2f5").grid(row=0, column=0, padx=5)
+tk.Label(frame, text="Fan", bg="#f0f2f5").grid(row=0, column=1, padx=5)
+tk.Label(frame, text="O‘qituvchi", bg="#f0f2f5").grid(row=0, column=2, padx=5)
 
 kun_entry = tk.Entry(frame)
 fan_entry = tk.Entry(frame)
 ustoz_entry = tk.Entry(frame)
 
-kun_entry.grid(row=1, column=0)
-fan_entry.grid(row=1, column=1)
-ustoz_entry.grid(row=1, column=2)
+kun_entry.grid(row=1, column=0, padx=5, pady=5)
+fan_entry.grid(row=1, column=1, padx=5, pady=5)
+ustoz_entry.grid(row=1, column=2, padx=5, pady=5)
 
-# Jadval
-columns = ("Kun", "Fan", "O‘qituvchi")
+# Жадвал (Treeview)
+columns = ("Sana", "Kun", "Fan", "O‘qituvchi")
 tree = ttk.Treeview(root, columns=columns, show="headings")
 
 for col in columns:
     tree.heading(col, text=col)
+    tree.column(col, width=150, anchor="center")
 
-tree.pack(expand=True, fill="both", pady=10)
+tree.pack(expand=True, fill="both", pady=10, padx=10)
 
-# ===== FUNKSIYALAR =====
-
-# Dars qo‘shish
+# ===== ФУНКЦИЯЛАР =====
 def add_lesson():
+    sana = date_entry.get()
     kun = kun_entry.get()
     fan = fan_entry.get()
     ustoz = ustoz_entry.get()
@@ -50,30 +50,27 @@ def add_lesson():
         messagebox.showwarning("Xato", "Hamma joyni to‘ldiring!")
         return
 
-    tree.insert("", tk.END, values=(kun, fan, ustoz))
-
-    # tozalash
+    tree.insert("", tk.END, values=(sana, kun, fan, ustoz))
+    
+    # Майдонларни тозалаш
     kun_entry.delete(0, tk.END)
     fan_entry.delete(0, tk.END)
     ustoz_entry.delete(0, tk.END)
 
-# Dars o‘chirish
 def delete_lesson():
     selected = tree.selection()
     if not selected:
         messagebox.showwarning("Xato", "Avval darsni tanlang!")
         return
-
     for item in selected:
         tree.delete(item)
 
-# ===== TUGMALAR =====
-
-btn_frame = tk.Frame(root)
+# ===== ТУГМАЛАР =====
+btn_frame = tk.Frame(root, bg="#f0f2f5")
 btn_frame.pack(pady=10)
 
-tk.Button(btn_frame, text="➕ Dars qo‘shish", command=add_lesson, bg="green", fg="white").grid(row=0, column=0, padx=10)
-tk.Button(btn_frame, text="❌ Dars o‘chirish", command=delete_lesson, bg="red", fg="white").grid(row=0, column=1, padx=10)
+tk.Button(btn_frame, text="➕ Dars qo‘shish", command=add_lesson, bg="#28a745", fg="white", font=("Arial", 10, "bold"), width=15).grid(row=0, column=0, padx=10)
+tk.Button(btn_frame, text="❌ Dars o‘chirish", command=delete_lesson, bg="#dc3545", fg="white", font=("Arial", 10, "bold"), width=15).grid(row=0, column=1, padx=10)
 
-# Ishga tushirish
+# Дастурни ишга тушириш
 root.mainloop()
