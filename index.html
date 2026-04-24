@@ -3,51 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Ta'lim Jadvallari</title>
+    <title>Smart Masofaviy Jadvallari</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     
     <style>
-        :root { --primary: #2563eb; --dark: #1e293b; --success: #10b981; }
-        body { font-family: 'Inter', sans-serif; background: #f1f5f9; margin: 0; padding: 20px; color: var(--dark); }
-        .container { max-width: 1100px; margin: 0 auto; }
+        :root { --primary: #4f46e5; --dark: #1e293b; --bg-soft: rgba(255, 255, 255, 0.9); }
         
-        /* Юқори панель */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            /* Ёқимли ва хотиржам қилувчи фон */
+            background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), 
+                        url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            margin: 0; padding: 20px; color: var(--dark);
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        /* Календарь ва Юқори қисм */
+        .calendar-widget {
+            background: var(--bg-soft); padding: 20px; border-radius: 20px;
+            display: flex; justify-content: space-around; align-items: center;
+            margin-bottom: 20px; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .cal-box { text-align: center; }
+        .cal-day { font-size: 40px; font-weight: 900; color: var(--primary); display: block; line-height: 1; }
+        .cal-info { font-size: 14px; color: #64748b; font-weight: bold; text-transform: uppercase; }
+
         .top-bar { 
-            background: white; padding: 20px; border-radius: 15px; 
+            background: var(--bg-soft); padding: 20px; border-radius: 15px; 
             display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px;
-            flex-wrap: wrap; gap: 15px;
+            margin-bottom: 20px; backdrop-filter: blur(5px);
         }
         .search-input { 
-            padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 8px; width: 300px; outline: none;
+            padding: 12px 20px; border: 1px solid #ddd; border-radius: 10px; width: 350px; outline: none; transition: 0.3s;
         }
-        .stat-badge { background: var(--primary); color: white; padding: 8px 15px; border-radius: 8px; font-weight: bold; }
+        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(79, 70, 229, 0.2); }
 
-        /* Жадвал */
-        .table-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        /* Жадвал дизайни */
+        .table-card { background: var(--bg-soft); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
         table { width: 100%; border-collapse: collapse; }
-        th { background: #f8fafc; padding: 15px; text-align: left; font-size: 12px; color: #64748b; border-bottom: 2px solid #edf2f7; }
-        td { padding: 15px; border-bottom: 1px solid #edf2f7; }
-        tr:hover { background: #f8fafc; }
+        th { background: #f1f5f9; padding: 18px; text-align: left; font-size: 12px; color: #475569; text-transform: uppercase; }
+        td { padding: 18px; border-bottom: 1px solid #e2e8f0; }
+        tr:hover { background: rgba(241, 245, 249, 0.5); }
 
-        /* Тугмалар */
-        .btn { border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; transition: 0.2s; }
-        .btn-excel { background: #dcfce7; color: #166534; margin-right: 5px; }
-        .btn-pdf { background: #fee2e2; color: #991b1b; }
-        .btn-edit { background: #f1f5f9; color: var(--primary); border: 1px solid #e2e8f0; }
-        
-        .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+        .subject-title { font-weight: 800; color: #1e293b; font-size: 15px; }
+        .topic-text { font-size: 14px; color: #334155; display: block; margin-bottom: 5px; background: #fff; padding: 8px; border-radius: 8px; border-left: 4px solid var(--primary); }
+        .date-badge { font-size: 11px; color: #6366f1; font-weight: bold; background: #eef2ff; padding: 2px 8px; border-radius: 4px; }
+
+        .btn { border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 12px; transition: 0.2s; }
+        .btn-excel { background: #22c55e; color: white; }
+        .btn-pdf { background: #ef4444; color: white; }
+        .btn-edit { background: var(--primary); color: white; }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <div class="calendar-widget">
+        <div class="cal-box">
+            <span class="cal-info" id="monthName">АПРЕЛЬ</span>
+            <span class="cal-day" id="dayNum">24</span>
+            <span class="cal-info" id="weekDay">ЖУМА</span>
+        </div>
+        <div style="border-left: 1px solid #ddd; height: 50px;"></div>
+        <div class="cal-box">
+            <span class="cal-info">ЖОРИЙ ВАҚТ</span>
+            <span class="cal-day" id="liveTime" style="font-size: 30px; margin-top: 5px;">19:40</span>
+        </div>
+    </div>
+
     <div class="top-bar">
-        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Фан ёки ўқитувчи бўйича қидириш..." onkeyup="filterTable()">
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <div class="stat-badge">Ўтилган дарслар: <span id="doneCount">0</span></div>
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Фан ёки ўқитувчини топиш..." onkeyup="filterTable()">
+        <div style="display: flex; gap: 10px;">
+            <div style="padding: 10px; font-weight: bold; color: var(--primary);">Ўтилди: <span id="doneCount">0</span></div>
             <button class="btn btn-excel" onclick="exportToExcel()">Excel</button>
             <button class="btn btn-pdf" onclick="exportToPDF()">PDF</button>
         </div>
@@ -59,9 +91,10 @@
                 <tr>
                     <th>№</th>
                     <th>Фан ва Ўқитувчи</th>
-                    <th>Мавзу ва Сана</th>
-                    <th>Ҳолати</th>
-                    <th>Бошқарув</th>
+                    <th>Дарс Мавзуси</th>
+                    <th>Киритилган Сана</th>
+                    <th>Ҳолат</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -70,15 +103,14 @@
 </div>
 
 <script>
-    // Ҳар бир фан учун алоҳида пароль белгиланган
     const subjects = [
-        { id: 0, n: "Iqtisodiyot nazariyasi 2", t: "S. Karimov", pass: "pass1" },
-        { id: 1, n: "Xorijiy til 2", t: "A. Rahimova", pass: "pass2" },
-        { id: 2, n: "O‘zbek (rus) tili", t: "M. G'afforov", pass: "pass3" },
-        { id: 3, n: "Dinshunoslik", t: "N. Olimov", pass: "pass4" },
-        { id: 4, n: "Jismoniy madaniyat", t: "V. Ivanov", pass: "pass5" },
-        { id: 5, n: "Akademik ko‘nikmalar", t: "D. Zokirova", pass: "pass6" },
-        { id: 6, n: "Amaliy matematika 2", t: "P. Qosimov", pass: "pass7" }
+        { id: 0, n: "Iqtisodiyot nazariyasi 2", t: "S. Karimov", pass: "1111" },
+        { id: 1, n: "Xorijiy til 2", t: "A. Rahimova", pass: "2222" },
+        { id: 2, n: "O‘zbek (rus) tili", t: "M. G'afforov", pass: "3333" },
+        { id: 3, n: "Dinshunoslik", t: "N. Olimov", pass: "4444" },
+        { id: 4, n: "Jismoniy madaniyat", t: "V. Ivanov", pass: "5555" },
+        { id: 5, n: "Akademik ko‘nikmalar", t: "D. Zokirova", pass: "6666" },
+        { id: 6, n: "Amaliy matematika 2", t: "P. Qosimov", pass: "7777" }
     ];
 
     function render() {
@@ -87,79 +119,77 @@
         let done = 0;
 
         subjects.forEach((s) => {
-            const topic = localStorage.getItem('topic_'+s.id) || "Мавзу киритилмаган";
-            const time = localStorage.getItem('time_'+s.id) || "--.--.---- | --:--";
+            const topic = localStorage.getItem('topic_'+s.id) || "Мавзу киритилмаган...";
+            const date = localStorage.getItem('date_'+s.id) || "--.--.----";
+            const time = localStorage.getItem('time_'+s.id) || "--:--";
             const status = localStorage.getItem('status_'+s.id) || "waiting";
             
             if(status === 'done') done++;
 
             body.innerHTML += `
                 <tr>
-                    <td style="font-weight:bold; color:var(--primary)">${s.id + 1}</td>
-                    <td><b>${s.n}</b><br><small style="color:#64748b">${s.t}</small></td>
-                    <td><span style="font-size:13px">${topic}</span><br><small style="color:#94a3b8">${time}</small></td>
+                    <td style="font-weight:900; color:var(--primary)">${s.id + 1}</td>
+                    <td><span class="subject-title">${s.n}</span><br><small style="color:#64748b">👤 ${s.t}</small></td>
+                    <td><span class="topic-text">${topic}</span></td>
+                    <td><span class="date-badge">📅 ${date}</span><br><small style="color:#94a3b8; margin-left:5px;">🕒 ${time}</small></td>
                     <td>
-                        <select onchange="updateStatus(${s.id}, this.value)" style="border:none; background:#f1f5f9; padding:5px; border-radius:5px; font-size:11px">
-                            <option value="waiting" ${status === 'waiting' ? 'selected' : ''}>🟡 Кутилаяпти</option>
+                        <select onchange="updateStatus(${s.id}, this.value)" style="padding:5px; border-radius:5px; border:1px solid #ddd; font-size:11px;">
+                            <option value="waiting" ${status === 'waiting' ? 'selected' : ''}>🟡 Кутмоқда</option>
                             <option value="done" ${status === 'done' ? 'selected' : ''}>🟢 Ўтилди</option>
                         </select>
                     </td>
-                    <td><button class="btn btn-edit" onclick="editSubject(${s.id})">Таҳрир</button></td>
+                    <td><button class="btn btn-edit" onclick="editSubject(${s.id})">⚙️</button></td>
                 </tr>`;
         });
         document.getElementById('doneCount').innerText = done;
     }
 
     function editSubject(id) {
-        const pass = prompt("Ушбу фан учун паролни киритинг:");
+        const pass = prompt("Ушбу фан паролини киритинг:");
         if (pass === subjects[id].pass) {
             const val = prompt("Янги мавзуни киритинг:");
             if (val) {
                 const now = new Date();
-                const fullDate = now.toLocaleDateString() + " | " + now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
                 localStorage.setItem('topic_'+id, val.trim());
-                localStorage.setItem('time_'+id, fullDate);
+                localStorage.setItem('date_'+id, now.toLocaleDateString('uz-UZ'));
+                localStorage.setItem('time_'+id, now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0'));
                 render();
             }
         } else if (pass !== null) alert("Хато пароль!");
     }
 
     function updateStatus(id, newStatus) {
-        const pass = prompt("Ҳолатни ўзгартириш учун ушбу фан паролини киритинг:");
-        if (pass === subjects[id].pass) {
+        if (prompt("Паролни киритинг:") === subjects[id].pass) {
             localStorage.setItem('status_'+id, newStatus);
             render();
-        } else {
-            alert("Хато пароль!");
-            render(); // Жадвални қайта чиқариш (селектни қайтариш учун)
-        }
+        } else { alert("Хато пароль!"); render(); }
+    }
+
+    function updateWidgets() {
+        const now = new Date();
+        document.getElementById('dayNum').innerText = now.getDate();
+        document.getElementById('monthName').innerText = now.toLocaleDateString('uz-UZ', {month: 'long'}).toUpperCase();
+        document.getElementById('weekDay').innerText = now.toLocaleDateString('uz-UZ', {weekday: 'long'}).toUpperCase();
+        document.getElementById('liveTime').innerText = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
     }
 
     function filterTable() {
         let input = document.getElementById('searchInput').value.toLowerCase();
         let rows = document.getElementById('tableBody').getElementsByTagName('tr');
-        for (let row of rows) {
-            row.style.display = row.innerText.toLowerCase().includes(input) ? "" : "none";
-        }
+        for (let row of rows) row.style.display = row.innerText.toLowerCase().includes(input) ? "" : "none";
     }
 
-    // EXPORT EXCEL
-    function exportToExcel() {
-        const table = document.getElementById("mainTable");
-        const wb = XLSX.utils.table_to_book(table);
-        XLSX.writeFile(wb, "Dars_Jadvali.xlsx");
-    }
-
-    // EXPORT PDF
+    function exportToExcel() { XLSX.writeFile(XLSX.utils.table_to_book(document.getElementById("mainTable")), "Jadval.xlsx"); }
     function exportToPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        doc.text("Dars Jadvali", 14, 15);
-        doc.autoTable({ html: '#mainTable', startY: 20 });
-        doc.save("Dars_Jadvali.pdf");
+        doc.autoTable({ html: '#mainTable' });
+        doc.save("Jadval.pdf");
     }
 
+    setInterval(updateWidgets, 1000);
     render();
+    updateWidgets();
 </script>
 
 </body>
