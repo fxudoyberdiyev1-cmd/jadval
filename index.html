@@ -3,59 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Смарт Жадвал Pro+</title>
+    <title>Masofaviy Ta'lim | Admin Panel</title>
     <style>
-        :root { --primary: #4f46e5; --dark: #0f172a; --bg: #f8fafc; }
+        :root { --tg-blue: #24A1DE; --dark: #17212b; --accent: #10b981; }
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #1e293b 0%, #4338ca 100%);
-            margin: 0; padding: 20px;
-            display: flex; justify-content: center; min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #24A1DE 100%);
+            margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh;
         }
-        .main-container { width: 100%; max-width: 1200px; display: flex; gap: 20px; flex-wrap: wrap; }
+        .container { width: 100%; max-width: 1200px; display: flex; gap: 20px; flex-wrap: wrap; }
         .app-card {
-            flex: 3; min-width: 700px; background: white; border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3); overflow: hidden;
+            flex: 3; min-width: 750px; background: white; border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4); overflow: hidden;
         }
+        .header { background: var(--dark); color: white; padding: 25px; text-align: center; border-bottom: 4px solid var(--tg-blue); }
         .sidebar { flex: 1; min-width: 280px; display: flex; flex-direction: column; gap: 20px; }
-        .header { background: var(--dark); color: white; padding: 30px; text-align: center; }
         
         table { width: 100%; border-collapse: collapse; }
-        th { background: #f1f5f9; color: #64748b; font-size: 11px; text-transform: uppercase; padding: 18px; text-align: left; }
-        td { padding: 15px; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+        th { background: #f8fafc; color: #64748b; font-size: 11px; text-transform: uppercase; padding: 15px; text-align: left; }
+        td { padding: 15px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
         
-        .tr-col { width: 50px; font-weight: 800; color: var(--primary); text-align: center; }
-        .editable { 
-            padding: 10px; background: #f8fafc; border-radius: 8px; 
-            cursor: pointer; border: 1px solid #e2e8f0; display: block; transition: 0.3s;
-        }
-        .editable:hover { border-color: var(--primary); background: #eff6ff; }
-        
+        .subject-info { font-weight: 800; color: var(--dark); font-size: 15px; }
         .time-badge {
             font-size: 11px; background: #e0e7ff; color: #4338ca;
-            padding: 2px 6px; border-radius: 4px; font-weight: bold;
+            padding: 4px 8px; border-radius: 6px; font-weight: bold; display: inline-block; margin-top: 5px;
+        }
+        
+        .editable { 
+            padding: 10px; background: #f8fafc; border-radius: 10px; 
+            cursor: pointer; border: 1px solid #e2e8f0; display: block; transition: 0.2s;
+        }
+        .editable:hover { border-color: var(--tg-blue); background: #eff6ff; }
+        
+        .btn-link {
+            background: var(--tg-blue); color: white; border: none; padding: 8px 15px;
+            border-radius: 50px; cursor: pointer; text-decoration: none; font-size: 12px; font-weight: bold;
         }
 
         .widget { background: white; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .cal-day { font-size: 50px; font-weight: 900; color: var(--dark); }
+        .cal-day { font-size: 50px; font-weight: 900; color: var(--tg-blue); line-height: 1; }
+        .lock-icon { font-size: 20px; margin-bottom: 10px; display: block; }
     </style>
 </head>
 <body>
 
-<div class="main-container">
+<div class="container">
     <div class="app-card">
         <div class="header">
-            <h2 style="margin:0">УНИВЕРСИТЕТ ДАРС ЖАДВАЛИ</h2>
-            <p id="viewStatus" style="font-size: 12px; opacity: 0.7; margin-top: 10px;"></p>
+            <h2 style="margin:0">ONLINE DARSLAR JADVALI</h2>
+            <div style="font-size: 12px; opacity: 0.6; margin-top: 5px;">Himoyalangan tizim (Admin)</div>
         </div>
         <table>
             <thead>
                 <tr>
                     <th>№</th>
-                    <th>Фан номи</th>
-                    <th>Киритилган вақт</th>
-                    <th>Дарс мавзуси</th>
-                    <th>Устоз И.Ф.О.</th>
+                    <th>Fan va O'qituvchi</th>
+                    <th>Mavzu va Kiritilgan vaqt</th>
+                    <th>Telegram Link</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -64,73 +68,99 @@
 
     <div class="sidebar">
         <div class="widget">
-            <div id="calMonth" style="font-weight: bold; color: var(--primary);">АПРЕЛЬ</div>
-            <div class="cal-day" id="calDay">24</div>
-            <div id="calWeekday" style="color: #64748b;">ЖУМА</div>
+            <div id="calMonth" style="font-weight: 800; color: var(--tg-blue);"></div>
+            <div class="cal-day" id="calDay"></div>
+            <div id="calWeekday" style="color: #94a3b8; font-weight: bold;"></div>
         </div>
+        
         <div class="widget" style="background: var(--dark); color: white;">
-            <div style="font-size: 12px; opacity: 0.6;">Кўришлар:</div>
-            <div id="viewCounter" style="font-size: 30px; font-weight: bold; color: #10b981;">0 / 20</div>
+            <span class="lock-icon">🔒</span>
+            <div style="font-size: 12px; opacity: 0.7;">Ko'rishlar soni:</div>
+            <div id="viewCount" style="font-size: 32px; font-weight: bold; color: var(--accent);">0 / 20</div>
+            <button onclick="resetCounter()" style="margin-top:10px; background:none; border:1px solid #444; color:#999; cursor:pointer; border-radius:4px; font-size:10px;">Nollash</button>
         </div>
     </div>
 </div>
 
 <script>
-    const subjects = ["Iqtisodiyot nazariyasi 2", "Xorijiy til 2", "O‘zbek (rus) tili", "Dinshunoslik", "Jismoniy madaniyat", "Akademik ko‘nikmalar", "Amaliy matematika 2"];
+    const subjects = [
+        { n: "Iqtisodiyot nazariyasi 2", t: "S. Karimov" },
+        { n: "Xorijiy til 2", t: "A. Rahimova" },
+        { n: "O‘zbek (rus) tili", t: "M. G'afforov" },
+        { n: "Dinshunoslik", t: "N. Olimov" },
+        { n: "Jismoniy madaniyat", t: "V. Ivanov" },
+        { n: "Akademik ko‘nikmalar", t: "D. Zokirova" },
+        { n: "Amaliy matematika 2", t: "P. Qosimov" }
+    ];
 
-    // Кўришларни ҳисоблаш
-    let views = parseInt(localStorage.getItem('page_views')) || 0;
-    views++;
-    if (views > 20) {
-        subjects.forEach((_, i) => { 
-            localStorage.removeItem('t_'+i); 
-            localStorage.removeItem('time_'+i); 
-            localStorage.removeItem('teach_'+i);
-        });
-        views = 1;
+    const ADMIN_PASS = "2026"; // Сизнинг паролингиз
+
+    let v = parseInt(localStorage.getItem('v_count')) || 0;
+    v++;
+    if (v > 20) {
+        subjects.forEach((_, i) => { localStorage.removeItem('topic_'+i); localStorage.removeItem('time_'+i); });
+        v = 1;
     }
-    localStorage.setItem('page_views', views);
+    localStorage.setItem('v_count', v);
 
     function render() {
-        document.getElementById('viewCounter').innerText = views + " / 20";
+        document.getElementById('viewCount').innerText = v + " / 20";
         const body = document.getElementById('tableBody');
         body.innerHTML = '';
 
         subjects.forEach((s, i) => {
-            const savedTime = localStorage.getItem('time_' + i) || "--:--";
-            const topic = localStorage.getItem('t_' + i) || "Мавзу киритинг...";
-            const teacher = localStorage.getItem('teach_' + i) || "Устоз...";
+            const topic = localStorage.getItem('topic_'+i) || "Mavzu kiritilmagan...";
+            const fullTime = localStorage.getItem('time_'+i) || "--.--.---- | --:--";
+            const link = localStorage.getItem('link_'+i) || "#";
 
             body.innerHTML += `
                 <tr>
-                    <td class="tr-col">${i + 1}</td>
-                    <td style="font-weight:bold">${s}</td>
-                    <td><span class="time-badge">${savedTime}</span></td>
-                    <td><span class="editable" onclick="updateTopic(${i})">${topic}</span></td>
-                    <td><span class="editable" onclick="editTeacher(${i})">${teacher}</span></td>
+                    <td style="font-weight:bold; color:var(--tg-blue)">${i + 1}</td>
+                    <td>
+                        <span class="subject-info">${s.n}</span><br>
+                        <small style="color: #64748b;">${s.t}</small>
+                    </td>
+                    <td>
+                        <span class="editable" onclick="secureUpdate(${i})">${topic}</span>
+                        <span class="time-badge">🗓 ${fullTime}</span>
+                    </td>
+                    <td style="text-align:center">
+                        <a href="${link}" target="_blank" class="btn-link" onclick="secureLink(event, ${i})">↗ Kirish</a>
+                    </td>
                 </tr>`;
         });
     }
 
-    // Мавзуни ўзгартириш ва вақтни АВТОМАТИК ёзиш
-    function updateTopic(i) {
-        const val = prompt("Янги мавзуни киритинг:");
-        if (val !== null && val.trim() !== "") {
-            const now = new Date();
-            const timeStr = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-            
-            localStorage.setItem('t_' + i, val.trim());
-            localStorage.setItem('time_' + i, timeStr); // Вақтни сақлаш
-            render();
+    function secureUpdate(i) {
+        const pass = prompt("O'zgartirish uchun parolni kiriting:");
+        if (pass === ADMIN_PASS) {
+            const val = prompt("Yangi mavzuni kiriting:");
+            if (val) {
+                const now = new Date();
+                const datePart = now.toLocaleDateString('uz-UZ');
+                const timePart = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+                
+                localStorage.setItem('topic_'+i, val);
+                localStorage.setItem('time_'+i, datePart + " | " + timePart);
+                render();
+            }
+        } else if (pass !== null) alert("Xato parol!");
+    }
+
+    function secureLink(e, i) {
+        if (e.shiftKey) {
+            e.preventDefault();
+            const pass = prompt("Linkni o'zgartirish uchun parolni kiriting:");
+            if (pass === ADMIN_PASS) {
+                const url = prompt("Telegram/Dars linkini kiriting:");
+                if (url) { localStorage.setItem('link_'+i, url); render(); }
+            }
         }
     }
 
-    function editTeacher(i) {
-        const val = prompt("Устоз исмини киритинг:", localStorage.getItem('teach_'+i) || "");
-        if (val !== null) {
-            localStorage.setItem('teach_' + i, val.trim() || "...");
-            render();
-        }
+    function resetCounter() {
+        const pass = prompt("Nollash uchun parolni kiriting:");
+        if (pass === ADMIN_PASS) { localStorage.setItem('v_count', 0); location.reload(); }
     }
 
     function updateCal() {
