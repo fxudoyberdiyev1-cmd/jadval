@@ -3,63 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masofaviy Ta'lim | Admin Panel</title>
+    <title>Smart Ta'lim Control Panel</title>
     <style>
-        :root { --tg-blue: #24A1DE; --dark: #17212b; --accent: #10b981; }
+        :root { 
+            --primary: #2563eb; --dark: #0f172a; --accent: #10b981; 
+            --danger: #ef4444; --warning: #f59e0b;
+        }
         body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #24A1DE 100%);
-            margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: #f1f5f9; margin: 0; padding: 20px;
+            display: flex; justify-content: center;
         }
         .container { width: 100%; max-width: 1200px; display: flex; gap: 20px; flex-wrap: wrap; }
-        .app-card {
-            flex: 3; min-width: 750px; background: white; border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4); overflow: hidden;
+        
+        /* Dashboard Card */
+        .main-card {
+            flex: 3; min-width: 700px; background: white; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden;
         }
-        .header { background: var(--dark); color: white; padding: 25px; text-align: center; border-bottom: 4px solid var(--tg-blue); }
-        .sidebar { flex: 1; min-width: 280px; display: flex; flex-direction: column; gap: 20px; }
-        
-        table { width: 100%; border-collapse: collapse; }
-        th { background: #f8fafc; color: #64748b; font-size: 11px; text-transform: uppercase; padding: 15px; text-align: left; }
-        td { padding: 15px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
-        
-        .subject-info { font-weight: 800; color: var(--dark); font-size: 15px; }
-        .time-badge {
-            font-size: 11px; background: #e0e7ff; color: #4338ca;
-            padding: 4px 8px; border-radius: 6px; font-weight: bold; display: inline-block; margin-top: 5px;
-        }
-        
-        .editable { 
-            padding: 10px; background: #f8fafc; border-radius: 10px; 
-            cursor: pointer; border: 1px solid #e2e8f0; display: block; transition: 0.2s;
-        }
-        .editable:hover { border-color: var(--tg-blue); background: #eff6ff; }
-        
-        .btn-link {
-            background: var(--tg-blue); color: white; border: none; padding: 8px 15px;
-            border-radius: 50px; cursor: pointer; text-decoration: none; font-size: 12px; font-weight: bold;
+        .header { background: var(--dark); color: white; padding: 25px; }
+        .search-box {
+            width: 100%; padding: 12px; border-radius: 10px; border: none;
+            margin-top: 15px; font-size: 14px; outline: none;
         }
 
-        .widget { background: white; border-radius: 20px; padding: 20px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .cal-day { font-size: 50px; font-weight: 900; color: var(--tg-blue); line-height: 1; }
-        .lock-icon { font-size: 20px; margin-bottom: 10px; display: block; }
+        /* Status Badges */
+        .status-pill {
+            padding: 4px 10px; border-radius: 50px; font-size: 11px; font-weight: bold; color: white;
+        }
+        .st-online { background: var(--accent); }
+        .st-ended { background: var(--danger); }
+        .st-waiting { background: var(--warning); }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f8fafc; color: #64748b; font-size: 11px; text-transform: uppercase; padding: 15px; text-align: left; }
+        tr:hover { background: #f1f5f9; cursor: pointer; transition: 0.2s; }
+        td { padding: 15px; border-bottom: 1px solid #f1f5f9; }
+
+        .editable { 
+            padding: 8px; background: #fff; border: 1px solid #e2e8f0; 
+            border-radius: 8px; font-size: 13px;
+        }
+
+        /* Sidebar Widgets */
+        .sidebar { flex: 1; min-width: 280px; display: flex; flex-direction: column; gap: 20px; }
+        .widget { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .stat-val { font-size: 24px; font-weight: bold; color: var(--primary); }
+        
+        .timer-display { font-size: 18px; font-weight: bold; color: var(--danger); margin-top: 5px; }
+
+        @media (max-width: 800px) { .container { flex-direction: column; } .main-card { min-width: 100%; } }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="app-card">
+    <div class="main-card">
         <div class="header">
-            <h2 style="margin:0">ONLINE DARSLAR JADVALI</h2>
-            <div style="font-size: 12px; opacity: 0.6; margin-top: 5px;">Himoyalangan tizim (Admin)</div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 style="margin:0">SMART DARSLAR</h2>
+                <span id="autoTimer" style="font-size:11px; opacity:0.7">Yangilanish: 30s</span>
+            </div>
+            <input type="text" id="searchInput" class="search-box" placeholder="🔍 Фан ёки ўқитувчи бўйича қидириш..." onkeyup="filterTable()">
         </div>
+        
         <table>
             <thead>
                 <tr>
-                    <th>№</th>
-                    <th>Fan va O'qituvchi</th>
-                    <th>Mavzu va Kiritilgan vaqt</th>
-                    <th>Telegram Link</th>
+                    <th>Статус</th>
+                    <th>Фан ва Ўқитувчи</th>
+                    <th>Мавзу ва Сана</th>
+                    <th>Бошқарув</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
@@ -67,17 +81,22 @@
     </div>
 
     <div class="sidebar">
-        <div class="widget">
-            <div id="calMonth" style="font-weight: 800; color: var(--tg-blue);"></div>
-            <div class="cal-day" id="calDay"></div>
-            <div id="calWeekday" style="color: #94a3b8; font-weight: bold;"></div>
+        <div class="widget" style="text-align:center">
+            <div id="clock" style="font-size:28px; font-weight:bold; color:var(--dark)">00:00:00</div>
+            <div id="fullDate" style="color: #64748b; font-size:13px"></div>
         </div>
-        
-        <div class="widget" style="background: var(--dark); color: white;">
-            <span class="lock-icon">🔒</span>
-            <div style="font-size: 12px; opacity: 0.7;">Ko'rishlar soni:</div>
-            <div id="viewCount" style="font-size: 32px; font-weight: bold; color: var(--accent);">0 / 20</div>
-            <button onclick="resetCounter()" style="margin-top:10px; background:none; border:1px solid #444; color:#999; cursor:pointer; border-radius:4px; font-size:10px;">Nollash</button>
+
+        <div class="widget">
+            <div style="font-size:12px; color:#64748b">Фаол дарслар:</div>
+            <div class="stat-val" id="activeCount">0</div>
+            <hr style="opacity:0.1">
+            <div style="font-size:12px; color:#64748b">Кўришлар:</div>
+            <div class="stat-val" style="color:var(--accent)" id="viewStats">0 / 20</div>
+        </div>
+
+        <div class="widget" id="nextLessonBox">
+            <div style="font-size:12px; color:#64748b">Дарс тугашига:</div>
+            <div class="timer-display" id="countdown">45:00</div>
         </div>
     </div>
 </div>
@@ -88,90 +107,94 @@
         { n: "Xorijiy til 2", t: "A. Rahimova" },
         { n: "O‘zbek (rus) tili", t: "M. G'afforov" },
         { n: "Dinshunoslik", t: "N. Olimov" },
-        { n: "Jismoniy madaniyat", t: "V. Ivanov" },
-        { n: "Akademik ko‘nikmalar", t: "D. Zokirova" },
-        { n: "Amaliy matematika 2", t: "P. Qosimov" }
+        { n: "Jismoniy madaniyat", t: "V. Ivanov" }
     ];
 
-    const ADMIN_PASS = "2026"; // Сизнинг паролингиз
-
-    let v = parseInt(localStorage.getItem('v_count')) || 0;
-    v++;
-    if (v > 20) {
-        subjects.forEach((_, i) => { localStorage.removeItem('topic_'+i); localStorage.removeItem('time_'+i); });
-        v = 1;
-    }
-    localStorage.setItem('v_count', v);
+    const ADMIN_PASS = "2026";
+    let views = parseInt(localStorage.getItem('v_count')) || 0;
+    views++;
+    if(views > 20) { views = 1; subjects.forEach((_,i) => localStorage.removeItem('topic_'+i)); }
+    localStorage.setItem('v_count', views);
 
     function render() {
-        document.getElementById('viewCount').innerText = v + " / 20";
         const body = document.getElementById('tableBody');
         body.innerHTML = '';
+        let activeLessons = 0;
 
         subjects.forEach((s, i) => {
-            const topic = localStorage.getItem('topic_'+i) || "Mavzu kiritilmagan...";
-            const fullTime = localStorage.getItem('time_'+i) || "--.--.---- | --:--";
-            const link = localStorage.getItem('link_'+i) || "#";
+            const topic = localStorage.getItem('topic_'+i) || "Киритилмаган";
+            const time = localStorage.getItem('time_'+i) || "--:--";
+            const status = localStorage.getItem('status_'+i) || "waiting";
+            
+            if(status === 'online') activeLessons++;
+
+            let statusClass = status === 'online' ? 'st-online' : (status === 'ended' ? 'st-ended' : 'st-waiting');
+            let statusText = status === 'online' ? '🟢 Онлайн' : (status === 'ended' ? '🔴 Якунланган' : '🟡 Кутилаяпти');
 
             body.innerHTML += `
                 <tr>
-                    <td style="font-weight:bold; color:var(--tg-blue)">${i + 1}</td>
+                    <td><span class="status-pill ${statusClass}" onclick="changeStatus(${i})">${statusText}</span></td>
                     <td>
-                        <span class="subject-info">${s.n}</span><br>
-                        <small style="color: #64748b;">${s.t}</small>
+                        <b style="color:var(--dark)">${s.n}</b><br>
+                        <small style="color:#64748b">👤 ${s.t}</small>
                     </td>
                     <td>
-                        <span class="editable" onclick="secureUpdate(${i})">${topic}</span>
-                        <span class="time-badge">🗓 ${fullTime}</span>
+                        <div class="editable" onclick="edit(${i})">${topic}</div>
+                        <small style="color:#94a3b8">🗓 ${time}</small>
                     </td>
-                    <td style="text-align:center">
-                        <a href="${link}" target="_blank" class="btn-link" onclick="secureLink(event, ${i})">↗ Kirish</a>
+                    <td>
+                        <button onclick="edit(${i})" style="border:none; background:none; cursor:pointer">⚙️</button>
                     </td>
                 </tr>`;
         });
+        document.getElementById('activeCount').innerText = activeLessons;
+        document.getElementById('viewStats').innerText = views + " / 20";
     }
 
-    function secureUpdate(i) {
-        const pass = prompt("O'zgartirish uchun parolni kiriting:");
-        if (pass === ADMIN_PASS) {
-            const val = prompt("Yangi mavzuni kiriting:");
-            if (val) {
+    function edit(i) {
+        if(prompt("Пароль:") === ADMIN_PASS) {
+            const val = prompt("Мавзу:");
+            if(val) {
                 const now = new Date();
-                const datePart = now.toLocaleDateString('uz-UZ');
-                const timePart = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-                
                 localStorage.setItem('topic_'+i, val);
-                localStorage.setItem('time_'+i, datePart + " | " + timePart);
+                localStorage.setItem('time_'+i, now.toLocaleDateString() + " " + now.getHours() + ":" + now.getMinutes());
                 render();
-            }
-        } else if (pass !== null) alert("Xato parol!");
-    }
-
-    function secureLink(e, i) {
-        if (e.shiftKey) {
-            e.preventDefault();
-            const pass = prompt("Linkni o'zgartirish uchun parolni kiriting:");
-            if (pass === ADMIN_PASS) {
-                const url = prompt("Telegram/Dars linkini kiriting:");
-                if (url) { localStorage.setItem('link_'+i, url); render(); }
             }
         }
     }
 
-    function resetCounter() {
-        const pass = prompt("Nollash uchun parolni kiriting:");
-        if (pass === ADMIN_PASS) { localStorage.setItem('v_count', 0); location.reload(); }
+    function changeStatus(i) {
+        if(prompt("Статус ўзгартириш учун пароль:") === ADMIN_PASS) {
+            const s = prompt("Статус: 1 (Online), 2 (Ended), 3 (Waiting)");
+            const map = {"1": "online", "2": "ended", "3": "waiting"};
+            if(map[s]) { localStorage.setItem('status_'+i, map[s]); render(); }
+        }
     }
 
-    function updateCal() {
+    function filterTable() {
+        let input = document.getElementById('searchInput').value.toLowerCase();
+        let rows = document.getElementById('tableBody').getElementsByTagName('tr');
+        for (let row of rows) {
+            row.style.display = row.innerText.toLowerCase().includes(input) ? "" : "none";
+        }
+    }
+
+    function updateTime() {
         const now = new Date();
-        document.getElementById('calDay').innerText = now.getDate();
-        document.getElementById('calMonth').innerText = now.toLocaleDateString('uz-UZ', {month: 'long'}).toUpperCase();
-        document.getElementById('calWeekday').innerText = now.toLocaleDateString('uz-UZ', {weekday: 'long'}).toUpperCase();
+        document.getElementById('clock').innerText = now.toLocaleTimeString();
+        document.getElementById('fullDate').innerText = now.toLocaleDateString('uz-UZ', {weekday:'long', day:'numeric', month:'long'});
     }
 
+    // Авто-янгиланиш симуляцияси
+    let refreshSec = 30;
+    setInterval(() => {
+        refreshSec--;
+        document.getElementById('autoTimer').innerText = `Yangilanish: ${refreshSec}s`;
+        if(refreshSec <= 0) { refreshSec = 30; render(); }
+    }, 1000);
+
+    setInterval(updateTime, 1000);
     render();
-    updateCal();
 </script>
 
 </body>
