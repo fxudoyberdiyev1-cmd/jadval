@@ -3,52 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Интерактив Кундалик</title>
+    <title>Интерактив Кундалик v2</title>
     <style>
         :root { --primary: #3b82f6; --dark: #0f172a; --bg: #f8fafc; }
-        body { font-family: sans-serif; background: var(--bg); margin: 0; padding: 15px; display: flex; justify-content: center; }
-        .app-card { width: 100%; max-width: 550px; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background: var(--dark); color: white; padding: 20px; text-align: center; }
-        .date-bar { background: var(--primary); color: white; padding: 8px; text-align: center; font-size: 12px; font-weight: bold; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .app-card { width: 100%; max-width: 550px; background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: var(--dark); color: white; padding: 25px; text-align: center; }
+        
+        /* Сана қисми учун услуб */
+        .editable-date { 
+            display: inline-block; 
+            background: rgba(255,255,255,0.1); 
+            padding: 5px 15px; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            transition: 0.3s;
+        }
+        .editable-date:hover { background: var(--primary); }
+        
         table { width: 100%; border-collapse: collapse; }
-        th { background: #f1f5f9; color: #64748b; font-size: 11px; text-transform: uppercase; padding: 10px; border-bottom: 2px solid #e2e8f0; }
-        td { padding: 12px; border-bottom: 1px solid #f1f5f9; }
-        .tr-col { width: 30px; font-weight: 800; color: var(--primary); text-align: center; }
+        th { background: #f1f5f9; color: #64748b; font-size: 11px; text-transform: uppercase; padding: 12px; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 15px; border-bottom: 1px solid #f1f5f9; }
+        .tr-col { width: 35px; font-weight: 800; color: var(--primary); text-align: center; }
         .subject-name { font-weight: 600; color: var(--dark); display: block; }
-        .editable-topic { display: block; font-size: 13px; color: #64748b; font-style: italic; cursor: pointer; padding: 3px; border-radius: 3px; }
-        .editable-topic:hover { background: #fffbeb; color: #b45309; }
-        .edit-input { width: 95%; padding: 5px; font-size: 13px; border: 2px solid var(--primary); border-radius: 4px; outline: none; }
+        
+        .editable-text { 
+            display: block; 
+            font-size: 13px; 
+            color: #64748b; 
+            font-style: italic; 
+            cursor: pointer; 
+            padding: 4px;
+        }
+        .editable-text:hover { background: #fffbeb; color: #b45309; border-radius: 4px; }
+        
+        input.edit-mode { 
+            width: 90%; 
+            padding: 5px; 
+            border: 2px solid var(--primary); 
+            border-radius: 6px; 
+            outline: none; 
+            font-family: inherit;
+        }
+        .footer-hint { text-align: center; padding: 15px; font-size: 11px; color: #94a3b8; }
     </style>
 </head>
 <body>
 
 <div class="app-card">
-    <div class="header"><h2 style="margin:0; font-size: 20px;">📅 ДАРС ЖАДВАЛИ</h2></div>
-    <div class="date-bar" id="today"></div>
+    <div class="header">
+        <div class="editable-date" id="dateDisplay" onclick="editField(this, 'savedDate')">Юкланмоқда...</div>
+        <h2 style="margin:10px 0 0 0; font-size: 22px;">📅 ДАРС ЖАДВАЛИ</h2>
+    </div>
+
     <table>
-        <thead><tr><th>Т/Р</th><th style="text-align:left">Фан ва Мавзу</th></tr></thead>
-        <tbody id="list"></tbody>
+        <thead>
+            <tr>
+                <th>Т/Р</th>
+                <th style="text-align:left">Фан ва Мавзу</th>
+            </tr>
+        </thead>
+        <tbody id="scheduleBody">
+            </tbody>
     </table>
+    <div class="footer-hint">Ўзгартириш учун матн ёки сана устига бир марта босинг.</div>
 </div>
 
 <script>
-    const subjs = ["Iqtisodiyot nazariyasi 2", "Xorijiy til 2", "O‘zbek (rus) tili", "Dinshunoslik", "Jismoniy madaniyat ва спорт", "Akademik ko‘nikmalar", "Amaliy matematika 2"];
-    function draw() {
-        const b = document.getElementById('list'); b.innerHTML = '';
-        subjs.forEach((s, i) => {
-            const t = localStorage.getItem('t'+i) || "Мавзуни ёзиш учун босинг...";
-            b.innerHTML += `<tr><td class="tr-col">${i+1}</td><td><span class="subject-name">${s}</span><span class="editable-topic" onclick="edit(this,${i})">${t}</span></td></tr>`;
+    const subjects = [
+        "Iqtisodiyot nazariyasi 2",
+        "Xorijiy til 2",
+        "O‘zbek (rus) tili",
+        "Dinshunoslik",
+        "Jismoniy madaniyat va sport",
+        "Akademik ko‘nikmalar",
+        "Amaliy matematika 2"
+    ];
+
+    // Саҳифани чизиш
+    function renderApp() {
+        // Санани юклаш
+        const defaultDate = new Date().toLocaleDateString('uz-UZ', {weekday:'long', day:'numeric', month:'long', year:'numeric'}).toUpperCase();
+        document.getElementById('dateDisplay').innerText = localStorage.getItem('savedDate') || defaultDate;
+
+        // Жадвални юклаш
+        const body = document.getElementById('scheduleBody');
+        body.innerHTML = '';
+        subjects.forEach((s, i) => {
+            const topic = localStorage.getItem('topic_' + i) || "Мавзуни ёзиш учун босинг...";
+            body.innerHTML += `
+                <tr>
+                    <td class="tr-col">${i + 1}</td>
+                    <td>
+                        <span class="subject-name">${s}</span>
+                        <span class="editable-text" onclick="editField(this, 'topic_${i}')">${topic}</span>
+                    </td>
+                </tr>`;
         });
     }
-    function edit(el, i) {
-        const val = el.innerText === "Мавзуни ёзиш учун босинг..." ? "" : el.innerText;
-        const inp = document.createElement('input'); inp.className = 'edit-input'; inp.value = val;
-        inp.onblur = function() { localStorage.setItem('t'+i, this.value || "Мавзуни ёзиш учун босинг..."); draw(); };
-        inp.onkeydown = e => { if(e.key === 'Enter') inp.blur(); };
-        el.replaceWith(inp); inp.focus();
+
+    // Таҳрирлаш функцияси
+    function editField(element, storageKey) {
+        const currentVal = element.innerText;
+        const input = document.createElement('input');
+        input.value = currentVal;
+        input.className = 'edit-mode';
+        
+        input.onblur = function() {
+            const newVal = this.value.trim() || currentVal;
+            localStorage.setItem(storageKey, newVal);
+            renderApp();
+        };
+
+        input.onkeydown = function(e) {
+            if (e.key === 'Enter') this.blur();
+        };
+
+        element.replaceWith(input);
+        input.focus();
     }
-    document.getElementById('today').innerText = new Date().toLocaleDateString('uz-UZ', {weekday:'long', day:'numeric', month:'long'}).toUpperCase();
-    draw();
+
+    renderApp();
 </script>
+
 </body>
 </html>
