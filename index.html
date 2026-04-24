@@ -3,30 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Smart Jadval - 7 Subjects</title>
+    <title>Smart Jadval Pro v7</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root { --primary: #6366f1; --dark: #0f172a; --admin-gold: #fbbf24; }
-        body { font-family: 'Inter', sans-serif; background: #f1f5f9; margin: 0; padding: 10px; padding-bottom: 50px; }
+        :root { --primary: #4f46e5; --dark: #1e293b; --accent: #10b981; --bg: #f8fafc; }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: var(--bg); margin: 0; padding: 12px; padding-bottom: 40px; }
         
-        .app-header { background: var(--dark); padding: 25px 15px; border-radius: 0 0 25px 25px; color: white; margin: -10px -10px 20px -10px; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .time-box { font-size: 28px; font-weight: 800; }
-        .settings-btn { position: absolute; right: 15px; bottom: 20px; background: rgba(255,255,255,0.15); border: none; color: white; padding: 12px; border-radius: 50%; font-size: 22px; cursor: pointer; transition: 0.3s; }
-        .settings-btn:active { transform: scale(0.9); background: rgba(255,255,255,0.3); }
-        
-        .card { background: white; border-radius: 20px; margin-bottom: 15px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; position: relative; overflow: hidden; }
-        .num { font-size: 22px; font-weight: 900; color: var(--primary); min-width: 30px; display: inline-block; }
-        .subject-title { font-size: 17px; font-weight: 800; color: var(--dark); margin-left: 5px; }
-        .teacher-name { background: #f0f4ff; color: #4338ca; padding: 6px 12px; border-radius: 10px; font-size: 14px; font-weight: 700; margin: 10px 0; display: inline-block; }
-        .topic-area { background: #f8fafc; padding: 15px; border-radius: 15px; font-size: 15px; font-weight: 700; color: #1e293b; border-left: 5px solid var(--primary); margin: 10px 0; min-height: 20px; }
-        
-        .btn-edit { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 800; font-size: 13px; cursor: pointer; width: 100%; transition: 0.2s; }
-        .btn-edit:active { opacity: 0.8; transform: translateY(2px); }
+        /* Юқори қисм дизайни */
+        .app-header { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 30px 20px; border-radius: 0 0 30px 30px; color: white; margin: -12px -12px 25px -12px; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.15); text-align: center; }
+        .time-box { font-size: 36px; font-weight: 800; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .date-box { font-size: 14px; color: #94a3b8; font-weight: 700; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .settings-btn { position: absolute; right: 20px; top: 30px; background: rgba(255,255,255,0.1); border: none; color: white; padding: 12px; border-radius: 15px; font-size: 24px; cursor: pointer; backdrop-filter: blur(5px); }
 
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 9999; }
-        .modal-content { background: white; margin: 10% auto; width: 85%; border-radius: 25px; padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-        h3 { margin-top: 0; color: var(--dark); border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
-        input { width: 100%; padding: 14px; margin: 10px 0; border: 2px solid #e2e8f0; border-radius: 12px; box-sizing: border-box; font-size: 16px; font-weight: 600; outline: none; }
+        /* Фан карточкалари */
+        .card { background: white; border-radius: 24px; margin-bottom: 20px; padding: 22px; box-shadow: 0 8px 16px rgba(0,0,0,0.05); border: 1px solid #edf2f7; position: relative; }
+        .card-top { display: flex; align-items: center; margin-bottom: 12px; }
+        .num { background: var(--primary); color: white; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: 900; font-size: 18px; margin-right: 12px; }
+        .subject-title { font-size: 20px; font-weight: 800; color: var(--dark); }
+        .teacher-name { display: flex; align-items: center; gap: 6px; color: #6366f1; font-weight: 700; font-size: 15px; margin-bottom: 15px; background: #eef2ff; padding: 6px 14px; border-radius: 12px; width: fit-content; }
+
+        /* Мавзу майдони */
+        .topic-area { background: #f1f5f9; padding: 18px; border-radius: 18px; font-size: 16px; font-weight: 700; color: #0f172a; border-left: 6px solid var(--primary); margin-bottom: 12px; line-height: 1.4; }
+        .meta-info { font-size: 13px; color: #64748b; font-weight: 700; display: flex; gap: 15px; margin-bottom: 18px; padding-left: 5px; }
+
+        /* Тугмалар */
+        .btn-row { display: flex; gap: 10px; }
+        .btn { flex: 1; border: none; padding: 16px; border-radius: 16px; font-weight: 800; font-size: 13px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-update { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+        .btn-history { background: #f1f5f9; color: var(--dark); border: 1px solid #e2e8f0; }
+        .btn:active { transform: scale(0.96); }
+
+        /* Модал ойна */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 9999; }
+        .modal-content { background: white; margin: 10% auto; width: 88%; border-radius: 30px; padding: 25px; max-height: 80vh; overflow-y: auto; }
+        input { width: 100%; padding: 16px; margin: 12px 0; border: 2px solid #e2e8f0; border-radius: 15px; box-sizing: border-box; font-size: 16px; font-weight: 600; outline: none; }
         input:focus { border-color: var(--primary); }
     </style>
 </head>
@@ -34,29 +44,33 @@
 
 <div class="app-header">
     <div id="liveTime" class="time-box">00:00</div>
-    <div id="fullDate" style="font-size: 13px; color: #94a3b8; font-weight: bold; letter-spacing: 1px;"></div>
-    <button class="settings-btn" onclick="openSettings()" title="Устозларни ўзгартириш">⚙️</button>
+    <div id="fullDate" class="date-box">2026-04-24 | JUMA</div>
+    <button class="settings-btn" onclick="openSettings()">⚙️</button>
 </div>
 
 <div id="mainContainer"></div>
 
+<div id="historyModal" class="modal">
+    <div class="modal-content">
+        <h3 id="historyTitle" style="color:var(--primary); margin-top:0; font-size: 22px;"></h3>
+        <div id="historyList"></div>
+        <button onclick="closeModal('historyModal')" class="btn btn-update" style="width:100%; margin-top:20px; background:var(--dark);">ЁПИШ</button>
+    </div>
+</div>
+
 <div id="settingsModal" class="modal">
     <div class="modal-content">
-        <h3>⚙️ ТАНЗИМЛАШ</h3>
-        <p style="font-size: 13px; color: #64748b; font-weight: 600;">Устоз ёки фанни ўзгартириш учун Супер Паролни киритинг:</p>
-        <input type="password" id="adminPass" placeholder="Паролни ёзинг...">
-        <button onclick="checkAdmin()" class="btn-edit" style="background:var(--dark); margin-bottom:10px;">КИРИШ</button>
-        <button onclick="closeModal()" class="btn-edit" style="background:#ef4444;">ЁПИШ</button>
+        <h3 style="margin-top:0">⚙️ СОЗЛАМАЛАР</h3>
+        <p style="font-weight:600; color:#64748b">Супер Паролни киритинг:</p>
+        <input type="password" id="adminPass" placeholder="Кодни ёзинг...">
+        <button onclick="checkAdmin()" class="btn btn-update" style="width:100%">КИРИШ</button>
+        <button onclick="closeModal('settingsModal')" class="btn" style="width:100%; margin-top:10px; background:#f1f5f9">ЁПИШ</button>
     </div>
 </div>
 
 <script>
-    // 1. СУПЕР ПАРОЛЬ (Ҳамма нарсани ўзгартириш учун)
     const MASTER_KEY = "admin777"; 
-
-    // 2. ФАНЛАР ВА УСТОЗЛАР (7 ТА ФАН)
-    // Агар хотирада бўлмаса, шу ердаги маълумотлар чиқади
-    let defaultSubjects = [
+    let subjects = JSON.parse(localStorage.getItem('my_subjects_v7')) || [
         { id: 0, n: "Iqtisodiyot nazariyasi 2", t: "S. Karimov", pass: "1111" },
         { id: 1, n: "Xorijiy til 2", t: "A. Rahimova", pass: "2222" },
         { id: 2, n: "O‘zbek (rus) tili", t: "M. G'afforov", pass: "3333" },
@@ -66,40 +80,41 @@
         { id: 6, n: "Amaliy matematika 2", t: "P. Qosimov", pass: "7777" }
     ];
 
-    let subjects = JSON.parse(localStorage.getItem('my_subjects_v7')) || defaultSubjects;
-
     function render() {
         const container = document.getElementById('mainContainer');
         container.innerHTML = '';
         subjects.forEach((s) => {
             const history = JSON.parse(localStorage.getItem('h40_'+s.id)) || [];
-            const last = history[0] || { topic: "Мавзу ҳали киритилмаган", date: "--.--.----", time: "--:--" };
+            const last = history[0] || { topic: "Мавзу ҳали киритилмаган", date: "2026-04-24", time: "20:52" };
             container.innerHTML += `
                 <div class="card">
-                    <div style="display:flex; align-items:center;">
+                    <div class="card-top">
                         <span class="num">${s.id + 1}</span>
                         <span class="subject-title">${s.n}</span>
                     </div>
                     <div class="teacher-name">👤 ${s.t}</div>
                     <div class="topic-area">${last.topic}</div>
-                    <div style="font-size:11px; color:#94a3b8; margin-bottom:12px; font-weight:700;">
-                        📅 ${last.date} | 🕒 ${last.time}
+                    <div class="meta-info">
+                        <span>📅 ${last.date}</span>
+                        <span>🕒 ${last.time}</span>
                     </div>
-                    <button class="btn-edit" onclick="editTopic(${s.id})">МАВЗУНИ ЯНГИЛАШ</button>
+                    <div class="btn-row">
+                        <button class="btn btn-update" onclick="editTopic(${s.id})">📝 ЯНГИЛАШ</button>
+                        <button class="btn btn-history" onclick="showHistory(${s.id})">📜 ТАРИХ</button>
+                    </div>
                 </div>`;
         });
     }
 
-    // МАВЗУНИ ЯНГИЛАШ (Фан пароли ёки Супер Пароль билан)
     function editTopic(id) {
-        const p = prompt(`${subjects[id].n}\nФан паролини киритинг:`);
+        const p = prompt("ПАРОЛНИ КИРИТИНГ:");
         if(p === subjects[id].pass || p === MASTER_KEY) {
-            const val = prompt("Янги дарс мавзусини ёзинг:");
-            if(val && val.trim() !== "") {
+            const val = prompt("ЯНГИ МАВЗУНИ ЁЗИНГ:");
+            if(val) {
                 const now = new Date();
                 const entry = { 
                     topic: val.trim(), 
-                    date: now.toLocaleDateString('uz-UZ'), 
+                    date: now.toISOString().split('T')[0], 
                     time: now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0') 
                 };
                 let history = JSON.parse(localStorage.getItem('h40_'+id)) || [];
@@ -108,56 +123,51 @@
                 localStorage.setItem('h40_'+id, JSON.stringify(history));
                 render();
             }
-        } else if (p !== null) { 
-            alert("❌ Хато пароль!"); 
-        }
+        } else if (p !== null) alert("❌ Пароль хато!");
     }
 
-    // УСТОЗ ВА ФАННИ ЎЗГАРТИРИШ (⚙️ Созламалар)
+    function showHistory(id) {
+        const history = JSON.parse(localStorage.getItem('h40_'+id)) || [];
+        document.getElementById('historyTitle').innerText = subjects[id].n;
+        const list = document.getElementById('historyList');
+        list.innerHTML = history.map((h, i) => `
+            <div style="padding:15px 0; border-bottom:1px solid #f1f5f9;">
+                <div style="font-weight:800; font-size:15px; color:var(--dark);">${i+1}. ${h.topic}</div>
+                <div style="font-size:12px; color:var(--primary); margin-top:6px; font-weight:bold;">📅 ${h.date} | 🕒 ${h.time}</div>
+            </div>
+        `).join('') || "<center style='padding:20px; color:#94a3b8;'>Архив бўш</center>";
+        document.getElementById('historyModal').style.display = 'block';
+    }
+
     function openSettings() { document.getElementById('settingsModal').style.display = 'block'; }
-    function closeModal() { document.getElementById('settingsModal').style.display = 'none'; document.getElementById('adminPass').value = ''; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
     function checkAdmin() {
-        const pass = document.getElementById('adminPass').value;
-        if(pass === MASTER_KEY) {
-            const num = prompt("Қайси тартибдаги фанни ўзгартирмоқчисиз? (1-7):");
+        if(document.getElementById('adminPass').value === MASTER_KEY) {
+            const num = prompt("Фан рақамини танланг (1-7):");
             const idx = parseInt(num) - 1;
-            
             if(subjects[idx]) {
-                const newName = prompt("Янги фан номи:", subjects[idx].n);
-                const newTeacher = prompt("Янги устоз исми:", subjects[idx].t);
-                const newPass = prompt("Бу фан учун янги пароль:", subjects[idx].pass);
-                
-                if(newName && newTeacher && newPass) {
-                    subjects[idx].n = newName;
-                    subjects[idx].t = newTeacher;
-                    subjects[idx].pass = newPass;
-                    localStorage.setItem('my_subjects_v7', JSON.stringify(subjects));
-                    alert("✅ Маълумотлар сақланди!");
-                    closeModal();
-                    render();
-                }
-            } else {
-                alert("❌ Бундай рақамли фан йўқ!");
+                subjects[idx].n = prompt("Фан номи:", subjects[idx].n) || subjects[idx].n;
+                subjects[idx].t = prompt("Устоз исми:", subjects[idx].t) || subjects[idx].t;
+                subjects[idx].pass = prompt("Янги пароль:", subjects[idx].pass) || subjects[idx].pass;
+                localStorage.setItem('my_subjects_v7', JSON.stringify(subjects));
+                location.reload();
             }
-        } else { 
-            alert("❌ Супер Пароль хато!"); 
-        }
+        } else alert("Хато!");
     }
 
     function updateTime() {
         const now = new Date();
         document.getElementById('liveTime').innerText = now.toLocaleTimeString('uz-UZ', {hour:'2-digit', minute:'2-digit'});
-        document.getElementById('fullDate').innerText = now.toLocaleDateString('uz-UZ', {weekday:'long', day:'numeric', month:'long'}).toUpperCase();
+        const options = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
+        let d = now.toLocaleDateString('uz-UZ', options).toUpperCase();
+        document.getElementById('fullDate').innerText = d.replace(/\//g, '-');
     }
-
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.ready();
 
     setInterval(updateTime, 1000);
     updateTime();
     render();
+    window.Telegram.WebApp.expand();
 </script>
 </body>
 </html>
