@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Smart Jadval - Admin Panel</title>
+    <title>Smart Jadval - Admin Edition</title>
     
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/5995/5995409.png">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
         :root { --primary: #6366f1; --dark: #0f172a; --admin-gold: #fbbf24; }
         body { font-family: 'Inter', sans-serif; background: #f1f5f9; margin: 0; padding: 10px; }
         
-        /* Header */
         .app-header {
             background: var(--dark); padding: 20px 15px; border-radius: 0 0 25px 25px;
             color: white; margin: -10px -10px 20px -10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -21,7 +18,6 @@
         .header-top { display: flex; justify-content: space-between; align-items: center; }
         .time-box { font-size: 28px; font-weight: 800; }
 
-        /* Card Design */
         .card {
             background: white; border-radius: 20px; margin-bottom: 15px;
             padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
@@ -41,7 +37,6 @@
             border-left: 5px solid var(--primary); margin: 10px 0;
         }
 
-        /* Buttons */
         .btn-group { display: flex; gap: 8px; }
         .btn {
             flex: 1; border: none; padding: 12px; border-radius: 12px;
@@ -50,11 +45,9 @@
         .btn-edit { background: var(--primary); color: white; }
         .btn-history { background: #e2e8f0; color: var(--dark); }
 
-        /* Modal */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 9999; }
         .modal-content { background: white; margin: 15% auto; width: 85%; border-radius: 25px; padding: 25px; max-height: 70vh; overflow-y: auto; }
         
-        /* Admin Badge */
         .admin-badge {
             position: absolute; top: 15px; right: 15px;
             font-size: 10px; background: var(--admin-gold); color: #000;
@@ -88,9 +81,11 @@
 </div>
 
 <script>
-    // СУПЕР ПАРОЛЬ - Буни фақат сиз биласиз!
+    // 1. СУПЕР ПАРОЛЬ (Фақат сиз учун)
     const SUPER_ADMIN_PASSWORD = "admin777";
 
+    // 2. УСТОЗЛАР ВА ФАНЛАР РЎЙХАТИ
+    // Бу ерда исмларни ва фанларни бемалол ўзгартиришингиз мумкин
     const subjects = [
         { id: 0, n: "Iqtisodiyot nazariyasi 2", t: "S. Karimov", pass: "1111" },
         { id: 1, n: "Xorijiy til 2", t: "A. Rahimova", pass: "2222" },
@@ -101,6 +96,10 @@
         { id: 6, n: "Amaliy matematika 2", t: "P. Qosimov", pass: "7777" }
     ];
 
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    tg.ready();
+
     function render() {
         const container = document.getElementById('mainContainer');
         container.innerHTML = '';
@@ -109,7 +108,7 @@
             const last = history[0] || { topic: "Мавзу киритилмаган", date: "--.--.----", time: "--:--" };
             container.innerHTML += `
                 <div class="card">
-                    <span class="admin-badge">ID: ${s.id + 100}</span>
+                    <span class="admin-badge">ADMIN MODE</span>
                     <div style="display:flex; align-items:center;">
                         <span class="num">${s.id + 1}</span>
                         <span class="subject-title">${s.n}</span>
@@ -130,14 +129,7 @@
     function editSubject(id) {
         const inputPass = prompt("Фан паролини ёки Супер Паролни киритинг:");
         
-        // Асосий текширув: Фан пароли ёки Супер Админ пароли
         if (inputPass === subjects[id].pass || inputPass === SUPER_ADMIN_PASSWORD) {
-            
-            // Агар супер пароль билан кирилса, махсус хабар чиқади
-            if (inputPass === SUPER_ADMIN_PASSWORD) {
-                console.log("Super Admin тизимга кирди");
-            }
-
             const val = prompt(`${subjects[id].n}\nЯнги мавзуни киритинг:`);
             if (val) {
                 const now = new Date();
@@ -153,12 +145,11 @@
                 render();
             }
         } else { 
-            alert("Кириш рад этилди! Пароль хато."); 
+            alert("Пароль хато!"); 
         }
     }
 
     function showHistory(id) {
-        // Архивга кириш учун ҳам супер пароль ишлаши мумкин (хоҳишга қараб)
         const history = JSON.parse(localStorage.getItem('h40_'+id)) || [];
         const list = document.getElementById('historyList');
         document.getElementById('historyTitle').innerText = subjects[id].n + " тарихи";
