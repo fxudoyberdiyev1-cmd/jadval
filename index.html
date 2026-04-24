@@ -1,76 +1,52 @@
-import tkinter as tk
-from tkinter import ttk, messagebox
-from tkcalendar import DateEntry
-
-# Асосий ойна
-root = tk.Tk()
-root.title("Dars Jadvali")
-root.geometry("700x550")
-root.configure(bg="#f0f2f5")
-
-# Сана танлаш қисми
-tk.Label(root, text="Sanani tanlang:", font=("Arial", 12, "bold"), bg="#f0f2f5").pack(pady=5)
-date_entry = DateEntry(root, width=15, background='darkblue', foreground='white', borderwidth=2)
-date_entry.pack(pady=5)
-
-# Киритиш майдонлари (Inputlar)
-frame = tk.Frame(root, bg="#f0f2f5")
-frame.pack(pady=10)
-
-tk.Label(frame, text="Kun", bg="#f0f2f5").grid(row=0, column=0, padx=5)
-tk.Label(frame, text="Fan", bg="#f0f2f5").grid(row=0, column=1, padx=5)
-tk.Label(frame, text="O‘qituvchi", bg="#f0f2f5").grid(row=0, column=2, padx=5)
-
-kun_entry = tk.Entry(frame)
-fan_entry = tk.Entry(frame)
-ustoz_entry = tk.Entry(frame)
-
-kun_entry.grid(row=1, column=0, padx=5, pady=5)
-fan_entry.grid(row=1, column=1, padx=5, pady=5)
-ustoz_entry.grid(row=1, column=2, padx=5, pady=5)
-
-# Жадвал (Treeview)
-columns = ("Sana", "Kun", "Fan", "O‘qituvchi")
-tree = ttk.Treeview(root, columns=columns, show="headings")
-
-for col in columns:
-    tree.heading(col, text=col)
-    tree.column(col, width=150, anchor="center")
-
-tree.pack(expand=True, fill="both", pady=10, padx=10)
-
-# ===== ФУНКЦИЯЛАР =====
-def add_lesson():
-    sana = date_entry.get()
-    kun = kun_entry.get()
-    fan = fan_entry.get()
-    ustoz = ustoz_entry.get()
-
-    if kun == "" or fan == "" or ustoz == "":
-        messagebox.showwarning("Xato", "Hamma joyni to‘ldiring!")
-        return
-
-    tree.insert("", tk.END, values=(sana, kun, fan, ustoz))
-    
-    # Майдонларни тозалаш
-    kun_entry.delete(0, tk.END)
-    fan_entry.delete(0, tk.END)
-    ustoz_entry.delete(0, tk.END)
-
-def delete_lesson():
-    selected = tree.selection()
-    if not selected:
-        messagebox.showwarning("Xato", "Avval darsni tanlang!")
-        return
-    for item in selected:
-        tree.delete(item)
-
-# ===== ТУГМАЛАР =====
-btn_frame = tk.Frame(root, bg="#f0f2f5")
-btn_frame.pack(pady=10)
-
-tk.Button(btn_frame, text="➕ Dars qo‘shish", command=add_lesson, bg="#28a745", fg="white", font=("Arial", 10, "bold"), width=15).grid(row=0, column=0, padx=10)
-tk.Button(btn_frame, text="❌ Dars o‘chirish", command=delete_lesson, bg="#dc3545", fg="white", font=("Arial", 10, "bold"), width=15).grid(row=0, column=1, padx=10)
-
-# Дастурни ишга тушириш
-root.mainloop()
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интерактив Кундалик</title>
+    <style>
+        :root { --primary: #3b82f6; --dark: #0f172a; --bg: #f8fafc; }
+        body { font-family: sans-serif; background: var(--bg); margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .app-card { width: 100%; max-width: 550px; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: var(--dark); color: white; padding: 20px; text-align: center; }
+        .date-bar { background: var(--primary); color: white; padding: 8px; text-align: center; font-size: 12px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f1f5f9; color: #64748b; font-size: 11px; text-transform: uppercase; padding: 10px; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 12px; border-bottom: 1px solid #f1f5f9; }
+        .tr-col { width: 30px; font-weight: 800; color: var(--primary); text-align: center; }
+        .subject-name { font-weight: 600; color: var(--dark); display: block; }
+        .editable-topic { display: block; font-size: 13px; color: #64748b; font-style: italic; cursor: pointer; padding: 3px; border-radius: 3px; }
+        .editable-topic:hover { background: #fffbeb; color: #b45309; }
+        .edit-input { width: 95%; padding: 5px; font-size: 13px; border: 2px solid var(--primary); border-radius: 4px; outline: none; }
+    </style>
+</head>
+<body>
+<div class="app-card">
+    <div class="header"><h2 style="margin:0; font-size: 20px;">📅 ДАРС ЖАДВАЛИ</h2></div>
+    <div class="date-bar" id="today"></div>
+    <table>
+        <thead><tr><th>Т/Р</th><th style="text-align:left">Фан ва Мавзу</th></tr></thead>
+        <tbody id="list"></tbody>
+    </table>
+</div>
+<script>
+    const subjs = ["Iqtisodiyot nazariyasi 2", "Xorijiy til 2", "O‘zbek (rus) tili", "Dinshunoslik", "Jismoniy madaniyat va sport", "Akademik ko‘nikmalar", "Amaliy matematika 2"];
+    function draw() {
+        const b = document.getElementById('list'); b.innerHTML = '';
+        subjs.forEach((s, i) => {
+            const t = localStorage.getItem('t'+i) || "Мавзуни ёзиш учун босинг...";
+            b.innerHTML += `<tr><td class="tr-col">${i+1}</td><td><span class="subject-name">${s}</span><span class="editable-topic" onclick="edit(this,${i})">${t}</span></td></tr>`;
+        });
+    }
+    function edit(el, i) {
+        const val = el.innerText === "Мавзуни ёзиш учун босинг..." ? "" : el.innerText;
+        const inp = document.createElement('input'); inp.className = 'edit-input'; inp.value = val;
+        inp.onblur = function() { localStorage.setItem('t'+i, this.value || "Мавзуни ёзиш учун босинг..."); draw(); };
+        inp.onkeydown = e => { if(e.key === 'Enter') inp.blur(); };
+        el.replaceWith(inp); inp.focus();
+    }
+    document.getElementById('today').innerText = new Date().toLocaleDateString('uz-UZ', {weekday:'long', day:'numeric', month:'long'}).toUpperCase();
+    draw();
+</script>
+</body>
+</html>
