@@ -3,96 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Дарс Жадвали</title>
+    <title>Студент Кундалиги</title>
     <style>
-        :root { --primary: #2563eb; --dark: #1e293b; --bg: #f8fafc; }
-        body { font-family: sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 100%; max-width: 550px; background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background: var(--dark); color: white; padding: 25px; text-align: center; }
+        :root {
+            --primary: #3b82f6;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --accent: #10b981;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
+            background-color: #e5e7eb; 
+            margin: 0; padding: 15px;
+            display: flex; justify-content: center;
+        }
+        .app-container {
+            width: 100%; max-width: 650px;
+            background: white; border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15); overflow: hidden;
+        }
+        .header {
+            background: var(--dark); color: white; padding: 25px; text-align: center;
+        }
+        .date-badge {
+            background: rgba(255,255,255,0.1); padding: 8px 15px;
+            border-radius: 50px; font-size: 14px; display: inline-block; margin-bottom: 10px;
+        }
+        .quote-box {
+            padding: 15px; background: #f1f5f9; font-size: 13px;
+            color: #475569; text-align: center; font-style: italic;
+        }
         table { width: 100%; border-collapse: collapse; }
-        td { padding: 15px 20px; border-bottom: 1px solid #f1f5f9; }
-        .num-badge { background: #eff6ff; color: var(--primary); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: bold; }
-        .subject-name { font-weight: 600; color: var(--dark); font-size: 15px; }
-        .topic-text { display: block; color: #64748b; font-size: 13px; font-style: italic; margin-top: 4px; }
+        th { 
+            background: #f8fafc; color: #64748b; font-size: 12px;
+            text-transform: uppercase; padding: 12px; border-bottom: 2px solid #e2e8f0;
+        }
+        td { padding: 15px 10px; border-bottom: 1px solid #f1f5f9; text-align: center; }
+        .tr-col { width: 40px; font-weight: bold; color: var(--primary); }
+        .subject-col { text-align: left; padding-left: 15px; }
+        .subject-name { font-weight: 600; color: var(--dark); display: block; }
+        .topic-name { font-size: 12px; color: #64748b; margin-top: 3px; display: block; }
         
-        /* Таҳрирлаш панели */
-        .admin-panel { margin-top: 20px; padding: 15px; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); width: 100%; max-width: 520px; display: none; }
-        .admin-panel input { width: 90%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; }
-        .edit-btn { margin-top: 20px; background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 12px; }
-        .save-btn { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 10px; }
+        .timer-box {
+            background: var(--primary); color: white; padding: 10px;
+            text-align: center; font-weight: bold; font-size: 14px;
+        }
+        tr:hover { background: #f9fafb; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header"><h2>📅 ДАРС ЖАДВАЛИ</h2></div>
-        <table id="scheduleTable">
-            </table>
+<div class="app-container">
+    <div class="header">
+        <div class="date-badge" id="currentDate">Юкланмоқда...</div>
+        <h2 style="margin:0">📓 ДАРС ЖАДВАЛИ</h2>
     </div>
 
-    <button class="edit-btn" onclick="toggleAdmin()">⚙️ Мавзуларни ўзгартириш</button>
-
-    <div class="admin-panel" id="adminPanel">
-        <h3>Мавзуларни ёзинг:</h3>
-        <div id="inputsContainer"></div>
-        <button class="save-btn" onclick="saveTopics()">✅ Сақлаш ва Кўриш</button>
+    <div class="timer-box" id="timer">
+        ⏳ Дарс жараёни кузатилмоқда...
     </div>
 
-    <script>
-        const subjects = [
-            "Iqtisodiyot nazariyasi 2",
-            "Xorijiy til 2",
-            "O‘zbek (rus) tili",
-            "Dinshunoslik",
-            "Jismoniy madaniyat va sport",
-            "Akademik ko‘nikmalar",
-            "Amaliy matematika 2"
-        ];
+    <table>
+        <thead>
+            <tr>
+                <th>Т/Р</th>
+                <th class="subject-col">Фан номи ва Мавзу</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tr-col">1</td>
+                <td class="subject-col">
+                    <span class="subject-name">Iqtisodiyot nazariyasi 2</span>
+                    <span class="topic-name">Мавзу: Бозор мувозанати ва нарх шаклланиши</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="tr-col">2</td>
+                <td class="subject-col">
+                    <span class="subject-name">Xorijiy til 2</span>
+                    <span class="topic-name">Мавзу: Intermediate Grammar Review</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="tr-col">3</td>
+                <td class="subject-col">
+                    <span class="subject-name">O‘zbek (rus) tili</span>
+                    <span class="topic-name">Мавзу: Соҳавий терминлар билан ишлаш</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="tr-col">4</td>
+                <td class="subject-col">
+                    <span class="subject-name">Dinshunoslik</span>
+                    <span class="topic-name">Мавзу: Жаҳон динлари тарихи</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="tr-col">5</td>
+                <td class="subject-col">
+                    <span class="subject-name">Jismoniy madaniyat va sport</span>
+                    <span class="topic-name">Мавзу: Енгил атлетика машғулотлари</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="tr-col">6</td>
+                <td class="subject-col">
+                    <span class="subject-name">Akademik ko‘nikmalar</span>
+                    <span class="topic-name">Мавзу: Тайм-менежмент ва самарадорлик</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="tr-col">7</td>
+                <td class="subject-col">
+                    <span class="subject-name">Amaliy matematika 2</span>
+                    <span class="topic-name">Мавзу: Дифференциал тенгламалар</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-        // Маълумотларни юклаш
-        function loadData() {
-            const table = document.getElementById('scheduleTable');
-            const inputs = document.getElementById('inputsContainer');
-            table.innerHTML = '';
-            inputs.innerHTML = '';
+    <div class="quote-box">
+        "Илмдан бошқа нажот йўқ ва бўлмагай." — Имом Бухорий
+    </div>
+</div>
 
-            subjects.forEach((s, i) => {
-                const savedTopic = localStorage.getItem('topic' + i) || "Мавзу киритилмаган";
-                
-                // Жадвални чиқариш
-                table.innerHTML += `
-                    <tr>
-                        <td style="width:40px"><div class="num-badge">${i+1}</div></td>
-                        <td>
-                            <span class="subject-name">${s}</span>
-                            <span class="topic-text" id="t${i}">${savedTopic}</span>
-                        </td>
-                    </tr>`;
+<script>
+    // Сана ва ҳафта кунини янгилаш
+    function updateDate() {
+        const ҳозир = new Date();
+        const вариантлар = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').innerText = ҳозир.toLocaleDateString('uz-UZ', вариантлар);
+    }
 
-                // Инпутларни чиқариш
-                inputs.innerHTML += `
-                    <div>
-                        <label>${i+1}. ${s}</label><br>
-                        <input type="text" id="input${i}" value="${savedTopic}">
-                    </div><br>`;
-            });
-        }
+    // Таймер функцияси (намунавий)
+    function updateTimer() {
+        const соат = new Date().getHours();
+        let хабар = "";
+        if (соат >= 8 && соат < 13) хабар = "📖 Ҳозир дарслар вақти. Диққат қилинг!";
+        else if (соат >= 13 && соат < 14) хабар = "☕ Тушлик вақти. Ёқимли иштаҳа!";
+        else хабар = "🏠 Дарслар тугаган. Мустақил таълим вақти!";
+        document.getElementById('timer').innerText = хабар;
+    }
 
-        function toggleAdmin() {
-            const panel = document.getElementById('adminPanel');
-            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-        }
+    updateDate();
+    updateTimer();
+    setInterval(updateTimer, 60000);
+</script>
 
-        function saveTopics() {
-            subjects.forEach((s, i) => {
-                const val = document.getElementById('input' + i).value;
-                localStorage.setItem('topic' + i, val);
-            });
-            alert("Мавзулар сақланди!");
-            location.reload();
-        }
-
-        loadData();
-    </script>
 </body>
 </html>
