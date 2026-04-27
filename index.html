@@ -11,37 +11,37 @@
     <style>
         :root { 
             --accent-cyan: #00f2ff; 
-            --sarbon-blue: #2c4765;
-            --bg-gradient: radial-gradient(circle at top right, #0d1621, #080a0c);
-            --text-main: #f1f5f9;
+            --bg-body: radial-gradient(circle at top right, #0d1621, #080a0c);
+            --text-color: #f1f5f9;
             --panel-bg: rgba(255, 255, 255, 0.02);
+            --aside-bg: rgba(13, 18, 23, 0.9);
         }
 
-        /* Кундизги режим стиллари */
         .light-mode {
-            --bg-gradient: radial-gradient(circle at top right, #f0f4f8, #d9e2ec);
-            --text-main: #102a43;
+            --bg-body: radial-gradient(circle at top right, #f0f4f8, #d9e2ec);
+            --text-color: #0f172a;
             --panel-bg: rgba(0, 0, 0, 0.05);
+            --aside-bg: rgba(255, 255, 255, 0.9);
         }
 
         body { 
             font-family: 'Outfit', sans-serif; 
-            background: var(--bg-gradient);
-            color: var(--text-main); 
+            background: var(--bg-body);
+            color: var(--text-color); 
             min-height: 100vh; 
             margin: 0; 
             display: flex;
-            transition: background 0.5s ease;
+            overflow: hidden;
+            transition: all 0.4s ease;
         }
 
-        /* Login Screen */
         #login-screen {
-            position: fixed; inset: 0; z-index: 100;
+            position: fixed; inset: 0; z-index: 999;
             background: #080a0c; display: flex; align-items: center; justify-content: center;
         }
 
         aside { 
-            width: 300px; background: rgba(13, 18, 23, 0.8);
+            width: 300px; background: var(--aside-bg);
             backdrop-filter: blur(25px); border-right: 1px solid rgba(255, 255, 255, 0.05);
             display: flex; flex-direction: column; padding: 2rem 1.2rem;
         }
@@ -50,11 +50,11 @@
             display: flex; align-items: center; gap: 12px;
             padding: 12px 18px; margin-bottom: 6px;
             border-radius: 16px; color: #94a3b8;
-            font-weight: 500; cursor: pointer; transition: all 0.3s;
+            font-weight: 500; cursor: pointer; transition: 0.3s;
         }
         .nav-link.active {
-            background: linear-gradient(135deg, rgba(44, 71, 101, 0.4), rgba(0, 242, 255, 0.05));
-            color: #fff; border: 1px solid rgba(0, 242, 255, 0.2);
+            background: linear-gradient(135deg, rgba(44, 71, 101, 0.4), rgba(0, 242, 255, 0.1));
+            color: var(--accent-cyan); border: 1px solid rgba(0, 242, 255, 0.2);
         }
 
         main { flex: 1; padding: 3rem; overflow-y: auto; }
@@ -63,29 +63,34 @@
             backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 32px;
         }
-        
-        .page-entry { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="dark-mode">
+<body id="body-tag">
 
     <div id="login-screen">
         <div class="glass-panel p-10 w-96 text-center border border-white/10" style="background: rgba(255,255,255,0.03)">
-            <h2 class="text-3xl font-black text-white mb-8 italic uppercase tracking-tighter">Sarbon OS</h2>
-            <div class="space-y-4">
-                <input id="login-user" type="text" placeholder="Логин" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500">
-                <input id="login-pass" type="password" placeholder="Пароль" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500">
-                <button onclick="checkLogin()" class="w-full bg-blue-600 p-4 rounded-xl font-black text-white uppercase tracking-widest hover:bg-blue-500 transition-all">Кириш</button>
+            <div class="mb-6 flex justify-center">
+                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-2xl">
+                    <i data-lucide="shield-check" class="text-white w-10 h-10"></i>
+                </div>
             </div>
-            <p id="login-error" class="text-red-500 text-[10px] mt-4 hidden uppercase font-bold">Логин ёки парол хато!</p>
+            <h2 class="text-2xl font-black text-white mb-2 uppercase italic">Sarbon Portal</h2>
+            <p class="text-gray-500 text-[10px] mb-8 uppercase tracking-[3px]">Авторизация</p>
+            
+            <div class="space-y-4">
+                <input id="login-user" type="text" placeholder="Логин" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500 transition-all">
+                <input id="login-pass" type="password" placeholder="Пароль" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500 transition-all">
+                <button onclick="checkLogin()" class="w-full bg-blue-600 p-4 rounded-xl font-black text-white uppercase tracking-widest hover:bg-blue-500 active:scale-95 transition-all shadow-lg shadow-blue-600/20">Кириш</button>
+            </div>
+            <p id="login-error" class="text-red-500 text-[10px] mt-4 hidden uppercase font-bold tracking-widest">Логин ёки парол хато!</p>
         </div>
     </div>
 
-    <aside id="sidebar" class="hidden">
-        <div class="logo-wrapper mb-12 text-center">
-            <h1 class="text-2xl font-black italic text-white uppercase">Sarbon</h1>
-            <p class="text-[9px] font-bold tracking-[5px] uppercase text-cyan-400">Universiteti</p>
+    <aside id="sidebar" style="display: none;">
+        <div class="logo-wrapper mb-12 text-center flex flex-col items-center">
+            <div class="w-12 h-12 bg-blue-600 rounded-xl mb-3"></div>
+            <h1 class="text-xl font-black italic text-white uppercase">Sarbon</h1>
+            <p class="text-[8px] font-bold tracking-[4px] uppercase text-cyan-400">Universiteti</p>
         </div>
 
         <nav class="flex-1 space-y-1">
@@ -101,100 +106,92 @@
         </nav>
 
         <div class="mt-auto pt-6 border-t border-white/5 space-y-4">
-            <div class="flex items-center gap-3 p-3 rounded-2xl bg-white/5">
-                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-bold">AD</div>
-                <div class="flex-1 overflow-hidden">
-                    <p class="text-[11px] font-black text-white uppercase">Admin Panel</p>
+            <div class="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/5">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center font-bold text-white">AD</div>
+                <div class="flex-1">
+                    <p class="text-[10px] font-black text-white uppercase">Admin</p>
                     <p class="text-[8px] text-gray-500 uppercase">Super User</p>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-2">
-                <button onclick="toggleTheme()" class="flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 text-[9px] font-bold uppercase tracking-widest">
-                    <i data-lucide="sun-moon"></i> Режим
+                <button onclick="toggleTheme()" class="flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 hover:bg-white/10 text-[9px] font-bold uppercase transition-all">
+                    <i data-lucide="sun-moon" class="w-3.5 h-3.5"></i> Режим
                 </button>
-                <button onclick="logout()" class="flex items-center justify-center gap-2 p-3 rounded-xl bg-red-500/10 text-red-400 text-[9px] font-bold uppercase">
-                    <i data-lucide="log-out"></i> Чиқиш
+                <button onclick="location.reload()" class="flex items-center justify-center gap-2 p-3 rounded-xl bg-red-500/10 text-red-400 text-[9px] font-bold uppercase transition-all">
+                    <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Чиқиш
                 </button>
             </div>
         </div>
     </aside>
 
-    <main id="main-content" class="hidden">
+    <main id="main-content" style="display: none;">
         <header class="flex justify-between items-center mb-12">
             <div>
-                <h2 id="page-title" class="text-5xl font-black italic text-white uppercase">Boshqaruv</h2>
-                <div class="h-1 w-20 bg-cyan-500 mt-2 rounded-full"></div>
+                <h2 id="page-title" class="text-5xl font-black italic text-white uppercase tracking-tighter">Boshqaruv</h2>
+                <div class="h-1.5 w-20 bg-cyan-500 mt-2 rounded-full"></div>
             </div>
-            <div class="bg-black/20 p-4 rounded-[24px] border border-white/5 flex gap-8 items-center">
-                <div>
-                    <p id="live-time" class="text-2xl font-black text-cyan-400">00:00</p>
-                    <p id="live-date" class="text-[10px] font-bold text-gray-500 uppercase">-- -- --</p>
+            <div class="bg-black/20 p-4 rounded-[24px] border border-white/5 flex gap-6 items-center backdrop-blur-md">
+                <div class="text-right">
+                    <p id="live-time" class="text-2xl font-black text-cyan-400 leading-none">00:00</p>
+                    <p id="live-date" class="text-[10px] font-bold text-gray-500 uppercase mt-1">-- -- --</p>
                 </div>
+                <i data-lucide="clock" class="text-gray-600"></i>
             </div>
         </header>
 
-        <div id="dashboard" class="page-entry">
+        <div id="dashboard" class="page-content">
             <div id="teacher-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-6"></div>
         </div>
 
-        <div id="weekly" class="hidden page-entry">
+        <div id="weekly" class="page-content" style="display: none;">
             <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-7 gap-4">
                 <div class="space-y-3">
                     <div class="bg-blue-600 p-4 rounded-2xl text-center shadow-lg"><span class="text-[10px] font-black text-white uppercase">Dushanba</span></div>
-                    <div class="bg-[#78b3f4] p-5 rounded-[28px] text-black shadow-xl">
-                        <h5 class="font-black text-lg">Iqtisodiyot</h5>
-                        <p class="opacity-50 text-[10px] font-bold mt-2">09:00 - 10:20</p>
+                    <div class="bg-[#78b3f4] p-6 rounded-[28px] text-black shadow-xl">
+                        <h5 class="font-black text-xl">Iqtisodiyot</h5>
+                        <p class="opacity-60 text-[11px] font-bold mt-2 uppercase italic tracking-widest">09:00 - 10:20</p>
                     </div>
                 </div>
-                <script>
-                    ['Seshanba','Chorshanba','Payshanba','Juma','Shanba','Yakshanba'].forEach(k => {
-                        document.write(`<div class="space-y-3"><div class="bg-white/5 p-4 rounded-2xl text-center border border-white/5"><span class="text-[10px] font-black text-gray-500 uppercase">${k}</span></div><div class="h-40 rounded-[28px] border-2 border-dashed border-white/5 bg-white/[0.01]"></div></div>`);
-                    });
-                </script>
-            </div>
+                </div>
         </div>
 
-        <div id="add" class="hidden page-entry">
-            <div class="max-w-2xl mx-auto glass-panel p-10">
-                <h3 class="text-2xl font-black mb-6 uppercase italic">Ma'lumot қўшиш</h3>
+        <div id="add" class="page-content" style="display: none;">
+            <div class="max-w-xl mx-auto glass-panel p-10 border border-white/5">
+                <h3 class="text-2xl font-black mb-8 uppercase italic text-white">Янги маълумот</h3>
                 <div class="space-y-4">
-                    <input id="in-ifsh" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none" placeholder="O'qituvchi F.I.Sh">
-                    <input id="in-fan" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none" placeholder="Fan nomi">
-                    <button onclick="saveAll()" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase text-white shadow-lg">Saqlash</button>
+                    <input id="in-ifsh" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-cyan-500" placeholder="F.I.Sh">
+                    <input id="in-fan" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl text-white outline-none focus:border-cyan-500" placeholder="Fan nomi">
+                    <button onclick="saveData()" class="w-full bg-cyan-500 p-4 rounded-2xl font-black uppercase text-black hover:bg-cyan-400 transition-all">Сақлаш</button>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        // ЛОГИН ВА ПАРОЛ
-        const ADMIN_USER = "admin";
-        const ADMIN_PASS = "sarbon2026";
-
+        // AUTH
         function checkLogin() {
             const u = document.getElementById('login-user').value;
             const p = document.getElementById('login-pass').value;
-            if(u === ADMIN_USER && p === ADMIN_PASS) {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('sidebar').classList.remove('hidden');
-                document.getElementById('main-content').classList.remove('hidden');
+            
+            if(u === "admin" && p === "sarbon2026") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('sidebar').style.display = 'flex';
+                document.getElementById('main-content').style.display = 'block';
                 lucide.createIcons();
                 renderDashboard();
             } else {
-                document.getElementById('login-error').classList.remove('hidden');
+                const err = document.getElementById('login-error');
+                err.classList.remove('hidden');
+                err.classList.add('animate-bounce');
             }
         }
 
-        // ТЕМА (DARK/LIGHT)
+        // THEME
         function toggleTheme() {
-            document.body.classList.toggle('light-mode');
+            document.getElementById('body-tag').classList.toggle('light-mode');
         }
 
-        function logout() {
-            location.reload();
-        }
-
-        // КУН ВА ВАҚТ
+        // TIME
         function updateClock() {
             const now = new Date();
             document.getElementById('live-time').innerText = now.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
@@ -202,42 +199,45 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // САҲИФАЛАР
+        // PAGES
         function showPage(id) {
-            document.querySelectorAll('.page-entry').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.page-content').forEach(p => p.style.display = 'none');
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(id).classList.remove('hidden');
-            document.getElementById('nav-'+id).classList.add('active');
-            document.getElementById('page-title').innerText = id === 'weekly' ? 'Jadval' : (id === 'add' ? 'Qo\'shish' : 'Boshqaruv');
+            
+            document.getElementById(id).style.display = 'block';
+            document.getElementById('nav-' + id).classList.add('active');
+            document.getElementById('page-title').innerText = (id === 'weekly' ? 'Jadval' : (id === 'add' ? 'Qo\'shish' : 'Boshqaruv'));
+            if(id === 'dashboard') renderDashboard();
         }
 
-        // DATABASE
-        let db = JSON.parse(localStorage.getItem('sarbon_v55')) || [];
-        function saveAll() {
+        // DATA
+        let db = JSON.parse(localStorage.getItem('sarbon_db')) || [];
+        function saveData() {
             const ifsh = document.getElementById('in-ifsh').value;
             const fan = document.getElementById('in-fan').value;
-            if(!ifsh || !fan) return alert("To'ldiring!");
+            if(!ifsh || !fan) return alert("Тўлдиринг!");
             db.push({ id: Date.now(), ifsh, fan, sana: new Date().toLocaleDateString() });
-            localStorage.setItem('sarbon_v55', JSON.stringify(db));
+            localStorage.setItem('sarbon_db', JSON.stringify(db));
             showPage('dashboard');
         }
 
         function renderDashboard() {
             const grid = document.getElementById('teacher-grid');
             grid.innerHTML = db.slice().reverse().map(t => `
-                <div class="glass-panel p-5 flex items-center gap-6 group hover:scale-[1.02] transition-all cursor-pointer">
-                    <div class="w-14 h-14 rounded-2xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center">
-                        <i data-lucide="user" class="text-blue-400"></i>
+                <div class="glass-panel p-6 flex items-center gap-6 group hover:border-cyan-500/50 transition-all">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-600/20 flex items-center justify-center text-blue-400">
+                        <i data-lucide="user"></i>
                     </div>
                     <div>
                         <span class="text-[9px] font-black uppercase text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full">${t.ifsh}</span>
-                        <h4 class="text-lg font-black mt-1 uppercase italic">${t.fan}</h4>
+                        <h4 class="text-xl font-black mt-1 uppercase italic text-white">${t.fan}</h4>
                     </div>
                 </div>
             `).join('');
             lucide.createIcons();
         }
 
+        // Иконаларни юклаш
         lucide.createIcons();
     </script>
 </body>
