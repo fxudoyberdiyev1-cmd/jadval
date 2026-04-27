@@ -3,198 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SARBON UNIVERSITY | Haftalik Jadval</title>
+    <title>SARBON UNIVERSITY | Portal v5.6</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
     
     <style>
+        :root { 
+            --accent-cyan: #00f2ff; 
+            --sarbon-blue: #2c4765;
+            --main-dark: #080a0c;
+        }
         body { 
             font-family: 'Outfit', sans-serif; 
-            background: #f8fafc; /* Оқ фон расмдагидек */
-            color: #1e293b;
-            margin: 0;
-            padding: 20px;
-        }
-
-        /* Юқори қисм (Header) */
-        .jadval-header {
+            background: #f8fafc; /* Жадвал учун идеал оқ фон */
+            color: #1e293b; 
+            min-height: 100vh; 
+            margin: 0; 
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
+            overflow: hidden;
         }
-        .header-title {
+        .space-font { font-family: 'Space Grotesk', sans-serif; }
+
+        /* Sidebar Glassmorphism */
+        aside { 
+            width: 280px; 
+            background: #0f172a; /* Тўқ сиёҳранг меню */
             display: flex;
+            flex-direction: column;
+            padding: 2rem 1.2rem;
+            color: white;
+        }
+
+        /* Logo Styling */
+        .logo-box {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
-            font-size: 28px;
-            font-weight: 900;
-            color: #0f172a;
+            margin-bottom: 2.5rem;
         }
-
-        /* Жадвал сеткаси */
-        .schedule-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 12px;
-        }
-
-        /* Кун устунлари */
-        .day-col {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            padding: 8px;
-            min-height: 600px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Кун сарлавҳаси */
-        .day-label {
-            text-align: center;
-            padding: 12px 5px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            background: #e2e8f0; /* Default ранг */
-            transition: 0.3s;
-        }
-        .day-label p:first-child { font-weight: 800; font-size: 13px; }
-        .day-label p:last-child { font-size: 11px; opacity: 0.8; }
-
-        /* Танланган кун (Dushanba расмдагидек кўк) */
-        .active-day-label {
-            background: #2563eb !important;
-            color: white !important;
-            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
-        }
-
-        /* Дарс карточкаси */
-        .lesson-box {
-            border-radius: 16px;
-            padding: 14px;
+        .sarbon-svg {
+            width: 60px;
+            height: 60px;
             margin-bottom: 10px;
-            color: #1e293b;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        .lesson-box:hover { transform: scale(1.02); }
-        .lesson-name { font-weight: 800; font-size: 13px; margin-bottom: 8px; }
-        .lesson-info { 
-            font-size: 10px; 
-            font-weight: 600; 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-            opacity: 0.7;
-            margin-top: 3px;
         }
 
-        /* Ранглар палитраси (Расм асосида) */
-        .color-iqtisod { background: #60a5fa; } /* Кўк */
-        .color-xorijiy { background: #34d399; } /* Яшил */
-        .color-math    { background: #fbbf24; } /* Тўқ сариқ */
-        .color-fizika  { background: #38bdf8; } /* Очиқ кўк */
-        .color-coding  { background: #a78bfa; } /* Бинафша */
-        .color-english { background: #f472b6; } /* Пушти */
-        .color-tarix   { background: #fbbf24; } /* Сариқ */
+        /* Nav Items */
+        .nav-link {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 18px; margin-bottom: 6px;
+            border-radius: 14px; color: #94a3b8;
+            font-weight: 500; transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .nav-link:hover { background: rgba(255,255,255,0.05); color: white; }
+        .nav-link.active { background: #2563eb; color: white; }
+
+        /* Main Content Area */
+        main { flex: 1; padding: 2rem; overflow-y: auto; }
+        
+        /* Schedule Grid (Янги мавзу асосида) */
+        .schedule-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: 20px; }
+        .day-col { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 8px; min-height: 550px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .day-label { text-align: center; padding: 10px 5px; border-radius: 12px; margin-bottom: 12px; background: #f1f5f9; }
+        .day-label p:first-child { font-weight: 800; font-size: 12px; }
+        .day-label p:last-child { font-size: 10px; opacity: 0.6; }
+        .active-label { background: #2563eb !important; color: white; }
+
+        /* Lesson Cards */
+        .lesson-card { border-radius: 14px; padding: 12px; margin-bottom: 8px; color: #0f172a; transition: 0.2s; }
+        .lesson-card:hover { transform: translateY(-3px); }
+        .lesson-name { font-weight: 800; font-size: 12px; margin-bottom: 5px; }
+        .lesson-time { font-size: 10px; font-weight: 600; display: flex; align-items: center; gap: 4px; opacity: 0.8; }
+
+        /* Ранглар палитраси */
+        .c-blue   { background: #60a5fa; }
+        .c-green  { background: #34d399; }
+        .c-orange { background: #fbbf24; }
+        .c-purple { background: #a78bfa; }
+        .c-pink   { background: #f472b6; }
+        .c-cyan   { background: #38bdf8; }
+
+        /* Glass Panel for Add Form */
+        .glass-panel { background: white; border: 1px solid #e2e8f0; border-radius: 24px; padding: 40px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="jadval-header">
-        <div class="header-title">
-            <div class="bg-slate-800 p-2 rounded-lg text-white">
-                <i data-lucide="calendar-days"></i>
-            </div>
-            Haftalik Jadval
-        </div>
-        <div class="text-right text-slate-400 font-bold text-xs uppercase tracking-widest">
-            2026-yil | 27-aprel — 3-may
-        </div>
-    </div>
-
-    <div class="schedule-grid">
-        
-        <div class="day-col">
-            <div class="day-label active-day-label">
-                <p>Dushanba</p><p>27-apr</p>
-            </div>
-            <div class="lesson-box color-iqtisod">
-                <div class="lesson-name">Iqtisodiyot 2</div>
-                <div class="lesson-info"><i data-lucide="user" class="w-3"></i> Unknown</div>
-                <div class="lesson-info"><i data-lucide="clock" class="w-3"></i> 20:52</div>
-            </div>
-            <div class="lesson-box color-xorijiy">
-                <div class="lesson-name">Xorijiy til 2</div>
-                <div class="lesson-info"><i data-lucide="user" class="w-3"></i> Unknown</div>
-                <div class="lesson-info"><i data-lucide="clock" class="w-3"></i> 20:25</div>
-            </div>
+    <aside>
+        <div class="logo-box">
+            <svg class="sarbon-svg" viewBox="0 0 200 200" fill="none">
+                <path d="M200 0H30C30 0 30 170 200 170V0Z" fill="#3B4F6C"/> <path d="M0 200V120C0 120 80 120 80 200H0Z" fill="#3B4F6C"/> </svg>
+            <h1 class="text-xl font-black uppercase tracking-tighter italic">Sarbon</h1>
+            <p class="text-[8px] font-bold tracking-[3px] text-blue-400 uppercase">Universiteti</p>
         </div>
 
-        <div class="day-col">
-            <div class="day-label"><p>Seshanba</p><p>28-apr</p></div>
-            <div class="lesson-box color-math">
-                <div class="lesson-name">Matematika 1</div>
-                <div class="lesson-info"><i data-lucide="user" class="w-3"></i> Unknown</div>
-                <div class="lesson-info"><i data-lucide="clock" class="w-3"></i> 09:00</div>
+        <nav class="flex-1">
+            <div onclick="showPage('dashboard')" id="nav-dashboard" class="nav-link">
+                <i data-lucide="layout-grid"></i> Boshqaruv
             </div>
-            <div class="lesson-box color-fizika">
-                <div class="lesson-name">Fizika</div>
-                <div class="lesson-info"><i data-lucide="user" class="w-3"></i> Unknown</div>
-                <div class="lesson-info"><i data-lucide="clock" class="w-3"></i> 11:00</div>
+            <div onclick="showPage('weekly')" id="nav-weekly" class="nav-link active">
+                <i data-lucide="calendar"></i> Jadval
+            </div>
+            <div onclick="showPage('add')" id="nav-add" class="nav-link">
+                <i data-lucide="plus-square"></i> Qo'shish
+            </div>
+            <div class="mt-8 px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Talaba</div>
+            <div onclick="showPage('kundalik')" id="nav-kundalik" class="nav-link">
+                <i data-lucide="book-open"></i> Kundalik
+            </div>
+        </nav>
+
+        <div class="mt-auto border-t border-white/10 pt-4">
+            <div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
+                <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-xs">AD</div>
+                <div class="text-[10px] font-bold uppercase">Admin</div>
+            </div>
+        </div>
+    </aside>
+
+    <main>
+        <header class="flex justify-between items-center mb-8">
+            <h2 id="page-title" class="text-3xl font-black text-slate-800 uppercase italic">Haftalik Jadval</h2>
+            <div class="text-right">
+                <p id="live-time" class="text-2xl font-black text-blue-600 space-font">00:00</p>
+                <p class="text-[10px] font-bold text-slate-400">2026-yil | 27-aprel</p>
+            </div>
+        </header>
+
+        <div id="weekly" class="page-content">
+            <div class="schedule-grid">
+                <div class="day-col">
+                    <div class="day-label active-label"><p>Dushanba</p><p>27-apr</p></div>
+                    <div class="lesson-card c-blue">
+                        <div class="lesson-name">Iqtisodiyot 2</div>
+                        <div class="lesson-time"><i data-lucide="clock" class="w-3"></i> 20:52</div>
+                    </div>
+                    <div class="lesson-card c-green">
+                        <div class="lesson-name">Xorijiy til 2</div>
+                        <div class="lesson-time"><i data-lucide="clock" class="w-3"></i> 20:25</div>
+                    </div>
+                </div>
+                <div class="day-col">
+                    <div class="day-label"><p>Seshanba</p><p>28-apr</p></div>
+                    <div class="lesson-card c-orange">
+                        <div class="lesson-name">Matematika 1</div>
+                        <div class="lesson-time"><i data-lucide="clock" class="w-3"></i> 09:00</div>
+                    </div>
+                    <div class="lesson-card c-cyan">
+                        <div class="lesson-name">Fizika</div>
+                        <div class="lesson-time"><i data-lucide="clock" class="w-3"></i> 11:00</div>
+                    </div>
+                </div>
+                <div class="day-col">
+                    <div class="day-label"><p>Chorshanba</p><p>29-apr</p></div>
+                    <div class="lesson-card c-purple">
+                        <div class="lesson-name">Dasturlash</div>
+                        <div class="lesson-time"><i data-lucide="clock" class="w-3"></i> 14:30</div>
+                    </div>
+                    <div class="lesson-card c-pink">
+                        <div class="lesson-name">Ingliz tili</div>
+                        <div class="lesson-time"><i data-lucide="clock" class="w-3"></i> 16:00</div>
+                    </div>
+                </div>
+                <div class="day-col"><div class="day-label"><p>Payshanba</p><p>30-apr</p></div></div>
+                <div class="day-col"><div class="day-label"><p>Juma</p><p>1-may</p></div></div>
+                <div class="day-col"><div class="day-label"><p>Shanba</p><p>2-may</p></div></div>
+                <div class="day-col"><div class="day-label"><p>Yakshanba</p><p>3-may</p></div></div>
             </div>
         </div>
 
-        <div class="day-col">
-            <div class="day-label"><p>Chorshanba</p><p>29-apr</p></div>
-            <div class="lesson-box color-coding">
-                <div class="lesson-name">Dasturlash</div>
-                <div class="lesson-info"><i data-lucide="user" class="w-3"></i> Unknown</div>
-                <div class="lesson-info"><i data-lucide="clock" class="w-3"></i> 14:30</div>
-            </div>
-            <div class="lesson-box color-english">
-                <div class="lesson-name">Ingliz tili</div>
-                <div class="lesson-info"><i data-lucide="user" class="w-3"></i> Unknown</div>
-                <div class="lesson-info"><i data-lucide="clock" class="w-3"></i> 16:00</div>
-            </div>
-        </div>
-
-        <div class="day-col">
-            <div class="day-label"><p>Payshanba</p><p>30-apr</p></div>
-            <div class="lesson-box color-tarix">
-                <div class="lesson-name">Tarix</div>
-                <div class="lesson-info"><i data-lucide="user" class="w-3"></i> Unknown</div>
-                <div class="lesson-info"><i data-lucide="clock" class="w-3"></i> 10:00</div>
+        <div id="add" class="hidden page-content">
+            <div class="max-w-xl mx-auto glass-panel">
+                <h3 class="text-xl font-bold mb-6 text-slate-800 border-b pb-4">Yangi dars qo'shish</h3>
+                <div class="space-y-4">
+                    <input class="w-full p-4 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" placeholder="Fan nomi">
+                    <select class="w-full p-4 border border-slate-200 rounded-xl outline-none">
+                        <option>Dushanba</option><option>Seshanba</option><option>Chorshanba</option>
+                    </select>
+                    <input type="time" class="w-full p-4 border border-slate-200 rounded-xl outline-none">
+                    <button class="w-full bg-blue-600 text-white p-4 rounded-xl font-bold hover:bg-blue-700 transition">SAQLASH</button>
+                </div>
             </div>
         </div>
 
-        <div class="day-col">
-            <div class="day-label"><p>Juma</p><p>1-may</p></div>
-            <div class="lesson-box color-xorijiy">
-                <div class="lesson-name">Kimyo</div>
-                <div class="lesson-info"><i data-lucide="user" class="w-3"></i> Unknown</div>
-                <div class="lesson-info"><i data-lucide="clock" class="w-3"></i> 09:00</div>
-            </div>
-            <div class="lesson-box color-iqtisod">
-                <div class="lesson-name">Biologiya</div>
-                <div class="lesson-info"><i data-lucide="user" class="w-3"></i> Unknown</div>
-                <div class="lesson-info"><i data-lucide="clock" class="w-3"></i> 13:00</div>
+        <div id="dashboard" class="hidden page-content">
+            <div class="grid grid-cols-3 gap-6">
+                <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+                    <p class="text-xs font-bold text-slate-400 uppercase">Talabalar</p>
+                    <h4 class="text-4xl font-black text-slate-800 mt-2">1,240</h4>
+                </div>
             </div>
         </div>
-
-        <div class="day-col">
-            <div class="day-label"><p>Shanba</p><p>2-may</p></div>
-        </div>
-
-        <div class="day-col">
-            <div class="day-label"><p>Yakshanba</p><p>3-may</p></div>
-        </div>
-
-    </div>
+    </main>
 
     <script>
+        // Иконкаларни фаоллаштириш
         lucide.createIcons();
+
+        // Вақтни янгилаш
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('live-time').innerText = now.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
+        }
+        setInterval(updateClock, 1000); updateClock();
+
+        // Саҳифаларни бошқариш
+        function showPage(id) {
+            // Барча саҳифаларни яшириш
+            document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
+            // Барча менюларни активликдан олиш
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            
+            // Танланган саҳифани кўрсатиш
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById('nav-' + id).classList.add('active');
+            
+            // Сарлавҳани ўзгартириш
+            const titles = { 
+                'dashboard': 'Boshqaruv Paneli', 
+                'weekly': 'Haftalik Jadval', 
+                'add': 'Ma\'lumot Qo\'shish',
+                'kundalik': 'Talaba Kundaligi'
+            };
+            document.getElementById('page-title').innerText = titles[id];
+        }
     </script>
 </body>
 </html>
