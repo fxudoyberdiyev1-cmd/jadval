@@ -62,6 +62,7 @@
             <div onclick="showPage('students')" id="nav-students" class="nav-link flex items-center gap-3 p-4 rounded-xl cursor-pointer hover:bg-white/5 transition-all"><i data-lucide="users"></i> Talabalar</div>
             <div onclick="showPage('weekly')" id="nav-weekly" class="nav-link flex items-center gap-3 p-4 rounded-xl cursor-pointer hover:bg-white/5 transition-all"><i data-lucide="calendar-range"></i> Jadval</div>
             <div onclick="showPage('add')" id="nav-add" class="nav-link flex items-center gap-3 p-4 rounded-xl cursor-pointer hover:bg-white/5 transition-all"><i data-lucide="plus-circle"></i> Qo'shish</div>
+            <div onclick="showPage('admin')" id="nav-admin" class="nav-link flex items-center gap-3 p-4 rounded-xl cursor-pointer hover:bg-white/5 transition-all text-cyan-400"><i data-lucide="shield-check"></i> Admin</div>
         </nav>
         <div class="mt-auto border-t border-white/5 pt-6 space-y-4">
             <button onclick="toggleTheme()" class="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 text-[10px] font-bold uppercase tracking-widest transition-all hover:bg-white/10">
@@ -73,7 +74,10 @@
 
     <main id="main-content" style="display: none;">
         <header class="flex justify-between items-center mb-12">
-            <h2 id="page-title" class="text-5xl font-black italic uppercase">Boshqaruv</h2>
+            <div class="flex flex-col">
+                <h2 id="page-title" class="text-5xl font-black italic uppercase">Boshqaruv</h2>
+                <p id="admin-name-display" class="text-cyan-400 font-bold uppercase text-[12px] tracking-widest mt-2"></p>
+            </div>
             <div class="bg-black/20 p-4 rounded-3xl border border-white/5 text-right">
                 <p id="live-time" class="text-2xl font-black text-cyan-400">00:00</p>
                 <p id="live-date" class="text-[10px] font-bold text-gray-500 uppercase">-- -- --</p>
@@ -117,20 +121,59 @@
                 </div>
             </div>
         </div>
+
+        <div id="admin" class="hidden space-y-8">
+            <div class="max-w-2xl mx-auto glass-panel p-10 border border-cyan-500/30">
+                <h3 class="text-3xl font-black mb-8 uppercase italic text-white flex items-center gap-3">
+                    <i data-lucide="user-cog" class="text-cyan-400"></i> Admin Sozlamalari
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-500">Shaxsiy ma'lumotlar</p>
+                        <input id="adm-f" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500" placeholder="Familiya">
+                        <input id="adm-i" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500" placeholder="Ism">
+                        <input id="adm-o" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500" placeholder="Otasining ismi">
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-500">Kirish ma'lumotlari</p>
+                        <input id="adm-user" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500" placeholder="Yangi Login">
+                        <input id="adm-pass" type="password" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500" placeholder="Yangi Parol">
+                    </div>
+                </div>
+                
+                <button onclick="updateAdminSettings()" class="w-full mt-8 bg-cyan-600 p-4 rounded-xl font-black uppercase text-white hover:bg-cyan-500 shadow-lg shadow-cyan-900/20 transition-all">
+                    Ma'lumotlarni Yangilash
+                </button>
+            </div>
+        </div>
     </main>
 
     <script>
-        // ЛОГИКА ҚИСМИ (ҲЕЧ НАРСА ЎЧИРИЛМАДИ)
+        // ADMIN DATABASE INITIALIZATION
+        let adminSettings = JSON.parse(localStorage.getItem('sarbon_admin')) || {
+            user: "admin",
+            pass: "sarbon2026",
+            f: "Sarbon",
+            i: "Admin",
+            o: "Universiteti"
+        };
+
         function checkAuth() {
             const u = document.getElementById('login-user').value;
             const p = document.getElementById('login-pass').value;
-            if(u === "admin" && p === "sarbon2026") {
+            
+            if(u === adminSettings.user && p === adminSettings.pass) {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-aside').style.display = 'flex';
                 document.getElementById('main-content').style.display = 'block';
+                document.getElementById('admin-name-display').innerText = `${adminSettings.f} ${adminSettings.i}`;
                 lucide.createIcons();
                 showPage('dashboard');
-            } else { document.getElementById('error-msg').classList.remove('hidden'); }
+            } else { 
+                document.getElementById('error-msg').classList.remove('hidden'); 
+            }
         }
 
         function toggleTheme() { document.body.classList.toggle('light-mode'); }
@@ -141,8 +184,32 @@
             document.getElementById(id).classList.remove('hidden');
             document.getElementById('nav-' + id).classList.add('active');
             document.getElementById('page-title').innerText = id === 'dashboard' ? 'Boshqaruv' : id.toUpperCase();
+            
             if(id === 'dashboard') renderDashboard();
             if(id === 'students') renderStudents();
+            if(id === 'admin') loadAdminForm();
+        }
+
+        // LOAD ADMIN DATA TO FORM
+        function loadAdminForm() {
+            document.getElementById('adm-f').value = adminSettings.f;
+            document.getElementById('adm-i').value = adminSettings.i;
+            document.getElementById('adm-o').value = adminSettings.o;
+            document.getElementById('adm-user').value = adminSettings.user;
+            document.getElementById('adm-pass').value = adminSettings.pass;
+        }
+
+        // UPDATE ADMIN SETTINGS
+        function updateAdminSettings() {
+            adminSettings.f = document.getElementById('adm-f').value;
+            adminSettings.i = document.getElementById('adm-i').value;
+            adminSettings.o = document.getElementById('adm-o').value;
+            adminSettings.user = document.getElementById('adm-user').value;
+            adminSettings.pass = document.getElementById('adm-pass').value;
+            
+            localStorage.setItem('sarbon_admin', JSON.stringify(adminSettings));
+            document.getElementById('admin-name-display').innerText = `${adminSettings.f} ${adminSettings.i}`;
+            alert("Admin sozlamalari muvaffaqiyatli saqlandi!");
         }
 
         function updateClock() {
