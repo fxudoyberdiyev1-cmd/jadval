@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SARBON UNIVERSITY | Portal v5.5</title>
+    <title>SARBON UNIVERSITY | Portal v6.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
@@ -12,7 +12,6 @@
         :root { 
             --accent-cyan: #00f2ff; 
             --sarbon-blue: #2c4765;
-            --sarbon-red: #7a2b2d;
             --main-dark: #080a0c;
         }
         body { 
@@ -28,162 +27,211 @@
 
         /* Sidebar Glassmorphism */
         aside { 
-            width: 300px; 
-            background: rgba(13, 18, 23, 0.8);
-            backdrop-filter: blur(25px);
+            width: 280px; 
+            background: rgba(13, 18, 23, 0.85);
+            backdrop-filter: blur(30px);
             border-right: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
-            padding: 2rem 1.2rem;
+            padding: 2rem 1rem;
         }
 
-        .logo-wrapper { 
-            margin-bottom: 3rem; 
-            text-align: center; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .logo-container {
+            margin-bottom: 3rem;
+            text-align: center;
         }
-        .sarbon-logo-svg {
-            width: 75px; height: 75px; margin-bottom: 10px;
-            filter: drop-shadow(0 10px 15px rgba(59, 130, 246, 0.3));
+        .university-logo {
+            width: 120px;
+            height: auto;
+            margin: 0 auto 10px;
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.1));
         }
 
-        /* Nav Items */
+        /* Sidebar Nav */
         .nav-link {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px 18px; margin-bottom: 6px;
-            border-radius: 16px; color: #94a3b8;
-            font-weight: 500; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid transparent;
+            display: flex; align-items: center; gap: 15px;
+            padding: 14px 20px; margin-bottom: 8px;
+            border-radius: 18px; color: #94a3b8;
+            font-weight: 500; transition: all 0.3s ease;
+            cursor: pointer;
         }
         .nav-link:hover {
-            background: rgba(255, 255, 255, 0.03); color: #fff; transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.05); color: #fff;
         }
         .nav-link.active {
-            background: linear-gradient(135deg, rgba(44, 71, 101, 0.4), rgba(0, 242, 255, 0.05));
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(0, 242, 255, 0.1));
             color: #fff; border: 1px solid rgba(0, 242, 255, 0.2);
+            box-shadow: 0 10px 20px -10px rgba(0, 242, 255, 0.3);
         }
 
-        /* Jadval Styling */
-        .schedule-container { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: 20px; }
-        .day-column { 
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); 
-            border-radius: 20px; padding: 8px; min-height: 550px; 
+        /* Jadval Grid System */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+            margin-top: 25px;
         }
-        .day-header { 
-            text-align: center; padding: 12px 5px; border-radius: 15px; margin-bottom: 15px;
-            background: rgba(255,255,255,0.05); 
+        .day-col {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 10px;
+            min-height: 500px;
         }
-        .active-day { background: #2563eb; color: white; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); }
+        .day-header {
+            text-align: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            margin-bottom: 15px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #64748b;
+        }
+        .day-header.active {
+            background: #2563eb;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+        }
 
-        .lesson-card {
-            border-radius: 16px; padding: 14px; margin-bottom: 10px; color: #0f172a;
-            transition: transform 0.3s ease; cursor: pointer;
+        /* Lesson Cards */
+        .lesson {
+            border-radius: 18px;
+            padding: 15px;
+            margin-bottom: 12px;
+            color: #0f172a;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
         }
-        .lesson-card:hover { transform: translateY(-3px); }
-
-        /* Colors */
-        .c-blue { background: #60a5fa; } .c-green { background: #34d399; }
-        .c-orange { background: #fbbf24; } .c-purple { background: #a78bfa; }
+        .lesson:hover { transform: translateY(-5px); }
+        .lesson-blue { background: #60a5fa; }
+        .lesson-orange { background: #fbbf24; }
+        .lesson-purple { background: #a78bfa; }
+        .lesson-pink { background: #f472b6; }
+        .lesson-green { background: #34d399; }
+        .lesson-cyan { background: #22d3ee; }
 
         main { flex: 1; padding: 3rem; overflow-y: auto; }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 32px;
-        }
-        .page-entry { animation: fadeInScale 0.6s ease-out forwards; }
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.98) translateY(15px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+        
+        /* Animations */
+        .page-entry { animation: slideUp 0.5s ease-out forwards; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
     <aside>
-        <div class="logo-wrapper">
-            <svg class="sarbon-logo-svg" viewBox="0 0 200 200">
-                <path d="M200 0H30C30 0 30 170 200 170V0Z" fill="#3B82F6"/>
-                <path d="M0 200V120C0 120 80 120 80 200H0Z" fill="#3B82F6"/>
-            </svg>
-            <h1 class="text-2xl font-black text-white uppercase italic">Sarbon</h1>
-            <p class="text-[9px] font-bold tracking-[5px] uppercase text-cyan-400">Universiteti</p>
+        <div class="logo-container">
+            <img src="https://i.postimg.cc/q7SjH9H0/sarbon-logo.jpg" alt="Sarbon Logo" class="university-logo">
+            <h1 class="text-xl font-black text-white uppercase italic tracking-tighter">Sarbon</h1>
+            <p class="text-[8px] font-bold tracking-[4px] uppercase text-cyan-400">Universiteti</p>
         </div>
 
-        <nav class="flex-1 space-y-1">
-            <div onclick="showPage('dashboard')" id="nav-dashboard" class="nav-link active cursor-pointer">
-                <i data-lucide="layout-dashboard"></i> Boshqaruv
+        <nav class="flex-1">
+            <div onclick="showPage('dashboard')" id="nav-dashboard" class="nav-link active">
+                <i data-lucide="layout-grid" class="w-5 h-5 text-orange-400"></i> Boshqaruv
             </div>
-            <div onclick="showPage('weekly')" id="nav-weekly" class="nav-link cursor-pointer">
-                <i data-lucide="calendar-range"></i> Jadval
+            <div onclick="showPage('weekly')" id="nav-weekly" class="nav-link">
+                <i data-lucide="calendar" class="w-5 h-5 text-blue-400"></i> Jadval
             </div>
-            <div onclick="showPage('add')" id="nav-add" class="nav-link cursor-pointer">
-                <i data-lucide="plus-circle"></i> Qo'shish
+            <div onclick="showPage('add')" id="nav-add" class="nav-link">
+                <i data-lucide="sparkles" class="w-5 h-5 text-yellow-400"></i> Qo'shish
             </div>
-            <p class="px-5 text-[9px] font-bold text-gray-600 uppercase tracking-widest mt-8 mb-3">Talaba</p>
-            <div onclick="showPage('kundalik')" id="nav-kundalik" class="nav-link cursor-pointer">
-                <i data-lucide="book-open"></i> Kundalik
+            
+            <div class="mt-8 mb-4 px-4">
+                <p class="text-[10px] font-bold text-gray-600 uppercase tracking-widest">Talaba</p>
+            </div>
+            
+            <div onclick="showPage('kundalik')" id="nav-kundalik" class="nav-link">
+                <i data-lucide="book-open" class="w-5 h-5 text-cyan-400"></i> Kundalik
             </div>
         </nav>
 
-        <div class="mt-auto space-y-4">
-            <div class="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/5">
-                <div class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center font-bold">AD</div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-[11px] font-black uppercase tracking-wider">Admin Panel</p>
-                </div>
+        <div class="mt-auto p-4 bg-white/5 rounded-2xl border border-white/5 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center font-black">AD</div>
+            <div>
+                <p class="text-xs font-bold">Admin</p>
+                <p class="text-[9px] text-gray-500 uppercase">Sarbon Portal</p>
             </div>
         </div>
     </aside>
 
     <main>
-        <header class="flex justify-between items-center mb-16">
+        <header class="flex justify-between items-center mb-12">
             <div>
-                <h2 id="page-title" class="text-6xl font-black italic space-font text-white uppercase">Boshqaruv</h2>
-                <div class="h-1 w-20 bg-cyan-500 mt-2 rounded-full"></div>
+                <h2 id="page-title" class="text-5xl font-black italic space-font text-white uppercase">Boshqaruv</h2>
+                <div class="h-1.5 w-24 bg-gradient-to-r from-blue-600 to-cyan-400 mt-3 rounded-full"></div>
             </div>
-            <div class="bg-black/20 p-5 rounded-[28px] border border-white/5 flex gap-10 items-center">
-                <div>
-                    <p id="live-time" class="text-3xl font-black space-font text-cyan-400">00:00</p>
+            
+            <div class="flex gap-6 items-center bg-black/30 p-4 rounded-3xl border border-white/10">
+                <div class="text-right">
+                    <p id="live-time" class="text-2xl font-black space-font text-white">00:00</p>
+                    <p id="live-date" class="text-[10px] font-bold text-cyan-500 uppercase tracking-tighter">-- -- --</p>
                 </div>
-                <div class="w-[1px] h-10 bg-white/10"></div>
-                <div>
-                    <p id="live-date" class="text-sm font-bold text-white">-- -- --</p>
-                </div>
+                <i data-lucide="clock" class="text-gray-600"></i>
             </div>
         </header>
 
         <div id="dashboard" class="page-entry">
-            <div id="teacher-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white/5 p-6 rounded-[32px] border border-white/5">
+                    <h4 class="text-gray-400 font-bold mb-4">Bugungi darslar</h4>
+                    <p class="text-4xl font-black">4 та</p>
                 </div>
+                <div class="bg-white/5 p-6 rounded-[32px] border border-white/5">
+                    <h4 class="text-gray-400 font-bold mb-4">Haftalik yuklama</h4>
+                    <p class="text-4xl font-black">22 соат</p>
+                </div>
+            </div>
         </div>
 
         <div id="weekly" class="hidden page-entry">
-            <div class="schedule-container">
-                <div class="day-column">
-                    <div class="day-header active-day"><p>DUSHANBA</p></div>
-                    <div class="lesson-card c-blue"><p class="font-black text-sm">Iqtisodiyot</p><p class="text-[10px]">09:00</p></div>
+            <div class="schedule-grid">
+                <div class="day-col">
+                    <div class="day-header active">DUSHANBA</div>
+                    <div class="lesson lesson-blue">
+                        <p class="font-black text-sm">Iqtisodiyot</p>
+                        <p class="text-[10px] opacity-80 mt-2">09:00 - 10:20</p>
+                    </div>
+                    <div class="lesson lesson-green">
+                        <p class="font-black text-sm">Xorijiy til</p>
+                        <p class="text-[10px] opacity-80 mt-2">10:30 - 11:50</p>
+                    </div>
                 </div>
-                <div class="day-column">
-                    <div class="day-header"><p>SESHANBA</p></div>
-                    <div class="lesson-card c-green"><p class="font-black text-sm">Matematika</p><p class="text-[10px]">10:30</p></div>
+                <div class="day-col">
+                    <div class="day-header">SESHANBA</div>
+                    <div class="lesson lesson-orange">
+                        <p class="font-black text-sm">Matematika</p>
+                        <p class="text-[10px] opacity-80 mt-2">09:00 - 10:20</p>
+                    </div>
+                    <div class="lesson lesson-cyan">
+                        <p class="font-black text-sm">Fizika</p>
+                        <p class="text-[10px] opacity-80 mt-2">11:00 - 12:20</p>
+                    </div>
                 </div>
-                <div class="day-column"><div class="day-header"><p>CHOR</p></div></div>
-                <div class="day-column"><div class="day-header"><p>PAY</p></div></div>
-                <div class="day-column"><div class="day-header"><p>JUM</p></div></div>
-                <div class="day-column"><div class="day-header"><p>SHAN</p></div></div>
-                <div class="day-column"><div class="day-header"><p>YAK</p></div></div>
+                <div class="day-col"><div class="day-header">CHORSHANBA</div></div>
+                <div class="day-col"><div class="day-header">PAYSHANBA</div></div>
+                <div class="day-col"><div class="day-header">JUMA</div></div>
+                <div class="day-col"><div class="day-header">SHANBA</div></div>
+                <div class="day-col"><div class="day-header">YAKSHANBA</div></div>
             </div>
         </div>
 
         <div id="add" class="hidden page-entry">
-            <div class="max-w-2xl mx-auto glass-panel p-12">
-                <h3 class="text-2xl font-black text-white mb-8 border-b border-white/5 pb-4 uppercase">Ma'lumot qo'shish</h3>
-                <div class="space-y-6">
-                    <input id="in-fan" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none" placeholder="Fan nomi">
-                    <input id="in-ifsh" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none" placeholder="O'qituvchi">
-                    <button onclick="alert('Saqlandi!')" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase">Saqlash</button>
+            <div class="max-w-xl bg-white/5 p-10 rounded-[40px] border border-white/10">
+                <h3 class="text-2xl font-black mb-8 italic">Yangi dars qo'shish</h3>
+                <div class="space-y-4">
+                    <input class="w-full bg-black/40 border border-white/10 p-4 rounded-2xl outline-none focus:border-blue-500 transition-all" placeholder="Fan nomi">
+                    <select class="w-full bg-black/40 border border-white/10 p-4 rounded-2xl outline-none text-gray-400">
+                        <option>Dushanba</option>
+                        <option>Seshanba</option>
+                    </select>
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-2xl font-black uppercase transition-all mt-4">Saqlash</button>
                 </div>
             </div>
         </div>
@@ -193,7 +241,7 @@
         function updateClock() {
             const now = new Date();
             document.getElementById('live-time').innerText = now.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('live-date').innerText = now.toLocaleDateString('uz-UZ', { day: 'numeric', month: 'long' });
+            document.getElementById('live-date').innerText = now.toLocaleDateString('uz-UZ', { day: 'numeric', month: 'long', year: 'numeric' });
         }
         setInterval(updateClock, 1000); updateClock();
 
@@ -201,13 +249,10 @@
             document.querySelectorAll('main > div').forEach(p => p.classList.add('hidden'));
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             
-            const target = document.getElementById(id);
-            if(target) target.classList.remove('hidden');
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById('nav-' + id).classList.add('active');
             
-            const navLink = document.getElementById('nav-' + id);
-            if(navLink) navLink.classList.add('active');
-            
-            const titles = { 'dashboard': 'Boshqaruv', 'weekly': 'Haftalik Jadval', 'add': 'Qo\'shish', 'kundalik': 'Kundalik' };
+            const titles = { 'dashboard': 'Boshqaruv', 'weekly': 'Haftalik Jadval', 'add': 'Dars Qo\'shish', 'kundalik': 'Talaba Kundaligi' };
             document.getElementById('page-title').innerText = titles[id];
         }
 
