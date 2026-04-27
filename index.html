@@ -12,7 +12,6 @@
         :root { 
             --accent-cyan: #00f2ff; 
             --sarbon-blue: #2c4765;
-            --sarbon-red: #7a2b2d;
             --main-dark: #080a0c;
         }
         body { 
@@ -26,7 +25,6 @@
         }
         .space-font { font-family: 'Space Grotesk', sans-serif; }
 
-        /* Sidebar Glassmorphism */
         aside { 
             width: 300px; 
             background: rgba(13, 18, 23, 0.8);
@@ -37,22 +35,6 @@
             padding: 2rem 1.2rem;
         }
 
-        /* Logo Integratsiyasi */
-        .logo-wrapper { 
-            margin-bottom: 3rem; 
-            text-align: center; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .sarbon-logo-svg {
-            width: 75px;
-            height: 75px;
-            margin-bottom: 10px;
-            filter: drop-shadow(0 10px 15px rgba(59, 130, 246, 0.3));
-        }
-
-        /* Nav Items & Icons */
         .nav-link {
             display: flex; align-items: center; gap: 12px;
             padding: 12px 18px; margin-bottom: 6px;
@@ -60,19 +42,12 @@
             font-weight: 500; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid transparent;
         }
-        .nav-link i { width: 18px; height: 18px; stroke-width: 2px; }
-        .nav-link:hover {
-            background: rgba(255, 255, 255, 0.03);
-            color: #fff;
-            transform: translateX(5px);
-        }
         .nav-link.active {
             background: linear-gradient(135deg, rgba(44, 71, 101, 0.4), rgba(0, 242, 255, 0.05));
             color: #fff;
             border: 1px solid rgba(0, 242, 255, 0.2);
         }
 
-        /* Main Content */
         main { flex: 1; padding: 3rem; overflow-y: auto; }
         .glass-panel {
             background: rgba(255, 255, 255, 0.02);
@@ -80,12 +55,9 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 32px;
         }
-        .btn-action {
-            background: linear-gradient(135deg, var(--sarbon-blue), #1e2e42);
-            padding: 16px 32px; border-radius: 20px;
-            font-weight: 800; letter-spacing: 1px;
-            box-shadow: 0 10px 25px rgba(44, 71, 101, 0.3);
-        }
+        
+        /* Schedule Card Styles */
+        .card-shadow { box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
         .page-entry { animation: fadeInScale 0.6s ease-out forwards; }
         @keyframes fadeInScale {
             from { opacity: 0; transform: scale(0.98) translateY(15px); }
@@ -96,13 +68,13 @@
 <body>
 
     <aside>
-        <div class="logo-wrapper">
-            <svg class="sarbon-logo-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="logo-wrapper mb-12 text-center flex flex-col items-center">
+            <svg class="w-20 h-20 mb-3" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M200 0H30C30 0 30 170 200 170V0Z" fill="#3B82F6"/>
                 <path d="M0 200V120C0 120 80 120 80 200H0Z" fill="#3B82F6"/>
             </svg>
-            <h1 class="text-2xl font-black tracking-tighter text-white uppercase italic">Sarbon</h1>
-            <p class="text-[9px] font-bold tracking-[5px] uppercase mt-1 text-cyan-400">Universiteti</p>
+            <h1 class="text-2xl font-black italic text-white uppercase">Sarbon</h1>
+            <p class="text-[9px] font-bold tracking-[5px] uppercase text-cyan-400">Universiteti</p>
         </div>
 
         <nav class="flex-1 space-y-1">
@@ -116,75 +88,90 @@
             <div onclick="showPage('add')" id="nav-add" class="nav-link cursor-pointer">
                 <i data-lucide="plus-circle"></i> Qo'shish
             </div>
-
-            <p class="px-5 text-[9px] font-bold text-gray-600 uppercase tracking-widest mt-8 mb-3">Talaba Xizmatlari</p>
-            <div onclick="showPage('kundalik')" id="nav-kundalik" class="nav-link cursor-pointer">
-                <i data-lucide="book-open"></i> Kundalik
-            </div>
-            <div onclick="showPage('kontrakt')" id="nav-kontrakt" class="nav-link cursor-pointer">
-                <i data-lucide="credit-card"></i> Kontrakt
-            </div>
         </nav>
-
-        <div class="mt-auto space-y-4">
-            <div class="group flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all cursor-pointer">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-xs font-bold text-white">AD</div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-[11px] font-black text-white truncate uppercase tracking-wider">Admin Panel</p>
-                    <p class="text-[8px] text-gray-500 font-bold uppercase tracking-widest">Super User</p>
-                </div>
-                <i data-lucide="settings" class="w-4 h-4 text-gray-600 group-hover:text-cyan-400"></i>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2">
-                <button onclick="alert('Sozlamalar...')" class="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 text-[9px] font-bold text-gray-400 uppercase tracking-widest transition-all">
-                    <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5"></i> Sozlash
-                </button>
-                <button onclick="confirm('Chiqasizmi?')" class="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 text-[9px] font-bold text-red-400 uppercase tracking-widest transition-all">
-                    <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Chiqish
-                </button>
-            </div>
-            <div class="pt-2 border-t border-white/5 text-center">
-                <p class="text-[8px] font-black text-gray-700 tracking-[3px] uppercase">Sarbon OS v5.5.0</p>
-            </div>
-        </div>
     </aside>
 
     <main>
-        <header class="flex justify-between items-center mb-16">
+        <header class="flex justify-between items-center mb-12">
             <div>
-                <h2 id="page-title" class="text-6xl font-black italic space-font text-white uppercase">Boshqaruv</h2>
-                <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-transparent mt-2 rounded-full"></div>
+                <h2 id="page-title" class="text-5xl font-black italic space-font text-white uppercase">Boshqaruv</h2>
+                <div class="h-1 w-20 bg-cyan-500 mt-2 rounded-full"></div>
             </div>
             
-            <div class="bg-black/20 p-5 rounded-[28px] border border-white/5 flex gap-10 items-center backdrop-blur-md">
+            <div class="bg-black/20 p-4 rounded-[24px] border border-white/5 flex gap-8 items-center">
                 <div>
-                    <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1">Vaqt</p>
-                    <p id="live-time" class="text-3xl font-black space-font text-cyan-400">00:00</p>
+                    <p class="text-[8px] font-bold text-gray-500 uppercase tracking-widest">Vaqt</p>
+                    <p id="live-time" class="text-2xl font-black text-cyan-400">00:00</p>
                 </div>
-                <div class="w-[1px] h-10 bg-white/10"></div>
+                <div class="w-[1px] h-8 bg-white/10"></div>
                 <div>
-                    <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1">Bugun</p>
-                    <p id="live-date" class="text-sm font-bold text-white">-- -- --</p>
+                    <p class="text-[8px] font-bold text-gray-500 uppercase tracking-widest">Bugun</p>
+                    <p id="live-date" class="text-xs font-bold text-white">-- -- --</p>
                 </div>
             </div>
         </header>
 
         <div id="dashboard" class="page-entry">
-            <div id="teacher-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-8"></div>
+            <div id="teacher-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-6"></div>
+        </div>
+
+        <div id="weekly" class="hidden page-entry">
+            <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                <div class="space-y-3">
+                    <div class="bg-blue-600 p-4 rounded-2xl text-center shadow-[0_0_20px_rgba(37,99,235,0.4)]">
+                        <span class="text-[10px] font-black uppercase text-white tracking-widest">Dushanba</span>
+                    </div>
+                    <div class="bg-[#78b3f4] p-5 rounded-[28px] card-shadow">
+                        <h5 class="text-black font-black text-lg">Iqtisodiyot</h5>
+                        <p class="text-black/50 text-[10px] font-bold mt-2 uppercase">09:00 - 10:20</p>
+                    </div>
+                    <div class="bg-[#4ade80] p-5 rounded-[28px] card-shadow">
+                        <h5 class="text-black font-black text-lg">Xorijiy til</h5>
+                        <p class="text-black/50 text-[10px] font-bold mt-2 uppercase">10:30 - 11:50</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="bg-white/5 p-4 rounded-2xl text-center border border-white/5">
+                        <span class="text-[10px] font-black uppercase text-gray-500 tracking-widest">Seshanba</span>
+                    </div>
+                    <div class="bg-[#ffcc33] p-5 rounded-[28px] card-shadow">
+                        <h5 class="text-black font-black text-lg">Matematika</h5>
+                        <p class="text-black/50 text-[10px] font-bold mt-2 uppercase">09:00 - 10:20</p>
+                    </div>
+                    <div class="bg-[#33d9f0] p-5 rounded-[28px] card-shadow">
+                        <h5 class="text-black font-black text-lg">Fizika</h5>
+                        <p class="text-black/50 text-[10px] font-bold mt-2 uppercase">11:00 - 12:20</p>
+                    </div>
+                </div>
+
+                <script>
+                    const kunlar = ['Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba'];
+                    kunlar.forEach(kun => {
+                        document.write(`
+                            <div class="space-y-3">
+                                <div class="bg-white/5 p-4 rounded-2xl text-center border border-white/5">
+                                    <span class="text-[10px] font-black uppercase text-gray-500 tracking-widest">${kun}</span>
+                                </div>
+                                <div class="h-40 rounded-[28px] border-2 border-dashed border-white/5 bg-white/[0.01]"></div>
+                            </div>
+                        `);
+                    });
+                </script>
+            </div>
         </div>
 
         <div id="add" class="hidden page-entry">
-            <div class="max-w-2xl mx-auto glass-panel p-12 shadow-2xl">
-                <h3 class="text-2xl font-black text-white mb-8 border-b border-white/5 pb-4 italic uppercase">Ma'lumot qo'shish</h3>
-                <div class="space-y-6">
+            <div class="max-w-2xl mx-auto glass-panel p-10">
+                <h3 class="text-2xl font-black text-white mb-6 uppercase italic">Ma'lumot қўшиш</h3>
+                <div class="space-y-4">
                     <input id="in-ifsh" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-cyan-500 text-white" placeholder="O'qituvchi F.I.Sh">
                     <input id="in-fan" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-cyan-500 text-white" placeholder="Fan nomi">
                     <div class="grid grid-cols-2 gap-4">
-                        <input id="in-sana" type="date" class="bg-white/5 border border-white/10 p-4 rounded-xl outline-none text-white">
+                        <input id="in-sana" type="date" class="bg-white/5 border border-white/10 p-4 rounded-xl text-white">
                         <input id="in-image" type="file" class="bg-white/5 border border-white/10 p-3 rounded-xl text-[10px] text-gray-400">
                     </div>
-                    <button onclick="saveAll()" class="btn-action w-full text-white uppercase">Saqlash</button>
+                    <button onclick="saveAll()" class="w-full bg-blue-600 hover:bg-blue-500 p-4 rounded-xl font-black uppercase text-white transition-all">Saqlash</button>
                 </div>
             </div>
         </div>
@@ -193,7 +180,6 @@
     <script>
         let db = JSON.parse(localStorage.getItem('sarbon_v55')) || [];
 
-        // Soat va sana
         function updateClock() {
             const now = new Date();
             document.getElementById('live-time').innerText = now.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
@@ -201,29 +187,25 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // Sahifalar navigatsiyasi
         function showPage(id) {
             document.querySelectorAll('main > div').forEach(p => p.classList.add('hidden'));
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             
-            const target = document.getElementById(id);
-            if(target) target.classList.remove('hidden');
-            
+            document.getElementById(id).classList.remove('hidden');
             const navLink = document.getElementById('nav-' + id);
             if(navLink) navLink.classList.add('active');
             
-            document.getElementById('page-title').innerText = id;
+            document.getElementById('page-title').innerText = id === 'weekly' ? 'Jadval' : (id === 'add' ? 'Qo\'shish' : 'Boshqaruv');
             if(id === 'dashboard') renderDashboard();
         }
 
-        // Ma'lumot saqlash
         async function saveAll() {
             const ifsh = document.getElementById('in-ifsh').value;
             const fan = document.getElementById('in-fan').value;
             const sana = document.getElementById('in-sana').value;
             const imgFile = document.getElementById('in-image').files[0];
             
-            if(!ifsh || !fan || !sana) return alert("Barcha maydonlarni to'ldiring!");
+            if(!ifsh || !fan || !sana) return alert("To'ldiring!");
 
             let img = "";
             if(imgFile) {
@@ -238,27 +220,22 @@
             showPage('dashboard');
         }
 
-        // Dashboardni chizish
         function renderDashboard() {
             const grid = document.getElementById('teacher-grid');
             grid.innerHTML = db.slice().reverse().map(t => `
                 <div class="glass-panel p-5 flex items-center gap-6 group hover:bg-white/5 transition-all">
-                    <div class="w-20 h-20 rounded-2xl bg-black/40 border border-white/5 overflow-hidden flex-shrink-0">
+                    <div class="w-16 h-16 rounded-2xl bg-black/40 border border-white/5 overflow-hidden flex-shrink-0">
                         ${t.img ? `<img src="${t.img}" class="w-full h-full object-cover">` : `<div class="p-4 opacity-10"><svg viewBox="0 0 200 200" fill="white"><path d="M200 0H30C30 0 30 170 200 170V0Z"/><path d="M0 200V120C0 120 80 120 80 200H0Z"/></svg></div>`}
                     </div>
                     <div class="flex-1">
-                        <span class="text-[9px] font-black uppercase text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-cyan-500/20">${t.ifsh}</span>
-                        <h4 class="text-xl font-black text-white mt-1 uppercase italic">${t.fan}</h4>
-                        <div class="flex gap-4 mt-2">
-                             <p class="text-[10px] text-gray-500 font-bold uppercase">📅 ${t.sana}</p>
-                             <p class="text-[10px] text-cyan-600 font-bold uppercase">🕒 ${t.vaqt}</p>
-                        </div>
+                        <span class="text-[9px] font-black uppercase text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/20">${t.ifsh}</span>
+                        <h4 class="text-lg font-black text-white mt-1 uppercase italic">${t.fan}</h4>
+                        <p class="text-[10px] text-gray-500 font-bold uppercase mt-1">📅 ${t.sana} | 🕒 ${t.vaqt}</p>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Иконкаларни фаоллаштириш
         lucide.createIcons();
         renderDashboard();
     </script>
