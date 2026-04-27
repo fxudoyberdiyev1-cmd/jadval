@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SARBON UNIVERSITETI - Тизим v5.2</title>
+    <title>Smart Jadval - SARBON UNIVERSITETI - Tizim v5.3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@300;600;900&display=swap" rel="stylesheet">
     <style>
@@ -11,14 +11,21 @@
             --accent: #00f2ff; 
             --main-bg: #05080a; 
             --sidebar-bg: #0d1217; 
-            --card-bg: rgba(22, 29, 39, 0.7); 
+            --card-bg: rgba(22, 29, 39, 0.7);
+            --sarbon-blue: #324C6A; /* Классик лого ранги */
+            --sarbon-red: #8B2C29;  /* Классик матн ранги */
         }
         body { font-family: 'Montserrat', sans-serif; background-color: var(--main-bg); color: #e2e8f0; min-height: 100vh; display: flex; margin: 0; }
         .orbitron { font-family: 'Orbitron', sans-serif; }
-        aside { background-color: var(--sidebar-bg); border-right: 1px solid rgba(0, 242, 255, 0.1); }
+        aside { background-color: var(--sidebar-bg); border-right: 1px solid rgba(255, 255, 255, 0.05); }
         .glass-card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; transition: 0.3s; }
         .nav-item { padding: 1rem; margin: 0.4rem 0; border-radius: 12px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; }
         .nav-item.active { background: rgba(0, 242, 255, 0.1); color: var(--accent); box-shadow: inset 4px 0 0 var(--accent); }
+        
+        /* 3-расмдаги логотипни кодда ясаш */
+        .sarbon-logo-icon { width: 60px; height: 60px; background: var(--sarbon-blue); border-radius: 2px 2px 2px 35px; position: relative; margin-bottom: 10px; }
+        .sarbon-logo-icon::after { content: ''; position: absolute; bottom: 4px; left: 4px; width: 14px; height: 14px; background: white; border-radius: 1px 1px 1px 8px; }
+        
         .time-box { background: #0d1217; border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 20px; padding: 12px 30px; display: flex; gap: 40px; align-items: center; }
         input { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(0, 242, 255, 0.1) !important; color: white !important; padding: 14px; border-radius: 14px; width: 100%; outline: none; }
         .page { display: none; }
@@ -29,16 +36,13 @@
 <body>
 
     <aside class="w-72 h-screen sticky top-0 p-6 flex flex-col">
-        <div class="mb-10 text-center flex flex-col items-center">
-            <div class="relative group">
-                <img src="logo.png" alt="SARBON" onerror="this.style.display='none'; document.getElementById('text-logo').style.display='block'" class="w-40 mb-2">
-                
-                <div id="text-logo" style="display:none;" class="py-4">
-                    <h1 class="orbitron text-3xl font-black text-white tracking-tighter leading-none">SARBON</h1>
-                    <p class="orbitron text-[8px] text-cyan-400 font-bold tracking-[0.5em] mt-1">UNIVERSITETI</p>
-                </div>
+        <div class="mb-10 flex flex-col items-center">
+            <div class="sarbon-logo-icon"></div>
+            <div class="text-center">
+                <h1 class="text-white font-black text-xl leading-none tracking-tight">Sarbon</h1>
+                <p class="text-[9px] font-bold tracking-[3px] uppercase" style="color: var(--sarbon-red);">Universiteti</p>
             </div>
-            <div class="h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent mt-4"></div>
+            <div class="h-[1px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent mt-6"></div>
         </div>
 
         <nav class="flex-1">
@@ -47,27 +51,27 @@
             <div onclick="showPage('add')" id="nav-add" class="nav-item">⚡ Yangi Qo'shish</div>
             
             <div class="mt-8 mb-2 text-[9px] text-gray-600 font-bold uppercase tracking-widest px-4">Talabalar uchun</div>
-            <div onclick="alert('Tez kunda...')" class="nav-item">📚 Kundalik</div>
-            <div onclick="alert('Tez kunda...')" class="nav-item">💳 Kontrakt</div>
+            <div onclick="showPage('kundalik')" id="nav-kundalik" class="nav-item">📚 Kundalik</div>
+            <div onclick="showPage('kontrakt')" id="nav-kontrakt" class="nav-item">💳 Kontrakt</div>
         </nav>
 
-        <div class="mt-auto pt-6 border-t border-white/5 text-[9px] text-gray-600 orbitron text-center uppercase tracking-widest">
-            TechFix v5.2
+        <div class="mt-auto pt-6 text-[9px] text-gray-700 orbitron text-center uppercase tracking-widest">
+            TECHFIX v5.3
         </div>
     </aside>
 
     <main class="flex-1 p-10 overflow-y-auto">
         <header class="flex justify-between items-center mb-12">
-            <h2 id="page-title" class="text-4xl font-black uppercase italic text-white tracking-tighter">Boshqaruv</h2>
+            <h2 id="page-title" class="text-5xl font-black uppercase italic text-white tracking-tighter orbitron">BOSHQUARUV</h2>
             <div class="time-box">
                 <div class="text-center">
                     <p class="text-[8px] text-gray-500 font-black uppercase mb-1">Sana</p>
-                    <p id="live-date" class="orbitron text-lg font-bold text-white tracking-tighter">--.--.----</p>
+                    <p id="live-date" class="orbitron text-xl font-bold text-white tracking-tighter">--.--.----</p>
                 </div>
-                <div class="w-[1px] h-6 bg-white/10"></div>
+                <div class="w-[1px] h-8 bg-white/10"></div>
                 <div class="text-center">
                     <p class="text-[8px] text-gray-500 font-black uppercase mb-1">Vaqt</p>
-                    <p id="live-time" class="orbitron text-lg font-bold text-cyan-400 tracking-tighter">00:00</p>
+                    <p id="live-time" class="orbitron text-xl font-bold text-cyan-400 tracking-tighter">00:00</p>
                 </div>
             </div>
         </header>
@@ -81,17 +85,31 @@
         </div>
 
         <div id="add" class="page">
-            <div class="max-w-xl mx-auto glass-card p-10">
-                <h4 class="text-xl font-black uppercase italic mb-8 text-white border-l-4 border-cyan-500 pl-4">Dars ma'lumotlari</h4>
+            <div class="max-w-xl mx-auto glass-card p-10 shadow-2xl shadow-cyan-500/5">
+                <h4 class="text-xl font-black uppercase italic mb-8 text-white border-l-4 border-cyan-500 pl-4">Yangi dars qo'shish</h4>
                 <div class="space-y-5">
                     <input id="in-ifsh" type="text" placeholder="O'qituvchi F.I.Sh">
                     <input id="in-fan" type="text" placeholder="Fan nomi">
                     <div class="grid grid-cols-2 gap-4">
                         <input id="in-sana" type="date">
-                        <input id="in-image" type="file" accept="image/*" class="text-xs">
+                        <input id="in-image" type="file" accept="image/*">
                     </div>
-                    <button onclick="saveAll()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-4 rounded-xl uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-cyan-500/20">Saqlash</button>
+                    <button onclick="saveAll()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-4 rounded-xl uppercase tracking-widest transition-all shadow-lg shadow-cyan-500/20">Saqlash</button>
                 </div>
+            </div>
+        </div>
+
+        <div id="kundalik" class="page">
+            <div class="glass-card p-12 text-center">
+                <h3 class="orbitron text-2xl font-bold text-cyan-400">TALABA KUNDALIGI</h3>
+                <p class="text-gray-500 mt-4">Ушбу бўлим ҳозирда ишлаб чиқилмоқда...</p>
+            </div>
+        </div>
+
+        <div id="kontrakt" class="page">
+            <div class="glass-card p-12 text-center">
+                <h3 class="orbitron text-2xl font-bold text-cyan-400">KONTRAKT TO'LOVLARI</h3>
+                <p class="text-gray-500 mt-4">Тўлов тизими тез орада фаоллаштирилади.</p>
             </div>
         </div>
     </main>
@@ -104,8 +122,7 @@
             document.getElementById('live-date').innerText = now.toLocaleDateString('uz-UZ');
             document.getElementById('live-time').innerText = now.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+        setInterval(updateClock, 1000); updateClock();
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -113,7 +130,7 @@
             document.getElementById(id).classList.add('active');
             const navBtn = document.getElementById('nav-' + id);
             if(navBtn) navBtn.classList.add('active');
-            document.getElementById('page-title').innerText = document.getElementById('nav-'+id).innerText;
+            document.getElementById('page-title').innerText = id.toUpperCase();
             if(id === 'dashboard') renderDashboard();
             if(id === 'weekly') renderWeekly();
         }
@@ -123,9 +140,7 @@
             const fan = document.getElementById('in-fan').value;
             const sana = document.getElementById('in-sana').value;
             const imgFile = document.getElementById('in-image').files[0];
-
             if(!ifsh || !fan || !sana) return alert("To'ldiring!");
-
             let img = "";
             if(imgFile) {
                 img = await new Promise(r => {
@@ -133,10 +148,8 @@
                     fr.onload = () => r(fr.result);
                 });
             }
-
             const dObj = new Date(sana);
             let dNum = dObj.getDay(); if(dNum === 0) dNum = 7;
-
             db.push({ id: Date.now(), ifsh, fan, sana, img, day: dNum, vaqt: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }) });
             localStorage.setItem('sarbon_final_v5', JSON.stringify(db));
             showPage('dashboard');
@@ -146,8 +159,8 @@
             const grid = document.getElementById('teacher-grid');
             grid.innerHTML = db.slice().reverse().map(t => `
                 <div class="glass-card p-5 flex items-center gap-5 border border-white/5 hover:border-cyan-500/20 transition-all">
-                    <div class="w-20 h-20 rounded-xl bg-black/40 flex items-center justify-center overflow-hidden border border-white/5 flex-shrink-0">
-                        ${t.img ? `<img src="${t.img}" class="w-full h-full object-cover">` : `<span class="text-[8px] orbitron text-cyan-400">SARBON</span>`}
+                    <div class="w-20 h-20 rounded-xl bg-black/40 flex items-center justify-center overflow-hidden flex-shrink-0">
+                        ${t.img ? `<img src="${t.img}" class="w-full h-full object-cover">` : `<div class="sarbon-logo-icon scale-50 m-0"></div>`}
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="flex justify-between">
@@ -185,7 +198,6 @@
                 renderDashboard();
             }
         }
-
         renderDashboard();
     </script>
 </body>
