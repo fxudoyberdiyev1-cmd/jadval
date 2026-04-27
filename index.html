@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SARBON - Тизим Бошқаруви</title>
+    <title>SARBON - University Control System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@300;600;900&display=swap" rel="stylesheet">
     <style>
@@ -11,20 +11,24 @@
             --accent: #00f2ff;
             --main-bg: #05070a;
             --glass: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
         }
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: var(--main-bg); 
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--main-bg);
             background-image: radial-gradient(circle at 50% 50%, #101520 0%, #05070a 100%);
-            color: #e2e8f0; 
+            color: #e2e8f0;
             min-height: 100vh;
+            margin: 0;
+            display: flex;
         }
         .orbitron { font-family: 'Orbitron', sans-serif; }
-        
+
+        /* Glassmorphism Styles */
         .glass-card {
             background: var(--glass);
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--card-border);
             border-radius: 24px;
         }
 
@@ -32,13 +36,36 @@
             background: linear-gradient(45deg, #00f2ff, #0066ff);
             box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
             transition: 0.3s;
+            color: white;
+            font-weight: 900;
+            text-transform: uppercase;
         }
-        .neon-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 242, 255, 0.6); }
+        .neon-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.6);
+        }
 
-        .nav-item { transition: 0.3s; border-radius: 15px; cursor: pointer; }
-        .nav-item:hover, .nav-item.active { background: rgba(0, 242, 255, 0.1); color: var(--accent); border-left: 4px solid var(--accent); }
+        /* Navigation */
+        .nav-item {
+            transition: 0.3s;
+            border-radius: 15px;
+            cursor: pointer;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #94a3b8;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: rgba(0, 242, 255, 0.1);
+            color: var(--accent);
+            border-left: 4px solid var(--accent);
+        }
 
-        /* Таймер блоки */
+        /* Layout Elements */
         .status-header {
             background: linear-gradient(90deg, rgba(0, 242, 255, 0.05), transparent);
             border-left: 4px solid var(--accent);
@@ -46,100 +73,164 @@
             border-radius: 0 20px 20px 0;
         }
 
-        .page { display: none; animation: fadeIn 0.5s ease-out; }
+        .page { display: none; animation: fadeIn 0.4s ease-out; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        input, select { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; border-radius: 12px !important; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Inputs */
+        input[type="text"], input[type="date"], select {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+            border-radius: 12px !important;
+            width: 100%;
+            padding: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--accent) !important; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        .sidebar-logo {
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
     </style>
 </head>
-<body class="flex">
+<body>
 
-    <aside class="w-80 h-screen sticky top-0 p-8 flex flex-col border-r border-white/5">
-        <div class="mb-12">
+    <!-- SIDEBAR -->
+    <aside class="w-72 h-screen sticky top-0 flex flex-col border-r border-white/5">
+        <div class="sidebar-logo">
             <h1 class="orbitron text-3xl font-black tracking-widest text-white">SARBON</h1>
-            <p class="text-[10px] text-cyan-400 font-bold tracking-[5px] uppercase">Университет</p>
+            <p class="text-[9px] text-cyan-400 font-bold tracking-[4px] uppercase mt-1">Universiteti</p>
         </div>
 
-        <nav class="space-y-4 flex-1">
-            <div onclick="showPage('dashboard')" id="nav-dashboard" class="nav-item active p-4 flex items-center gap-4 font-bold text-sm uppercase">
-                <span>📡</span> Терминал
+        <nav class="px-6 space-y-3 flex-1">
+            <div onclick="showPage('dashboard')" id="nav-dashboard" class="nav-item active">
+                <span>📡</span> Boshqaruv
             </div>
-            <div onclick="showPage('weekly')" id="nav-weekly" class="nav-item p-4 flex items-center gap-4 font-bold text-sm uppercase">
-                <span>🌀</span> Дарс Жадвали
+            <div onclick="showPage('weekly')" id="nav-weekly" class="nav-item">
+                <span>🌀</span> Haftalik Jadval
             </div>
-            <div onclick="showPage('add')" id="nav-add" class="nav-item p-4 flex items-center gap-4 font-bold text-sm uppercase">
-                <span>⚡</span> Янги Кўшиш
+            <div onclick="showPage('add')" id="nav-add" class="nav-item">
+                <span>⚡</span> Yangi Qo'shish
             </div>
         </nav>
 
-        <div class="mt-auto p-4 glass-card text-center border-cyan-900/30">
-            <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-1">Тизим ҳолати</p>
-            <p class="text-xs text-cyan-400 font-bold">ФАОЛ</p>
+        <div class="p-6 mt-auto">
+            <div class="glass-card p-4 text-center border-cyan-900/30">
+                <p class="text-[8px] text-gray-500 uppercase tracking-widest mb-1">Tizim holati</p>
+                <p class="text-[10px] text-cyan-400 font-black orbitron">ONLINE</p>
+            </div>
         </div>
     </aside>
 
-    <main class="flex-1 p-12">
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 p-10 overflow-y-auto">
         
-        <header class="flex justify-between items-center mb-16">
+        <!-- HEADER -->
+        <header class="flex justify-between items-start mb-12">
             <div class="status-header">
-                <h2 class="text-xs font-black text-cyan-500 uppercase tracking-[4px] mb-2">Бошқарув панели</h2>
-                <h3 class="text-4xl font-black italic uppercase">Асосий Ойна</h3>
+                <h2 class="text-[10px] font-black text-cyan-500 uppercase tracking-[3px] mb-1">Tizim terminali</h2>
+                <h3 id="page-title" class="text-3xl font-black italic uppercase text-white">Asosiy Oyna</h3>
             </div>
 
+            <!-- TIME & DATE BOX (No icons) -->
             <div class="glass-card px-8 py-4 flex gap-8 items-center border-cyan-500/20">
                 <div class="text-center">
-                    <p class="text-[9px] text-gray-500 font-bold uppercase mb-1">Сана</p>
-                    <p class="orbitron text-lg font-bold text-white tracking-tighter">📅 2026-04-15</p>
+                    <p class="text-[8px] text-gray-500 font-bold uppercase mb-1">Sana</p>
+                    <p class="orbitron text-base font-bold text-white">2026-04-15</p>
                 </div>
-                <div class="h-8 w-[1px] bg-white/10"></div>
+                <div class="h-6 w-[1px] bg-white/10"></div>
                 <div class="text-center">
-                    <p class="text-[9px] text-gray-500 font-bold uppercase mb-1">Вақт</p>
-                    <p class="orbitron text-lg font-bold text-cyan-400 neon-text">⏰ 00:19</p>
+                    <p class="text-[8px] text-gray-500 font-bold uppercase mb-1">Vaqt</p>
+                    <p class="orbitron text-base font-bold text-cyan-400">00:19</p>
                 </div>
             </div>
         </header>
 
+        <!-- DASHBOARD PAGE -->
         <div id="dashboard" class="page active">
-            <div id="teacher-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                </div>
-        </div>
-
-        <div id="weekly" class="page">
-            <div class="grid grid-cols-7 gap-4">
-                <div class="day-col" id="col-1"><div class="text-center mb-4 text-[10px] font-black text-cyan-500 orbitron">ДУШ</div><div class="container space-y-3"></div></div>
-                <div class="day-col" id="col-2"><div class="text-center mb-4 text-[10px] font-black text-cyan-500 orbitron">СЕШ</div><div class="container space-y-3"></div></div>
-                <div class="day-col" id="col-3"><div class="text-center mb-4 text-[10px] font-black text-cyan-500 orbitron">ЧОР</div><div class="container space-y-3"></div></div>
-                <div class="day-col" id="col-4"><div class="text-center mb-4 text-[10px] font-black text-cyan-500 orbitron">ПАЙ</div><div class="container space-y-3"></div></div>
-                <div class="day-col" id="col-5"><div class="text-center mb-4 text-[10px] font-black text-cyan-500 orbitron">ЖУМ</div><div class="container space-y-3"></div></div>
-                <div class="day-col" id="col-6"><div class="text-center mb-4 text-[10px] font-black text-cyan-500 orbitron">ШАН</div><div class="container space-y-3"></div></div>
-                <div class="day-col" id="col-7"><div class="text-center mb-4 text-[10px] font-black text-gray-600 orbitron">ЯКШ</div><div class="container space-y-3"></div></div>
+            <div class="flex justify-between items-center mb-6">
+                <h4 class="text-sm font-bold text-gray-400 uppercase tracking-widest">O'qituvchilar Ro'yxati</h4>
+            </div>
+            <div id="teacher-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cards will be injected here -->
             </div>
         </div>
 
+        <!-- WEEKLY SCHEDULE PAGE -->
+        <div id="weekly" class="page">
+            <div class="grid grid-cols-7 gap-3 h-full">
+                <!-- Days of the week -->
+                <div class="flex flex-col" id="col-1">
+                    <div class="text-[10px] font-black text-cyan-500 orbitron mb-4 text-center">DUSHANBA</div>
+                    <div class="container space-y-2"></div>
+                </div>
+                <div class="flex flex-col" id="col-2">
+                    <div class="text-[10px] font-black text-cyan-500 orbitron mb-4 text-center">SESHANBA</div>
+                    <div class="container space-y-2"></div>
+                </div>
+                <div class="flex flex-col" id="col-3">
+                    <div class="text-[10px] font-black text-cyan-500 orbitron mb-4 text-center">CHORSHANBA</div>
+                    <div class="container space-y-2"></div>
+                </div>
+                <div class="flex flex-col" id="col-4">
+                    <div class="text-[10px] font-black text-cyan-500 orbitron mb-4 text-center">PAYSHANBA</div>
+                    <div class="container space-y-2"></div>
+                </div>
+                <div class="flex flex-col" id="col-5">
+                    <div class="text-[10px] font-black text-cyan-500 orbitron mb-4 text-center">JUMA</div>
+                    <div class="container space-y-2"></div>
+                </div>
+                <div class="flex flex-col" id="col-6">
+                    <div class="text-[10px] font-black text-cyan-500 orbitron mb-4 text-center">SHANBA</div>
+                    <div class="container space-y-2"></div>
+                </div>
+                <div class="flex flex-col" id="col-7">
+                    <div class="text-[10px] font-black text-gray-600 orbitron mb-4 text-center">YAKSHANBA</div>
+                    <div class="container space-y-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADD NEW DATA PAGE -->
         <div id="add" class="page">
-            <div class="max-w-2xl glass-card p-10 mx-auto border-cyan-500/10">
-                <h4 class="text-2xl font-black italic mb-8 border-b border-white/5 pb-4 uppercase">Янги маълумот киритиш</h4>
-                <div class="space-y-6">
+            <div class="max-w-xl mx-auto glass-card p-10 border-cyan-500/10">
+                <h4 class="text-xl font-black italic mb-8 border-b border-white/5 pb-4 uppercase text-white tracking-widest">Ma'lumot Kiritish</h4>
+                <div class="space-y-5">
                     <div>
-                        <label class="text-[10px] font-bold text-gray-500 uppercase block mb-2 ml-1">Ўқитувчи ID ёки Исми</label>
-                        <input id="in-ifsh" type="text" class="w-full p-4 cyber-input outline-none" placeholder="Масалан: Анвар Алимов">
+                        <label class="text-[9px] font-bold text-gray-500 uppercase block mb-1 ml-1">O'qituvchi F.I.Sh</label>
+                        <input id="in-ifsh" type="text" placeholder="Masalan: Anvar Alimov">
                     </div>
                     <div>
-                        <label class="text-[10px] font-bold text-gray-500 uppercase block mb-2 ml-1">Фан номи</label>
-                        <input id="in-fan" type="text" class="w-full p-4 cyber-input outline-none" placeholder="Масалан: Иқтисодиёт">
+                        <label class="text-[9px] font-bold text-gray-500 uppercase block mb-1 ml-1">Fan Nomi</label>
+                        <input id="in-fan" type="text" placeholder="Masalan: Iqtisodiyot">
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-[10px] font-bold text-gray-500 uppercase block mb-2 ml-1">Сана</label>
-                            <input id="in-sana" type="date" class="w-full p-4 cyber-input outline-none">
+                            <label class="text-[9px] font-bold text-gray-500 uppercase block mb-1 ml-1">Sana</label>
+                            <input id="in-sana" type="date">
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold text-gray-500 uppercase block mb-2 ml-1">Расм (Аватар)</label>
-                            <input id="in-image" type="file" accept="image/*" class="w-full p-3 text-xs">
+                            <label class="text-[9px] font-bold text-gray-500 uppercase block mb-1 ml-1">O'qituvchi Rasmi</label>
+                            <div class="relative">
+                                <input id="in-image" type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                                <div class="w-full p-4 bg-white/5 border border-white/10 rounded-xl text-[10px] text-gray-400 text-center font-bold">RASM TANLASH</div>
+                            </div>
                         </div>
                     </div>
-                    <button onclick="saveAll()" class="w-full neon-btn py-5 rounded-xl font-black uppercase tracking-widest text-sm mt-4">Тизимга сақлаш</button>
+                    <button onclick="saveData()" class="w-full neon-btn py-4 rounded-xl mt-4 text-sm">Tizimga Saqlash</button>
                 </div>
             </div>
         </div>
@@ -147,88 +238,143 @@
     </main>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('sarbon_v3_db')) || [];
+        // Database Initialization
+        let db = JSON.parse(localStorage.getItem('sarbon_integrated_db')) || [];
 
+        // Navigation Function
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            document.getElementById('nav-' + id).classList.add('active');
-            if(id === 'dashboard') renderDashboard();
-            if(id === 'weekly') renderWeekly();
+            
+            const page = document.getElementById(id);
+            const nav = document.getElementById('nav-' + id);
+            const title = document.getElementById('page-title');
+
+            page.classList.add('active');
+            nav.classList.add('active');
+
+            if(id === 'dashboard') {
+                title.innerText = "Asosiy Oyna";
+                renderDashboard();
+            } else if(id === 'weekly') {
+                title.innerText = "Haftalik Jadval";
+                renderWeekly();
+            } else if(id === 'add') {
+                title.innerText = "Yangi Qo'shish";
+            }
         }
 
-        async function saveAll() {
-            const ifsh = document.getElementById('in-ifsh').value;
-            const fan = document.getElementById('in-fan').value;
+        // Save Data Function
+        async function saveData() {
+            const ifsh = document.getElementById('in-ifsh').value.trim();
+            const fan = document.getElementById('in-fan').value.trim();
             const sana = document.getElementById('in-sana').value;
             const imgInput = document.getElementById('in-image');
+            
+            if(!ifsh || !fan || !sana) {
+                alert("Iltimos, barcha maydonlarni to'ldiring!");
+                return;
+            }
+
             const vaqt = new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
-
-            if(!ifsh || !fan || !sana) return alert("Маълумотни тўлиқ киритинг!");
-
+            
             let base64Img = "";
             if(imgInput.files[0]) {
-                base64Img = await new Promise(r => {
-                    const fr = new FileReader(); fr.readAsDataURL(imgInput.files[0]);
-                    fr.onload = () => r(fr.result);
+                base64Img = await new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.readAsDataURL(imgInput.files[0]);
                 });
             }
 
-            const dayNum = new Date(sana).getDay();
-            const normalizedDay = dayNum === 0 ? 7 : dayNum;
+            const dateObj = new Date(sana);
+            let dayNum = dateObj.getDay();
+            dayNum = (dayNum === 0) ? 7 : dayNum; // Normalize Sunday as 7
 
-            db.push({ id: Date.now(), ifsh, fan, sana, vaqt, img: base64Img, day: normalizedDay });
-            localStorage.setItem('sarbon_v3_db', JSON.stringify(db));
-            
+            const newEntry = {
+                id: Date.now(),
+                ifsh,
+                fan,
+                sana,
+                vaqt,
+                img: base64Img,
+                day: dayNum
+            };
+
+            db.push(newEntry);
+            localStorage.setItem('sarbon_integrated_db', JSON.stringify(db));
+
+            // Clear inputs
             document.getElementById('in-ifsh').value = '';
             document.getElementById('in-fan').value = '';
+            document.getElementById('in-sana').value = '';
+            
             showPage('dashboard');
         }
 
+        // Render Dashboard (Cards)
         function renderDashboard() {
             const grid = document.getElementById('teacher-grid');
-            grid.innerHTML = db.map(t => `
-                <div class="glass-card p-6 relative group overflow-hidden border-white/5 hover:border-cyan-500/50 transition-all">
-                    <button onclick="deleteItem(${t.id})" class="absolute top-4 right-4 text-gray-600 hover:text-red-500 transition font-bold">Очириш</button>
-                    <div class="flex items-center gap-6">
-                        ${t.img ? `<img src="${t.img}" class="w-20 h-20 rounded-2xl object-cover border-2 border-cyan-500/20 shadow-[0_0_15px_rgba(0,242,255,0.1)]">` : `<div class="w-20 h-20 rounded-2xl bg-white/5 flex items-center justify-center text-[10px] text-gray-500">IMAGE</div>`}
-                        <div>
-                            <p class="text-[9px] font-black text-cyan-500 uppercase tracking-widest">${t.ifsh}</p>
-                            <h4 class="text-xl font-black text-white italic uppercase">${t.fan}</h4>
-                            <div class="mt-3 flex gap-4 text-[10px] font-bold text-gray-500 uppercase">
-                                <span>📅 ${t.sana}</span>
-                                <span class="text-white">⏰ ${t.vaqt}</span>
+            if(db.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-20 text-center text-gray-600 font-bold uppercase tracking-widest text-xs">Ma'lumotlar mavjud emas</div>`;
+                return;
+            }
+
+            grid.innerHTML = db.slice().reverse().map(item => `
+                <div class="glass-card p-5 relative group border-white/5 hover:border-cyan-500/40 transition-all">
+                    <button onclick="deleteEntry(${item.id})" class="absolute top-3 right-4 text-[9px] text-red-500 font-black uppercase opacity-0 group-hover:opacity-100 transition-opacity">O'chirish</button>
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 rounded-2xl overflow-hidden bg-white/5 border border-white/10 flex-shrink-0">
+                            ${item.img ? `<img src="${item.img}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-[8px] text-gray-700">IMAGE</div>`}
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="text-[9px] font-black text-cyan-500 uppercase truncate">${item.ifsh}</p>
+                            <h5 class="text-base font-black text-white italic uppercase truncate">${item.fan}</h5>
+                            <div class="flex gap-3 mt-1">
+                                <span class="text-[9px] font-bold text-gray-500">${item.sana}</span>
+                                <span class="text-[9px] font-black text-white italic">${item.vaqt}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            `).reverse().join('');
+            `).join('');
         }
 
+        // Render Weekly Schedule
         function renderWeekly() {
-            document.querySelectorAll('.day-col .container').forEach(c => c.innerHTML = '');
-            db.forEach((item) => {
+            // Clear all containers
+            document.querySelectorAll('.container').forEach(c => c.innerHTML = '');
+
+            db.forEach(item => {
                 const container = document.querySelector(`#col-${item.day} .container`);
                 if(container) {
                     container.innerHTML += `
-                        <div class="p-3 bg-white/5 rounded-xl border-l-2 border-cyan-500">
-                            <p class="text-[10px] font-black text-white uppercase truncate">${item.fan}</p>
-                            <p class="text-[8px] text-gray-500 uppercase font-bold mt-1">${item.vaqt}</p>
+                        <div class="p-3 bg-white/5 rounded-xl border-l-2 border-cyan-500 hover:bg-cyan-500/5 transition-colors">
+                            <p class="text-[9px] font-black text-white uppercase truncate">${item.fan}</p>
+                            <p class="text-[8px] text-gray-500 font-bold mt-0.5">${item.vaqt}</p>
                         </div>
                     `;
                 }
             });
+
+            // If a container is empty, show visual placeholder
+            document.querySelectorAll('.container').forEach(c => {
+                if(c.innerHTML === '') {
+                    c.innerHTML = `<div class="h-10 border border-dashed border-white/5 rounded-xl"></div>`;
+                }
+            });
         }
 
-        function deleteItem(id) {
-            if(confirm("Очирилсинми?")) {
-                db = db.filter(i => i.id !== id);
-                localStorage.setItem('sarbon_v3_db', JSON.stringify(db));
+        // Delete Function
+        function deleteEntry(id) {
+            if(confirm("Ushbu ma'lumotni tizimdan o'chirmoqchimisiz?")) {
+                db = db.filter(item => item.id !== id);
+                localStorage.setItem('sarbon_integrated_db', JSON.stringify(db));
                 renderDashboard();
             }
         }
 
+        // Initial Boot
         renderDashboard();
     </script>
 </body>
