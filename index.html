@@ -3,17 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sarbon Universiteti - Dashboard</title>
+    <title>Sarbon Universiteti - EduManager</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
     <style>
         :root { --accent: #00f2ff; --main-bg: #0b0f19; --sidebar-bg: #111827; }
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--main-bg); color: #e2e8f0; display: flex; margin: 0; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--main-bg); color: #e2e8f0; display: flex; margin: 0; min-height: 100vh; }
         aside { background-color: var(--sidebar-bg); border-right: 1px solid rgba(255, 255, 255, 0.05); }
         .glass-card { background: rgba(31, 41, 55, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; }
         .nav-item { padding: 1rem 1.5rem; margin: 0.5rem 0; border-radius: 15px; cursor: pointer; transition: 0.3s; color: #94a3b8; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; }
         .nav-item.active { background: rgba(0, 242, 255, 0.1); color: var(--accent); border-left: 4px solid var(--accent); }
         .orbitron { font-family: 'Orbitron', sans-serif; }
+        
+        /* Вақт ва Сана блоки дизайни */
+        .time-box-container { 
+            background: rgba(17, 24, 39, 0.8); 
+            border: 1px solid rgba(0, 242, 255, 0.15); 
+            border-radius: 30px; 
+            padding: 12px 35px; 
+            display: flex; 
+            gap: 40px; 
+            align-items: center;
+        }
+
         .page { display: none; }
         .page.active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -23,10 +35,10 @@
 
     <aside class="w-72 h-screen sticky top-0 flex flex-col shadow-2xl">
         <div class="p-10 text-left">
-            <div class="bg-white p-4 rounded-2xl shadow-lg border border-gray-100 inline-block">
-                <img src="photo_2025-02-07_09-59-36.jpg" alt="Sarbon Logo" class="w-20 h-auto">
+            <div class="bg-white p-4 rounded-3xl shadow-xl border border-gray-100 inline-block">
+                <img src="132a9faa-8ca5-425c-9e7a-49390f45965c.jpg" alt="Sarbon Logo" class="w-20 h-auto">
             </div>
-            <div class="mt-4 border-b border-white/5 w-full"></div>
+            <div class="mt-8 border-b border-white/5 w-full"></div>
         </div>
 
         <nav class="flex-1 px-6">
@@ -37,38 +49,45 @@
     </aside>
 
     <main class="flex-1 p-12 overflow-y-auto">
-        <header class="flex justify-between items-center mb-12 border-b border-white/5 pb-10">
-            <h2 id="page-title" class="text-4xl font-black uppercase italic text-white tracking-tighter">Asosiy Oyna</h2>
-            <div class="bg-[#1f2937] px-8 py-4 rounded-2xl border border-white/10 flex gap-10 items-center shadow-inner">
-                <div class="text-center">
-                    <p class="text-[8px] text-gray-500 font-black uppercase mb-1">Sana</p>
-                    <p id="live-date" class="orbitron text-xl font-bold text-white tracking-tighter">--.--.----</p>
+        <header class="flex justify-between items-center mb-16">
+            <h2 id="page-title" class="text-4xl font-black uppercase italic text-white tracking-tighter orbitron">Dashboard</h2>
+            
+            <div class="time-box-container shadow-2xl">
+                <div class="flex flex-col items-center">
+                    <p class="text-[9px] text-gray-500 font-black uppercase mb-2">Sana</p>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xl">📅</span>
+                        <p id="live-date" class="orbitron text-2xl font-bold text-white tracking-tight">--.--.----</p>
+                    </div>
                 </div>
-                <div class="w-[1px] h-10 bg-white/5"></div>
-                <div class="text-center">
-                    <p class="text-[8px] text-gray-500 font-black uppercase mb-1">Vaqt</p>
-                    <p id="live-time" class="orbitron text-xl font-bold text-cyan-400 tracking-tighter">00:00</p>
+                <div class="w-[1px] h-10 bg-white/10"></div>
+                <div class="flex flex-col items-center">
+                    <p class="text-[9px] text-gray-500 font-black uppercase mb-2">Vaqt</p>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xl">⏰</span>
+                        <p id="live-time" class="orbitron text-2xl font-bold text-cyan-400 tracking-tight">00:00</p>
+                    </div>
                 </div>
             </div>
         </header>
 
         <div id="dashboard" class="page active">
-            <div id="teacher-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-6"></div>
+            <div id="teacher-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-8"></div>
         </div>
 
         <div id="weekly" class="page">
-            <div class="grid grid-cols-7 gap-3" id="weekly-grid"></div>
+            <div class="grid grid-cols-7 gap-4" id="weekly-grid"></div>
         </div>
 
         <div id="add" class="page">
             <div class="max-w-xl glass-card p-10 mx-auto">
-                <h4 class="text-xl font-black text-white uppercase mb-8 border-l-4 border-cyan-500 pl-4">Dars ma'lumotlari</h4>
+                <h4 class="text-xl font-black text-white uppercase mb-8 border-l-4 border-cyan-500 pl-4 orbitron">Dars Ma'lumotlari</h4>
                 <div class="space-y-4">
                     <input id="in-ifsh" class="w-full bg-black/30 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500 transition-all" type="text" placeholder="O'qituvchi F.I.Sh">
                     <input id="in-fan" class="w-full bg-black/30 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500 transition-all" type="text" placeholder="Fan nomi">
                     <input id="in-sana" class="w-full bg-black/30 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500 transition-all" type="date">
                     <div class="pt-2">
-                        <label class="text-[10px] text-gray-500 uppercase font-bold block mb-2">Rasm юклаш (ихтиёрий)</label>
+                        <label class="text-[10px] text-gray-400 uppercase font-bold block mb-2">Rasm юклаш</label>
                         <input id="in-image" class="text-xs text-gray-500" type="file" accept="image/*">
                     </div>
                     <button onclick="saveAll()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-5 rounded-xl uppercase tracking-widest transition-all mt-4 shadow-lg shadow-cyan-500/20">Tizimga saqlash</button>
@@ -78,11 +97,15 @@
     </main>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('sarbon_final_clean')) || [];
+        let db = JSON.parse(localStorage.getItem('sarbon_final_v10')) || [];
 
         function updateClock() {
             const now = new Date();
-            document.getElementById('live-date').innerText = now.toLocaleDateString('uz-UZ');
+            // Сана форматини расмдагидек қилиш: YYYY-MM-DD
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            document.getElementById('live-date').innerText = `${y}-${m}-${d}`;
             document.getElementById('live-time').innerText = now.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
         }
         setInterval(updateClock, 1000); updateClock();
@@ -101,7 +124,7 @@
             const fan = document.getElementById('in-fan').value;
             const sana = document.getElementById('in-sana').value;
             const imgFile = document.getElementById('in-image').files[0];
-            if(!ifsh || !fan || !sana) return alert("Ma'lumotlarni to'liq kiriting!");
+            if(!ifsh || !fan || !sana) return alert("Barcha maydonlarni to'ldiring!");
 
             let img = "";
             if(imgFile) {
@@ -115,26 +138,29 @@
             let dNum = dObj.getDay(); if(dNum === 0) dNum = 7;
 
             db.push({ id: Date.now(), ifsh, fan, sana, img, day: dNum, vaqt: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }) });
-            localStorage.setItem('sarbon_final_clean', JSON.stringify(db));
+            localStorage.setItem('sarbon_final_v10', JSON.stringify(db));
             showPage('dashboard');
         }
 
         function renderDashboard() {
             const grid = document.getElementById('teacher-grid');
             grid.innerHTML = db.slice().reverse().map(t => `
-                <div class="glass-card p-6 flex items-center gap-6 border-white/5 hover:bg-white/5 transition-all">
-                    <div class="w-20 h-20 rounded-2xl bg-white/5 flex items-center justify-center overflow-hidden flex-shrink-0 border border-white/10 shadow-lg">
-                        ${t.img ? `<img src="${t.img}" class="w-full h-full object-cover">` : `<div class="text-cyan-500 font-black text-2xl orbitron">${t.fan[0]}</div>`}
+                <div class="glass-card p-8 flex items-center gap-8 border-white/5 hover:border-cyan-500/30 transition-all group">
+                    <div class="w-24 h-24 rounded-3xl bg-white flex items-center justify-center overflow-hidden flex-shrink-0 shadow-2xl">
+                        ${t.img ? 
+                            `<img src="${t.img}" class="w-full h-full object-cover">` : 
+                            `<img src="132a9faa-8ca5-425c-9e7a-49390f45965c.jpg" class="w-[80%] h-auto opacity-40">`
+                        }
                     </div>
                     <div class="flex-1 overflow-hidden">
-                        <div class="flex justify-between items-start mb-1">
-                            <p class="text-[9px] font-black text-cyan-400 uppercase tracking-widest truncate">${t.ifsh}</p>
-                            <button onclick="deleteItem(${t.id})" class="text-red-500/50 hover:text-red-500 text-[8px] font-bold uppercase transition-colors">O'chirish</button>
+                        <div class="flex justify-between items-start mb-2">
+                            <p class="text-[10px] font-black text-cyan-400 uppercase tracking-widest truncate orbitron">${t.ifsh}</p>
+                            <button onclick="deleteItem(${t.id})" class="text-red-500/50 hover:text-red-500 text-[9px] font-bold uppercase transition-all">O'chirish</button>
                         </div>
-                        <h4 class="text-xl font-black text-white italic uppercase truncate leading-tight">${t.fan}</h4>
-                        <div class="flex gap-4 text-[9px] font-bold text-gray-500 border-t border-white/5 mt-3 pt-2">
-                            <span>${t.sana}</span>
-                            <span class="text-cyan-400/60">${t.vaqt}</span>
+                        <h4 class="text-2xl font-black text-white italic uppercase truncate orbitron">${t.fan}</h4>
+                        <div class="flex gap-6 text-[10px] font-bold text-gray-500 border-t border-white/5 mt-4 pt-4">
+                            <span>📅 ${t.sana}</span>
+                            <span class="text-cyan-400/80">⏰ ${t.vaqt}</span>
                         </div>
                     </div>
                 </div>
@@ -144,13 +170,13 @@
         function renderWeekly() {
             const days = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba'];
             document.getElementById('weekly-grid').innerHTML = days.map((day, i) => `
-                <div class="flex flex-col gap-3">
-                    <div class="glass-card p-2 text-center text-[9px] font-black text-cyan-500 uppercase border-cyan-500/20">${day}</div>
-                    <div class="space-y-2">
+                <div class="flex flex-col gap-4">
+                    <div class="glass-card p-3 text-center text-[9px] font-black text-cyan-500 uppercase border-cyan-500/20 orbitron">${day}</div>
+                    <div class="space-y-3">
                         ${db.filter(t => t.day === (i + 1)).map(t => `
-                            <div class="p-3 bg-white/5 rounded-xl border-l-2 border-cyan-500 hover:bg-white/10 transition-all">
-                                <p class="text-[8px] font-black text-white uppercase truncate">${t.fan}</p>
-                                <p class="text-[7px] text-gray-500 mt-1">${t.vaqt}</p>
+                            <div class="p-4 bg-white/5 rounded-2xl border-l-4 border-cyan-500 shadow-lg hover:bg-white/10 transition-all">
+                                <p class="text-[9px] font-black text-white uppercase truncate mb-1">${t.fan}</p>
+                                <p class="text-[8px] text-gray-500 font-bold">${t.vaqt}</p>
                             </div>
                         `).join('')}
                     </div>
@@ -159,9 +185,9 @@
         }
 
         function deleteItem(id) {
-            if(confirm("Darsni o'chirmoqchimisiz?")) {
+            if(confirm("Ushbu ma'lumotni o'chirmoqchimisiz?")) {
                 db = db.filter(t => t.id !== id);
-                localStorage.setItem('sarbon_final_clean', JSON.stringify(db));
+                localStorage.setItem('sarbon_final_v10', JSON.stringify(db));
                 renderDashboard();
             }
         }
