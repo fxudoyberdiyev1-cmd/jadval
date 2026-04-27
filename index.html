@@ -2,93 +2,234 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>Sarbon Universiteti Logo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SARBON UNIVERSITY | Portal v5.5</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --dark-blue: #2c4765;
-            --dark-red: #7a2b2d;
+        :root { 
+            --accent-cyan: #00f2ff; 
+            --sarbon-blue: #2c4765;
+            --sarbon-red: #7a2b2d;
+            --main-dark: #080a0c;
+        }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background: radial-gradient(circle at top right, #0d1621, #080a0c);
+            color: #f1f5f9; 
+            min-height: 100vh; 
+            margin: 0; 
+            display: flex;
+            overflow: hidden;
+        }
+        .space-font { font-family: 'Space Grotesk', sans-serif; }
+
+        /* Sidebar Glassmorphism */
+        aside { 
+            width: 300px; 
+            background: rgba(13, 18, 23, 0.8);
+            backdrop-filter: blur(25px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            padding: 2.5rem 1.5rem;
         }
 
-        .logo-container {
+        /* --- INTEGRATSIYA: SARBON LOGO ICON --- */
+        .logo-wrapper { 
+            position: relative; 
+            margin-bottom: 3.5rem; 
+            text-align: center; 
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 20px;
         }
-
-        /* Логотипнинг график қисми */
-        .icon {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin-bottom: 15px;
-        }
-
-        /* Катта тўртбурчак (кесилган) */
-        .big-shape {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 170px;
-            height: 170px;
-            background-color: var(--dark-blue);
-            border-bottom-left-radius: 100%; /* Камонсимон кесилиш */
-        }
-
-        /* Кичик шакл (пастдаги) */
-        .small-shape {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
+        
+        .sarbon-logo-svg {
+            width: 80px;
             height: 80px;
-            background-color: var(--dark-blue);
-            border-top-right-radius: 100%;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 10px 20px rgba(44, 71, 101, 0.5));
         }
 
-        /* Матн қисми */
-        .text-container {
-            text-align: center;
-            color: var(--dark-red);
-            line-height: 1.1;
+        /* Nav Items */
+        .nav-link {
+            display: flex; align-items: center; gap: 15px;
+            padding: 14px 20px; margin-bottom: 8px;
+            border-radius: 18px; color: #94a3b8;
+            font-weight: 500; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+        }
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: #fff;
+            transform: translateX(8px);
+        }
+        .nav-link.active {
+            background: linear-gradient(135deg, rgba(44, 71, 101, 0.4), rgba(0, 242, 255, 0.05));
+            color: #fff;
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
         }
 
-        .line1 {
-            font-size: 42px;
-            font-weight: bold;
-            display: block;
+        /* Content Styles */
+        main { flex: 1; padding: 3rem; overflow-y: auto; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px;
+            transition: 0.5s;
         }
-
-        .line2 {
-            font-size: 36px;
-            font-weight: bold;
-            display: block;
-            position: relative;
+        .btn-action {
+            background: linear-gradient(135deg, var(--sarbon-blue), #1e2e42);
+            padding: 16px 32px; border-radius: 20px;
+            font-weight: 800; letter-spacing: 1px;
+            box-shadow: 0 10px 25px rgba(44, 71, 101, 0.3);
+            transition: 0.3s;
         }
-
-        .registered {
-            font-size: 14px;
-            position: absolute;
-            top: 5px;
-            right: -20px;
-            font-weight: normal;
+        .page-entry { animation: fadeInScale 0.6s ease-out forwards; }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.98) translateY(15px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <div class="logo-container">
-        <div class="icon">
-            <div class="big-shape"></div>
-            <div class="small-shape"></div>
+    <aside>
+        <div class="logo-wrapper">
+            <svg class="sarbon-logo-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M200 0H30C30 0 30 170 200 170V0Z" fill="#3B82F6" fill-opacity="0.9"/>
+                <path d="M0 200V120C0 120 80 120 80 200H0Z" fill="#3B82F6"/>
+            </svg>
+            <h1 class="text-3xl font-black tracking-tighter text-white uppercase italic">Sarbon</h1>
+            <p class="text-[10px] font-bold tracking-[6px] uppercase mt-1" style="color: var(--accent-cyan);">Universiteti</p>
         </div>
-        
-        <div class="text-container">
-            <span class="line1">Sarbon</span>
-            <span class="line2">Universiteti<span class="registered">®</span></span>
-        </div>
-    </div>
 
+        <nav class="flex-1 space-y-2">
+            <p class="px-5 text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-4">Asosiy</p>
+            <div onclick="showPage('dashboard')" id="nav-dashboard" class="nav-link active cursor-pointer">
+                <span class="text-xl">🏠</span> Boshqaruv
+            </div>
+            <div onclick="showPage('weekly')" id="nav-weekly" class="nav-link cursor-pointer">
+                <span class="text-xl">📅</span> Jadval
+            </div>
+            <div onclick="showPage('add')" id="nav-add" class="nav-link cursor-pointer">
+                <span class="text-xl">✨</span> Qo'shish
+            </div>
+
+            <p class="px-5 text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-10 mb-4">Talaba</p>
+            <div onclick="showPage('kundalik')" id="nav-kundalik" class="nav-link cursor-pointer">
+                <span class="text-xl">📖</span> Kundalik
+            </div>
+        </nav>
+
+        <div class="mt-auto p-4 bg-white/5 rounded-3xl border border-white/5">
+            <p class="text-[10px] font-bold text-center text-gray-500">SYSTEM STABLE V5.5</p>
+        </div>
+    </aside>
+
+    <main>
+        <header class="flex justify-between items-center mb-16">
+            <div>
+                <h2 id="page-title" class="text-6xl font-black italic space-font text-white uppercase">Boshqaruv</h2>
+                <div class="h-1 w-20 bg-gradient-to-r from-cyan-500 to-transparent mt-2 rounded-full"></div>
+            </div>
+            
+            <div class="bg-black/20 p-5 rounded-[28px] border border-white/5 flex gap-10 items-center backdrop-blur-md">
+                <div>
+                    <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1">Hozirgi vaqt</p>
+                    <p id="live-time" class="text-3xl font-black space-font text-cyan-400">00:00</p>
+                </div>
+                <div class="w-[1px] h-10 bg-white/10"></div>
+                <div>
+                    <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1">Bugun</p>
+                    <p id="live-date" class="text-sm font-bold text-white">-- -- --</p>
+                </div>
+            </div>
+        </header>
+
+        <div id="dashboard" class="page-entry">
+            <div id="teacher-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-10">
+                </div>
+        </div>
+
+        <div id="add" class="hidden page-entry">
+            <div class="max-w-3xl mx-auto glass-panel p-16 shadow-2xl">
+                <h3 class="text-3xl font-black text-white mb-10 border-b border-white/5 pb-6 italic">Yangi ma'lumot kiritish</h3>
+                <div class="space-y-8">
+                    <input id="in-ifsh" class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-cyan-500 text-white" placeholder="O'qituvchi F.I.Sh">
+                    <input id="in-fan" class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-cyan-500 text-white" placeholder="Fan nomi">
+                    <div class="grid grid-cols-2 gap-8">
+                        <input id="in-sana" type="date" class="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none text-white">
+                        <input id="in-image" type="file" class="bg-white/5 border border-white/10 p-4 rounded-2xl text-xs text-gray-400">
+                    </div>
+                    <button onclick="saveAll()" class="btn-action w-full text-white uppercase mt-4">Tizimga saqlash</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let db = JSON.parse(localStorage.getItem('sarbon_v55')) || [];
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('live-time').innerText = now.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('live-date').innerText = now.toLocaleDateString('uz-UZ', { day: 'numeric', month: 'long' });
+        }
+        setInterval(updateClock, 1000); updateClock();
+
+        function showPage(id) {
+            document.querySelectorAll('main > div').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            
+            const target = document.getElementById(id);
+            if(target) target.classList.remove('hidden');
+            document.getElementById('nav-' + id).classList.add('active');
+            document.getElementById('page-title').innerText = id;
+
+            if(id === 'dashboard') renderDashboard();
+        }
+
+        async function saveAll() {
+            const ifsh = document.getElementById('in-ifsh').value;
+            const fan = document.getElementById('in-fan').value;
+            const sana = document.getElementById('in-sana').value;
+            const imgFile = document.getElementById('in-image').files[0];
+            
+            if(!ifsh || !fan || !sana) return alert("Маълумотни тўлиқ киритинг!");
+
+            let img = "";
+            if(imgFile) {
+                img = await new Promise(r => {
+                    const fr = new FileReader(); fr.readAsDataURL(imgFile);
+                    fr.onload = () => r(fr.result);
+                });
+            }
+
+            db.push({ id: Date.now(), ifsh, fan, sana, img, vaqt: new Date().toLocaleTimeString('uz-UZ', {hour:'2-digit', minute:'2-digit'}) });
+            localStorage.setItem('sarbon_v55', JSON.stringify(db));
+            showPage('dashboard');
+        }
+
+        function renderDashboard() {
+            const grid = document.getElementById('teacher-grid');
+            grid.innerHTML = db.slice().reverse().map(t => `
+                <div class="glass-panel p-6 flex items-center gap-8 group hover:bg-white/5 transition-all">
+                    <div class="w-24 h-24 rounded-3xl bg-black/40 border border-white/5 overflow-hidden flex-shrink-0">
+                        ${t.img ? `<img src="${t.img}" class="w-full h-full object-cover">` : `<div class="p-6 opacity-20"><svg viewBox="0 0 200 200" fill="white"><path d="M200 0H30C30 0 30 170 200 170V0Z"/><path d="M0 200V120C0 120 80 120 80 200H0Z"/></svg></div>`}
+                    </div>
+                    <div class="flex-1">
+                        <span class="text-[10px] font-black uppercase text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">${t.ifsh}</span>
+                        <h4 class="text-2xl font-black text-white mt-2 uppercase italic">${t.fan}</h4>
+                        <p class="text-[11px] text-gray-500 mt-2 font-bold uppercase tracking-widest">📅 ${t.sana} | 🕒 ${t.vaqt}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+        renderDashboard();
+    </script>
 </body>
 </html>
