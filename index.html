@@ -15,7 +15,6 @@
         .nav-item.active { background: rgba(0, 242, 255, 0.1); color: var(--accent); border-left: 4px solid var(--accent); }
         .orbitron { font-family: 'Orbitron', sans-serif; }
         
-        /* Вақт ва Сана блоки дизайни */
         .time-box-container { 
             background: rgba(17, 24, 39, 0.8); 
             border: 1px solid rgba(0, 242, 255, 0.15); 
@@ -87,7 +86,7 @@
                     <input id="in-fan" class="w-full bg-black/30 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500 transition-all" type="text" placeholder="Fan nomi">
                     <input id="in-sana" class="w-full bg-black/30 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500 transition-all" type="date">
                     <div class="pt-2">
-                        <label class="text-[10px] text-gray-400 uppercase font-bold block mb-2">Rasm юклаш</label>
+                        <label class="text-[10px] text-gray-400 uppercase font-bold block mb-2">Rasm yuklash</label>
                         <input id="in-image" class="text-xs text-gray-500" type="file" accept="image/*">
                     </div>
                     <button onclick="saveAll()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-5 rounded-xl uppercase tracking-widest transition-all mt-4 shadow-lg shadow-cyan-500/20">Tizimga saqlash</button>
@@ -101,7 +100,6 @@
 
         function updateClock() {
             const now = new Date();
-            // Сана форматини расмдагидек қилиш: YYYY-MM-DD
             const y = now.getFullYear();
             const m = String(now.getMonth() + 1).padStart(2, '0');
             const d = String(now.getDate()).padStart(2, '0');
@@ -115,6 +113,10 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.getElementById('nav-' + id).classList.add('active');
+            
+            const title = id === 'dashboard' ? 'Dashboard' : (id === 'weekly' ? 'Haftalik Jadval' : 'Yangi Qo\'shish');
+            document.getElementById('page-title').innerText = title;
+
             if(id === 'dashboard') renderDashboard();
             if(id === 'weekly') renderWeekly();
         }
