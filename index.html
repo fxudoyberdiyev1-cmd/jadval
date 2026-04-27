@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduManager Pro - Sarbon Universiteti</title>
+    <title>Sarbon EduManager - Photo Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -12,157 +12,156 @@
         .page { display: none; }
         .page.active { display: block; }
         
-        .sarbon-logo-shape-big { width: 60px; height: 60px; background-color: #2D4363; border-bottom-left-radius: 100%; }
-        .sarbon-logo-shape-small { width: 22px; height: 22px; background-color: #2D4363; border-top-right-radius: 100%; position: absolute; bottom: 0; left: 0; }
+        /* Sarbon Logo CSS */
+        .sarbon-logo-shape-big { width: 50px; height: 50px; background-color: #2D4363; border-bottom-left-radius: 100%; }
+        .sarbon-logo-shape-small { width: 18px; height: 18px; background-color: #2D4363; border-top-right-radius: 100%; position: absolute; bottom: 0; left: 0; }
         
-        .calendar-day.has-data { background-color: #fee2e2; border: 2px solid #7A2E32; color: #7A2E32; font-weight: bold; cursor: pointer; }
-        .lesson-img { width: 100%; height: 160px; object-fit: cover; border-radius: 20px; margin-bottom: 15px; }
+        .lesson-card-img { width: 100%; height: 180px; object-fit: cover; border-radius: 24px; }
+        .calendar-day.has-data { background-color: #fee2e2; border: 2px solid #7A2E32; color: #7A2E32; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="flex min-h-screen">
-        <aside class="w-72 bg-white border-r border-gray-200 sticky top-0 h-screen flex flex-col shadow-sm">
-            <div class="p-10 flex flex-col items-center">
-                <div class="relative w-[80px] h-[80px] mb-4">
+        <aside class="w-64 bg-white border-r border-gray-100 sticky top-0 h-screen flex flex-col shadow-sm">
+            <div class="p-8 flex flex-col items-center">
+                <div class="relative w-[60px] h-[60px] mb-3">
                     <div class="sarbon-logo-shape-big ml-auto"></div>
                     <div class="sarbon-logo-shape-small"></div>
                 </div>
-                <div class="text-center leading-tight">
-                    <span class="block text-xl font-extrabold tracking-tighter text-[#7A2E32]">Sarbon</span>
-                    <span class="block text-xl font-extrabold tracking-tighter text-[#7A2E32]">Universiteti<small class="text-[10px] align-top">®</small></span>
+                <div class="text-center">
+                    <span class="block text-lg font-extrabold tracking-tighter text-[#7A2E32]">Sarbon</span>
+                    <span class="block text-lg font-extrabold tracking-tighter text-[#7A2E32]">Universiteti</span>
                 </div>
             </div>
             
             <nav class="flex-1 px-4 space-y-1">
-                <div onclick="showPage('dashboard')" id="nav-dashboard" class="sidebar-item active-nav px-6 py-4 cursor-pointer flex items-center gap-3 rounded-xl transition">🏠 Dashboard</div>
-                <div onclick="showPage('talabalar')" id="nav-talabalar" class="sidebar-item px-6 py-4 cursor-pointer flex items-center gap-3 rounded-xl transition">🎓 Talabalar</div>
+                <div onclick="showPage('dashboard')" id="nav-dashboard" class="sidebar-item active-nav px-6 py-4 cursor-pointer flex items-center gap-3 rounded-xl transition">🏠 Bosh sahifa</div>
                 <div onclick="showPage('jadval')" id="nav-jadval" class="sidebar-item px-6 py-4 cursor-pointer flex items-center gap-3 rounded-xl transition">📅 Tarix</div>
             </nav>
         </aside>
 
         <main class="flex-1 p-10">
-            <div class="flex justify-between items-center mb-10 bg-white/60 p-4 rounded-3xl border border-white shadow-sm backdrop-blur-md">
-                <h2 id="page-title" class="text-3xl font-black text-[#2D4363] tracking-tight">Dashboard</h2>
-                <div class="flex items-center gap-4">
-                    <img id="profile-img" src="https://avatar.iran.liara.run/public/31" class="w-12 h-12 rounded-full border-2 border-[#7A2E32] cursor-pointer shadow-md" onclick="document.getElementById('upload-img').click()">
-                    <input type="file" id="upload-img" class="hidden" onchange="updateProfilePhoto(this)">
+            <div class="flex justify-between items-center mb-10">
+                <h2 id="page-title" class="text-3xl font-black text-[#2D4363]">Dashboard</h2>
+                <div class="flex items-center gap-4 bg-white p-2 pr-6 rounded-full shadow-sm border">
+                    <img src="https://avatar.iran.liara.run/public/job/teacher/male" class="w-10 h-10 rounded-full border-2 border-[#7A2E32]">
+                    <span class="text-sm font-bold text-gray-700">Admin Panel</span>
                 </div>
             </div>
 
             <div id="dashboard" class="page active">
-                <div class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-100 mb-10">
-                    <h3 class="text-xl font-black mb-6 text-[#2D4363]">📚 Yangi dars ва расм қўшиш</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+                <div class="bg-white p-8 rounded-[35px] shadow-sm border border-gray-100 mb-10">
+                    <h3 class="text-sm font-black mb-6 text-gray-400 uppercase tracking-widest">Yangi dars ва расм қўшиш</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
                         <div class="flex flex-col gap-2">
-                            <label class="text-[10px] font-bold text-gray-400 ml-2">FAN NOMI</label>
-                            <input id="in-fan" type="text" class="p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-[#7A2E32] font-semibold">
+                            <label class="text-[10px] font-bold text-blue-900 ml-2 uppercase">Fan nomi</label>
+                            <input id="in-fan" type="text" placeholder="Масалан: Информатика" class="p-4 bg-gray-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-[#7A2E32] font-semibold">
                         </div>
                         <div class="flex flex-col gap-2">
-                            <label class="text-[10px] font-bold text-gray-400 ml-2">MAVZU</label>
-                            <input id="in-mavzu" type="text" class="p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-[#7A2E32] font-semibold">
+                            <label class="text-[10px] font-bold text-blue-900 ml-2 uppercase">Sana</label>
+                            <input id="in-sana" type="date" class="p-4 bg-gray-50 border-none rounded-2xl outline-none focus:ring-2 focus:ring-[#7A2E32] font-semibold">
                         </div>
                         <div class="flex flex-col gap-2">
-                            <label class="text-[10px] font-bold text-gray-400 ml-2">SANA</label>
-                            <input id="in-sana" type="date" class="p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-[#7A2E32] font-semibold">
+                            <label class="text-[10px] font-bold text-blue-900 ml-2 uppercase">Dars rasmi</label>
+                            <input id="in-image" type="file" accept="image/*" class="text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-red-50 file:text-[#7A2E32] hover:file:bg-red-100">
                         </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[10px] font-bold text-gray-400 ml-2 text-center">RASM (JPG/PNG)</label>
-                            <input id="in-image" type="file" accept="image/*" class="text-xs file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-red-50 file:text-[#7A2E32] hover:file:bg-red-100 cursor-pointer">
-                        </div>
-                        <button onclick="saveData()" class="h-[58px] bg-[#2D4363] text-white rounded-2xl font-black hover:bg-[#1a2a3f] shadow-lg transition uppercase text-sm tracking-widest">Saqlash</button>
+                        <button onclick="saveData()" class="h-[58px] bg-[#2D4363] text-white rounded-2xl font-black hover:bg-[#1a2a3f] shadow-lg shadow-blue-100 transition uppercase text-xs tracking-widest">Saqlash</button>
                     </div>
                 </div>
-                <div id="lessons-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+
+                <div id="lessons-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    </div>
             </div>
 
-            <div id="talabalar" class="page">...</div>
             <div id="jadval" class="page">
-                 <div class="bg-white p-10 rounded-[40px] shadow-sm border">
-                    <h3 class="text-2xl font-black mb-10 text-center text-[#2D4363]">📅 Kalendar</h3>
-                    <div class="grid grid-cols-7 gap-3 mb-10" id="calendar-grid"></div>
-                    <div id="history-detail" class="bg-red-50 p-8 rounded-[32px] hidden border border-red-100 shadow-inner">
-                        <h4 class="font-black text-[#7A2E32] mb-6 text-xl" id="history-date"></h4>
-                        <div id="history-content" class="space-y-4"></div>
-                    </div>
+                <div class="bg-white p-10 rounded-[40px] shadow-sm border">
+                    <div class="grid grid-cols-7 gap-3" id="calendar-grid"></div>
                 </div>
             </div>
         </main>
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('edu_db')) || [];
+        let db = JSON.parse(localStorage.getItem('sarbon_db')) || [];
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active-nav'));
             document.getElementById(id).classList.add('active');
-            if(document.getElementById('nav-' + id)) document.getElementById('nav-' + id).classList.add('active-nav');
+            document.getElementById('nav-' + id).classList.add('active-nav');
             if(id === 'dashboard') renderDashboard();
             if(id === 'jadval') renderCalendar();
-            document.getElementById('page-title').innerText = id.charAt(0).toUpperCase() + id.slice(1);
+            document.getElementById('page-title').innerText = id === 'dashboard' ? 'Bosh sahifa' : 'Tarix';
         }
 
         async function saveData() {
             const fan = document.getElementById('in-fan').value;
-            const mavzu = document.getElementById('in-mavzu').value;
             const sana = document.getElementById('in-sana').value;
-            const imageInput = document.getElementById('in-image');
-            
-            if(!fan || !sana) return alert("Ma'lumotlarni to'ldiring!");
+            const imgInput = document.getElementById('in-image');
+            const hozirgiVaqt = new Date().toLocaleTimeString('uz-UZ', { hour12: false });
 
-            let imageData = "";
-            if (imageInput.files && imageInput.files[0]) {
-                imageData = await convertToBase64(imageInput.files[0]);
+            if(!fan || !sana) return alert("Fan va sanani kiriting!");
+
+            let base64Img = "";
+            if(imgInput.files[0]) {
+                base64Img = await convertToBase64(imgInput.files[0]);
             }
 
-            db.push({ 
-                id: Date.now(), 
-                fan, 
-                mavzu, 
-                sana, 
-                image: imageData 
+            db.push({
+                id: Date.now(),
+                fan: fan,
+                sana: sana,
+                vaqt: hozirgiVaqt,
+                img: base64Img
             });
 
-            localStorage.setItem('edu_db', JSON.stringify(db));
+            localStorage.setItem('sarbon_db', JSON.stringify(db));
             
             // Tozalash
             document.getElementById('in-fan').value = '';
-            document.getElementById('in-mavzu').value = '';
             document.getElementById('in-image').value = '';
-            
             renderDashboard();
         }
 
         function convertToBase64(file) {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
             });
         }
 
         function renderDashboard() {
             const grid = document.getElementById('lessons-grid');
             grid.innerHTML = db.map(item => `
-                <div class="bg-white p-6 rounded-[40px] shadow-sm border border-gray-50 relative group hover:shadow-2xl transition-all">
-                    ${item.image ? `<img src="${item.image}" class="lesson-img shadow-sm">` : 
-                    `<div class="w-full h-20 bg-red-50 rounded-2xl mb-4 flex items-center justify-center text-[#7A2E32] font-black italic">Rasm йўқ</div>`}
-                    
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="px-4 py-1 bg-gray-100 text-[#2D4363] rounded-full text-[10px] font-black uppercase tracking-widest">${item.fan}</div>
-                        <button onclick="removeData(${item.id})" class="text-red-300 hover:text-red-600 font-bold p-1 text-[10px]">O'chirish</button>
+                <div class="bg-white p-5 rounded-[35px] shadow-sm border border-gray-50 hover:shadow-xl transition-all group">
+                    <div class="relative mb-5">
+                        ${item.img ? `<img src="${item.img}" class="lesson-card-img shadow-md">` : 
+                        `<div class="w-full h-[180px] bg-red-50 rounded-[24px] flex items-center justify-center text-[#7A2E32] font-bold">Rasm yuklanmagan</div>`}
+                        <button onclick="deleteItem(${item.id})" class="absolute top-3 right-3 bg-white/80 backdrop-blur text-red-500 w-8 h-8 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition flex items-center justify-center font-bold">×</button>
                     </div>
-                    <h3 class="text-xl font-black text-gray-900 mb-1 tracking-tighter uppercase leading-tight">${item.mavzu || 'Mavzu kiritilmagan'}</h3>
+                    
+                    <div class="px-2">
+                        <h4 class="text-xl font-black text-[#2D4363] uppercase tracking-tighter mb-4">${item.fan}</h4>
+                        
+                        <div class="flex items-center justify-between border-t pt-4">
+                            <div class="flex items-center gap-2 text-gray-400 font-bold text-[11px]">
+                                <span>📅 ${item.sana}</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-[#7A2E32] font-black text-[11px]">
+                                <span>⏰ ${item.vaqt}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `).join('');
         }
 
-        function removeData(id) {
-            if(confirm("O'chirilsinmi?")) {
-                db = db.filter(item => item.id !== id);
-                localStorage.setItem('edu_db', JSON.stringify(db));
+        function deleteItem(id) {
+            if(confirm("Darsni o'chirmoqchimisiz?")) {
+                db = db.filter(i => i.id !== id);
+                localStorage.setItem('sarbon_db', JSON.stringify(db));
                 renderDashboard();
             }
         }
@@ -171,45 +170,13 @@
             const grid = document.getElementById('calendar-grid');
             grid.innerHTML = '';
             const days = ["Du", "Se", "Ch", "Pa", "Ju", "Sh", "Ya"];
-            days.forEach(d => grid.innerHTML += `<div class="font-black text-gray-300 text-[10px] uppercase text-center p-2">${d}</div>`);
-
-            const now = new Date();
-            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-
-            for(let i=1; i<=lastDay; i++) {
-                const dateStr = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${i.toString().padStart(2,'0')}`;
-                const hasData = db.some(l => l.sana === dateStr);
-                grid.innerHTML += `<div onclick="showHistory('${dateStr}')" class="calendar-day p-6 border rounded-[20px] text-center font-bold ${hasData ? 'has-data shadow-lg' : 'bg-white text-gray-200'}">${i}</div>`;
-            }
-        }
-
-        function showHistory(sana) {
-            const detail = document.getElementById('history-detail');
-            const content = document.getElementById('history-content');
-            const filtered = db.filter(l => l.sana === sana);
-            if(filtered.length > 0) {
-                detail.classList.remove('hidden');
-                document.getElementById('history-date').innerText = sana + " kungi dars:";
-                content.innerHTML = filtered.map(f => `
-                    <div class="p-4 bg-white rounded-3xl border-l-8 border-[#7A2E32] flex gap-4 items-center">
-                        ${f.image ? `<img src="${f.image}" class="w-16 h-16 rounded-xl object-cover">` : ''}
-                        <div>
-                            <h5 class="font-black text-[#2D4363] uppercase text-sm">${f.fan}</h5>
-                            <p class="text-gray-500 text-xs">${f.mavzu}</p>
-                        </div>
-                    </div>
-                `).join('');
-            } else {
-                detail.classList.add('hidden');
-                alert("Darslar йўқ");
-            }
-        }
-
-        function updateProfilePhoto(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = e => document.getElementById('profile-img').src = e.target.result;
-                reader.readAsDataURL(input.files[0]);
+            days.forEach(d => grid.innerHTML += `<div class="text-center text-[10px] font-black text-gray-300 uppercase p-2">${d}</div>`);
+            
+            for(let i=1; i<=31; i++) {
+                const dayStr = i.toString().padStart(2, '0');
+                const fullDate = `2026-04-${dayStr}`;
+                const hasData = db.some(d => d.sana === fullDate);
+                grid.innerHTML += `<div class="p-6 border rounded-2xl text-center font-bold ${hasData ? 'has-data shadow-md' : 'text-gray-200'}">${i}</div>`;
             }
         }
 
