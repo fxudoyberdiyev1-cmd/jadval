@@ -53,6 +53,22 @@
         .glass-panel { background: var(--panel-bg); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 32px; }
         
         .nav-link.active { background: rgba(255, 255, 255, 0.05); color: var(--accent-cyan); border: 1px solid rgba(0, 242, 255, 0.2); }
+        
+        /* Расм юклаш учун чиройли кўриниш */
+        .file-upload-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        .file-upload-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -124,6 +140,14 @@
                     <input id="in-ifsh" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500" placeholder="O'qituvchi F.I.Sh">
                     <input id="in-fan" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-cyan-500" placeholder="Fan nomi">
                     <input id="in-sana" type="date" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-white outline-none">
+                    
+                    <div class="file-upload-wrapper">
+                        <button class="w-full bg-white/5 border border-dashed border-white/20 p-4 rounded-xl text-gray-400 text-sm flex items-center justify-center gap-2">
+                            <i data-lucide="image"></i> <span>Rasm tanlash (ixtiyoriy)</span>
+                        </button>
+                        <input type="file" id="in-image" accept="image/*">
+                    </div>
+
                     <button onclick="saveTeacher()" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase text-white shadow-lg">O'qituvchini Saqlash</button>
                 </div>
             </div>
@@ -175,7 +199,6 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // БАЗАЛАР
         let db = JSON.parse(localStorage.getItem('sarbon_v55')) || [];
         let studentsDb = JSON.parse(localStorage.getItem('sarbon_students')) || [];
 
@@ -191,7 +214,6 @@
             showPage('dashboard');
         }
 
-        // Талабани сақлаш
         function saveStudent() {
             const name = document.getElementById('st-name').value;
             const group = document.getElementById('st-group').value;
@@ -202,7 +224,6 @@
             showPage('students');
         }
 
-        // Ўқитувчиларни чиқариш
         function renderDashboard() {
             const grid = document.getElementById('teacher-grid');
             grid.innerHTML = db.slice().reverse().map(t => `
@@ -218,7 +239,6 @@
             lucide.createIcons();
         }
 
-        // Талабаларни чиқариш
         function renderStudents() {
             const grid = document.getElementById('student-grid');
             grid.innerHTML = studentsDb.slice().reverse().map(s => `
