@@ -3,113 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Jadval - SARBON UNIVERSITETI - Tizim v5.3</title>
+    <title>SARBON UNIVERSITETI | Smart System v5.4</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@300;600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root { 
             --accent: #00f2ff; 
-            --main-bg: #05080a; 
-            --sidebar-bg: #0d1217; 
-            --card-bg: rgba(22, 29, 39, 0.7);
-            --sarbon-blue: #324C6A; /* Классик лого ранги */
-            --sarbon-red: #8B2C29;  /* Классик матн ранги */
+            --sarbon-blue: #324C6A;
+            --sarbon-red: #8B2C29;
+            --bg-dark: #030708;
+            --sidebar-grad: linear-gradient(180deg, #0d1217 0%, #05080a 100%);
         }
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--main-bg); color: #e2e8f0; min-height: 100vh; display: flex; margin: 0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); color: #e2e8f0; min-height: 100vh; display: flex; margin: 0; overflow: hidden; }
         .orbitron { font-family: 'Orbitron', sans-serif; }
-        aside { background-color: var(--sidebar-bg); border-right: 1px solid rgba(255, 255, 255, 0.05); }
-        .glass-card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; transition: 0.3s; }
-        .nav-item { padding: 1rem; margin: 0.4rem 0; border-radius: 12px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; }
-        .nav-item.active { background: rgba(0, 242, 255, 0.1); color: var(--accent); box-shadow: inset 4px 0 0 var(--accent); }
         
-        /* 3-расмдаги логотипни кодда ясаш */
-        .sarbon-logo-icon { width: 60px; height: 60px; background: var(--sarbon-blue); border-radius: 2px 2px 2px 35px; position: relative; margin-bottom: 10px; }
-        .sarbon-logo-icon::after { content: ''; position: absolute; bottom: 4px; left: 4px; width: 14px; height: 14px; background: white; border-radius: 1px 1px 1px 8px; }
+        /* Sidebar Styling */
+        aside { background: var(--sidebar-grad); width: 280px; border-right: 1px solid rgba(255, 255, 255, 0.03); display: flex; flex-direction: column; z-index: 50; }
         
-        .time-box { background: #0d1217; border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 20px; padding: 12px 30px; display: flex; gap: 40px; align-items: center; }
-        input { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(0, 242, 255, 0.1) !important; color: white !important; padding: 14px; border-radius: 14px; width: 100%; outline: none; }
+        /* Logo Styling from Image 3 */
+        .sarbon-logo-icon { width: 55px; height: 55px; background: var(--sarbon-blue); border-radius: 2px 2px 2px 30px; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .sarbon-logo-icon::after { content: ''; position: absolute; bottom: 4px; left: 4px; width: 12px; height: 12px; background: white; border-radius: 1px 1px 1px 6px; }
+
+        /* Navigation */
+        .nav-item { padding: 0.9rem 1.2rem; margin: 0.3rem 1rem; border-radius: 14px; cursor: pointer; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 12px; font-weight: 600; color: #515f72; font-size: 0.85rem; border: 1px solid transparent; }
+        .nav-item:hover { background: rgba(255, 255, 255, 0.03); color: white; transform: translateX(5px); }
+        .nav-item.active { background: rgba(0, 242, 255, 0.06); color: var(--accent); border: 1px solid rgba(0, 242, 255, 0.15); box-shadow: 0 4px 15px rgba(0, 242, 255, 0.05); }
+
+        /* Main Area */
+        main { flex: 1; height: 100vh; overflow-y: auto; padding: 2.5rem; position: relative; }
+        .glass-card { background: rgba(13, 18, 23, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 28px; transition: 0.4s; }
+        .glass-card:hover { border-color: rgba(0, 242, 255, 0.2); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+
+        /* Custom Inputs */
+        input { background: rgba(255, 255, 255, 0.03) !important; border: 1px solid rgba(255, 255, 255, 0.07) !important; color: white !important; padding: 16px; border-radius: 16px; width: 100%; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--accent) !important; background: rgba(255, 255, 255, 0.05) !important; box-shadow: 0 0 20px rgba(0, 242, 255, 0.1); }
+
+        /* Animations */
         .page { display: none; }
-        .page.active { display: block; animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .page.active { display: block; animation: slideUp 0.5s ease-out forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <aside class="w-72 h-screen sticky top-0 p-6 flex flex-col">
-        <div class="mb-10 flex flex-col items-center">
-            <div class="sarbon-logo-icon"></div>
+    <aside>
+        <div class="p-8 flex flex-col items-center">
+            <div class="sarbon-logo-icon mb-4"></div>
             <div class="text-center">
-                <h1 class="text-white font-black text-xl leading-none tracking-tight">Sarbon</h1>
-                <p class="text-[9px] font-bold tracking-[3px] uppercase" style="color: var(--sarbon-red);">Universiteti</p>
+                <h1 class="text-white font-extrabold text-2xl tracking-tighter leading-none">Sarbon</h1>
+                <p class="text-[8px] font-bold tracking-[4px] uppercase mt-1 opacity-80" style="color: var(--sarbon-red);">Universiteti</p>
             </div>
-            <div class="h-[1px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent mt-6"></div>
         </div>
 
-        <nav class="flex-1">
-            <div onclick="showPage('dashboard')" id="nav-dashboard" class="nav-item active">📡 Boshqaruv</div>
-            <div onclick="showPage('weekly')" id="nav-weekly" class="nav-item">🌀 Haftalik Jadval</div>
-            <div onclick="showPage('add')" id="nav-add" class="nav-item">⚡ Yangi Qo'shish</div>
-            
-            <div class="mt-8 mb-2 text-[9px] text-gray-600 font-bold uppercase tracking-widest px-4">Talabalar uchun</div>
-            <div onclick="showPage('kundalik')" id="nav-kundalik" class="nav-item">📚 Kundalik</div>
-            <div onclick="showPage('kontrakt')" id="nav-kontrakt" class="nav-item">💳 Kontrakt</div>
+        <div class="px-6 py-2 text-[10px] font-bold text-gray-600 uppercase tracking-widest opacity-50">Menyu</div>
+        <nav>
+            <div onclick="showPage('dashboard')" id="nav-dashboard" class="nav-item active">
+                <span class="text-lg">📡</span> Boshqaruv Markazi
+            </div>
+            <div onclick="showPage('weekly')" id="nav-weekly" class="nav-item">
+                <span class="text-lg">🌀</span> Haftalik Jadval
+            </div>
+            <div onclick="showPage('add')" id="nav-add" class="nav-item">
+                <span class="text-lg">⚡</span> Yangi Qo'shish
+            </div>
         </nav>
 
-        <div class="mt-auto pt-6 text-[9px] text-gray-700 orbitron text-center uppercase tracking-widest">
-            TECHFIX v5.3
+        <div class="px-6 py-6 mt-4 text-[10px] font-bold text-gray-600 uppercase tracking-widest opacity-50 border-t border-white/5">Talaba Xizmatlari</div>
+        <nav>
+            <div onclick="showPage('kundalik')" id="nav-kundalik" class="nav-item">
+                <span class="text-lg">📚</span> Fan Kundaligi
+            </div>
+            <div onclick="showPage('kontrakt')" id="nav-kontrakt" class="nav-item">
+                <span class="text-lg">💳</span> To'lov Kontrakt
+            </div>
+        </nav>
+
+        <div class="mt-auto p-8">
+            <div class="bg-gradient-to-br from-cyan-500/10 to-blue-500/10 p-4 rounded-2xl border border-white/5">
+                <p class="text-[9px] text-cyan-400 font-bold uppercase orbitron mb-1">Tizim v5.4</p>
+                <p class="text-[10px] text-gray-500">Barcha jarayonlar nazoratda.</p>
+            </div>
         </div>
     </aside>
 
-    <main class="flex-1 p-10 overflow-y-auto">
-        <header class="flex justify-between items-center mb-12">
-            <h2 id="page-title" class="text-5xl font-black uppercase italic text-white tracking-tighter orbitron">BOSHQUARUV</h2>
-            <div class="time-box">
-                <div class="text-center">
-                    <p class="text-[8px] text-gray-500 font-black uppercase mb-1">Sana</p>
-                    <p id="live-date" class="orbitron text-xl font-bold text-white tracking-tighter">--.--.----</p>
-                </div>
-                <div class="w-[1px] h-8 bg-white/10"></div>
-                <div class="text-center">
-                    <p class="text-[8px] text-gray-500 font-black uppercase mb-1">Vaqt</p>
-                    <p id="live-time" class="orbitron text-xl font-bold text-cyan-400 tracking-tighter">00:00</p>
+    <main>
+        <header class="flex justify-between items-end mb-12">
+            <div>
+                <p class="text-cyan-400 font-bold orbitron text-[10px] tracking-widest mb-1 uppercase">Sarbon University System</p>
+                <h2 id="page-title" class="text-5xl font-black uppercase italic text-white tracking-tighter">BOSHQUARUV</h2>
+            </div>
+            
+            <div class="flex gap-4">
+                <div class="bg-[#0d1217] border border-white/5 rounded-2xl p-4 flex gap-8 items-center shadow-2xl">
+                    <div class="text-right">
+                        <p class="text-[8px] text-gray-500 font-bold uppercase mb-1">Bugungi Sana</p>
+                        <p id="live-date" class="orbitron text-md font-bold text-white tracking-tighter">--.--.----</p>
+                    </div>
+                    <div class="w-[1px] h-8 bg-white/10"></div>
+                    <div>
+                        <p class="text-[8px] text-gray-500 font-bold uppercase mb-1">Hozirgi Vaqt</p>
+                        <p id="live-time" class="orbitron text-2xl font-black text-cyan-400 leading-none">00:00</p>
+                    </div>
                 </div>
             </div>
         </header>
 
         <div id="dashboard" class="page active">
-            <div id="teacher-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-6"></div>
+            <div id="teacher-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                </div>
         </div>
 
         <div id="weekly" class="page">
-            <div class="grid grid-cols-7 gap-3" id="weekly-grid"></div>
+            <div class="grid grid-cols-7 gap-4" id="weekly-grid"></div>
         </div>
 
         <div id="add" class="page">
-            <div class="max-w-xl mx-auto glass-card p-10 shadow-2xl shadow-cyan-500/5">
-                <h4 class="text-xl font-black uppercase italic mb-8 text-white border-l-4 border-cyan-500 pl-4">Yangi dars qo'shish</h4>
-                <div class="space-y-5">
-                    <input id="in-ifsh" type="text" placeholder="O'qituvchi F.I.Sh">
-                    <input id="in-fan" type="text" placeholder="Fan nomi">
-                    <div class="grid grid-cols-2 gap-4">
-                        <input id="in-sana" type="date">
-                        <input id="in-image" type="file" accept="image/*">
+            <div class="max-w-2xl mx-auto glass-card p-12">
+                <div class="flex items-center gap-4 mb-10">
+                    <div class="w-2 h-10 bg-cyan-500 rounded-full"></div>
+                    <h4 class="text-2xl font-black uppercase italic text-white">Yangi ma'lumot kiritish</h4>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <label class="text-[10px] font-bold text-gray-500 uppercase ml-2 mb-2 block">O'qituvchi ma'lumoti</label>
+                        <input id="in-ifsh" type="text" placeholder="F.I.Sh (Masalan: Alisherov A.)">
                     </div>
-                    <button onclick="saveAll()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-4 rounded-xl uppercase tracking-widest transition-all shadow-lg shadow-cyan-500/20">Saqlash</button>
+                    <div>
+                        <label class="text-[10px] font-bold text-gray-500 uppercase ml-2 mb-2 block">Fan va Yo'nalish</label>
+                        <input id="in-fan" type="text" placeholder="Fan nomi">
+                    </div>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="text-[10px] font-bold text-gray-500 uppercase ml-2 mb-2 block">Sana</label>
+                            <input id="in-sana" type="date">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-gray-500 uppercase ml-2 mb-2 block">Rasm yuklash</label>
+                            <input id="in-image" type="file" accept="image/*" class="text-xs pt-3">
+                        </div>
+                    </div>
+                    <button onclick="saveAll()" class="w-full bg-gradient-to-r from-cyan-600 to-cyan-400 hover:from-cyan-500 hover:to-cyan-300 text-black font-black py-5 rounded-2xl uppercase tracking-widest transition-all shadow-xl shadow-cyan-500/20 active:scale-[0.98] mt-4">Ma'lumotlarni Saqlash</button>
                 </div>
             </div>
         </div>
 
         <div id="kundalik" class="page">
-            <div class="glass-card p-12 text-center">
-                <h3 class="orbitron text-2xl font-bold text-cyan-400">TALABA KUNDALIGI</h3>
-                <p class="text-gray-500 mt-4">Ушбу бўлим ҳозирда ишлаб чиқилмоқда...</p>
+            <div class="glass-card p-20 text-center">
+                <div class="text-6xl mb-6 opacity-30">📚</div>
+                <h3 class="orbitron text-3xl font-black text-white italic">TALABA KUNDALIGI</h3>
+                <p class="text-gray-500 mt-4 max-w-md mx-auto">Sizнинг барча баҳоларингиз ва давомадингиз тез орада шу ерда акс этади.</p>
             </div>
         </div>
 
         <div id="kontrakt" class="page">
-            <div class="glass-card p-12 text-center">
-                <h3 class="orbitron text-2xl font-bold text-cyan-400">KONTRAKT TO'LOVLARI</h3>
-                <p class="text-gray-500 mt-4">Тўлов тизими тез орада фаоллаштирилади.</p>
+            <div class="glass-card p-20 text-center">
+                <div class="text-6xl mb-6 opacity-30">💳</div>
+                <h3 class="orbitron text-3xl font-black text-white italic">TO'LOV KONTRAKT</h3>
+                <p class="text-gray-500 mt-4 max-w-md mx-auto">Тўловларни онлайн амалга ошириш ва QR-чек олиш тизими созланмоқда.</p>
             </div>
         </div>
     </main>
@@ -119,7 +174,8 @@
 
         function updateClock() {
             const now = new Date();
-            document.getElementById('live-date').innerText = now.toLocaleDateString('uz-UZ');
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('live-date').innerText = now.toLocaleDateString('uz-UZ', options);
             document.getElementById('live-time').innerText = now.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
         }
         setInterval(updateClock, 1000); updateClock();
@@ -130,7 +186,10 @@
             document.getElementById(id).classList.add('active');
             const navBtn = document.getElementById('nav-' + id);
             if(navBtn) navBtn.classList.add('active');
-            document.getElementById('page-title').innerText = id.toUpperCase();
+            
+            const titles = { 'dashboard': 'BOSHQUARUV', 'weekly': 'HAFTALIK JADVAL', 'add': 'YANGI QO\'SHISH', 'kundalik': 'KUNDALIK', 'kontrakt': 'KONTRAKT' };
+            document.getElementById('page-title').innerText = titles[id];
+            
             if(id === 'dashboard') renderDashboard();
             if(id === 'weekly') renderWeekly();
         }
@@ -140,7 +199,8 @@
             const fan = document.getElementById('in-fan').value;
             const sana = document.getElementById('in-sana').value;
             const imgFile = document.getElementById('in-image').files[0];
-            if(!ifsh || !fan || !sana) return alert("To'ldiring!");
+            if(!ifsh || !fan || !sana) return alert("Iltimos, barcha maydonlarni to'ldiring!");
+            
             let img = "";
             if(imgFile) {
                 img = await new Promise(r => {
@@ -150,6 +210,7 @@
             }
             const dObj = new Date(sana);
             let dNum = dObj.getDay(); if(dNum === 0) dNum = 7;
+            
             db.push({ id: Date.now(), ifsh, fan, sana, img, day: dNum, vaqt: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }) });
             localStorage.setItem('sarbon_final_v5', JSON.stringify(db));
             showPage('dashboard');
@@ -158,17 +219,20 @@
         function renderDashboard() {
             const grid = document.getElementById('teacher-grid');
             grid.innerHTML = db.slice().reverse().map(t => `
-                <div class="glass-card p-5 flex items-center gap-5 border border-white/5 hover:border-cyan-500/20 transition-all">
-                    <div class="w-20 h-20 rounded-xl bg-black/40 flex items-center justify-center overflow-hidden flex-shrink-0">
-                        ${t.img ? `<img src="${t.img}" class="w-full h-full object-cover">` : `<div class="sarbon-logo-icon scale-50 m-0"></div>`}
+                <div class="glass-card p-6 flex items-center gap-6 group">
+                    <div class="w-24 h-24 rounded-2xl bg-black/40 flex items-center justify-center overflow-hidden border border-white/5 flex-shrink-0 shadow-inner">
+                        ${t.img ? `<img src="${t.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">` : `<div class="sarbon-logo-icon scale-[0.4] opacity-50"></div>`}
                     </div>
                     <div class="flex-1 min-w-0">
-                        <div class="flex justify-between">
-                            <p class="text-[9px] font-black text-cyan-500 uppercase tracking-widest truncate">${t.ifsh}</p>
-                            <button onclick="deleteItem(${t.id})" class="text-[8px] text-red-500/40 hover:text-red-500 uppercase">O'chirish</button>
+                        <div class="flex justify-between items-start">
+                            <span class="px-3 py-1 rounded-full bg-cyan-500/10 text-[9px] font-black text-cyan-400 uppercase tracking-widest mb-2 inline-block border border-cyan-500/20">${t.ifsh}</span>
+                            <button onclick="deleteItem(${t.id})" class="text-gray-600 hover:text-red-500 transition-colors text-xs">✕</button>
                         </div>
-                        <h4 class="text-xl font-black text-white italic uppercase truncate">${t.fan}</h4>
-                        <p class="text-[9px] text-gray-500 mt-2">📅 ${t.sana} | 🕒 ${t.vaqt}</p>
+                        <h4 class="text-2xl font-black text-white italic uppercase truncate tracking-tighter">${t.fan}</h4>
+                        <div class="flex gap-4 mt-3 pt-3 border-t border-white/5">
+                            <span class="text-[10px] font-bold text-gray-500">📅 ${t.sana}</span>
+                            <span class="text-[10px] font-bold text-cyan-500 orbitron">🕒 ${t.vaqt}</span>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -177,13 +241,13 @@
         function renderWeekly() {
             const days = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba'];
             document.getElementById('weekly-grid').innerHTML = days.map((day, i) => `
-                <div class="flex flex-col gap-2">
-                    <div class="glass-card p-2 text-center text-[8px] font-black text-cyan-400 uppercase border-b border-cyan-500/30">${day}</div>
-                    <div class="space-y-1">
+                <div class="flex flex-col gap-3">
+                    <div class="bg-white/5 p-3 rounded-xl text-center text-[9px] font-black text-cyan-400 uppercase border-b-2 border-cyan-500 shadow-lg">${day}</div>
+                    <div class="space-y-2">
                         ${db.filter(t => t.day === (i + 1)).map(t => `
-                            <div class="p-2 bg-white/5 rounded-lg border-l-2 border-cyan-500">
-                                <p class="text-[8px] font-bold text-white uppercase truncate">${t.fan}</p>
-                                <p class="text-[7px] text-gray-500">${t.vaqt}</p>
+                            <div class="p-3 bg-white/5 rounded-xl border border-white/5 hover:border-cyan-500/30 transition-all">
+                                <p class="text-[10px] font-bold text-white uppercase truncate">${t.fan}</p>
+                                <p class="text-[8px] text-gray-500 mt-1 orbitron">${t.vaqt}</p>
                             </div>
                         `).join('')}
                     </div>
@@ -192,7 +256,7 @@
         }
 
         function deleteItem(id) {
-            if(confirm("O'chirilsinmi?")) {
+            if(confirm("Ma'lumotni o'chirib tashlaymizmi?")) {
                 db = db.filter(t => t.id !== id);
                 localStorage.setItem('sarbon_final_v5', JSON.stringify(db));
                 renderDashboard();
