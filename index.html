@@ -1,126 +1,96 @@
-import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduManager - Darslar Jadvali</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
 
-// МАНА ШУ ЕРДАГИ МАЪЛУМОТЛАРНИ ЎЗГАРТИРСАНГИЗ САЙТДА ЖАДВАЛ ЎЗГАРАДИ
-const lessons = [
-  {
-    id: 1,
-    title: "Iqtisodiyot nazariyasi 2",
-    teacher: "B. Karimov",
-    status: "Active",
-    date: "2026-04-24",
-    time: "20:52",
-    room: "101-xona",
-    desc: "Iqtisodiy nazariyaning asosiy tushunchalari",
-  },
-  {
-    id: 2,
-    title: "Xorijiy til 2",
-    teacher: "A. Rahimova",
-    status: "Active",
-    date: "2026-04-24",
-    time: "20:25",
-    room: "202-xona",
-    desc: "Ingliz tili grammatikasi va amaliy mashg‘ulot",
-  },
-  {
-    id: 3,
-    title: "Matematika",
-    teacher: "S. Abdouazizov",
-    status: "Yaqin",
-    date: "2026-04-25",
-    time: "09:00",
-    room: "303-xona",
-    desc: "Differensial va integral hisob",
-  },
-  {
-    id: 4,
-    title: "Informatika",
-    teacher: "M. Tursunov",
-    status: "Tugagan",
-    date: "2026-04-23",
-    time: "16:30",
-    room: "Lab-1",
-    desc: "Python dasturlash asoslari",
-  },
-];
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-white shadow-lg p-6 space-y-4 hidden md:block">
+            <h1 class="text-2xl font-bold text-blue-700 mb-8">EduManager</h1>
+            <nav class="space-y-4">
+                <p class="font-bold text-blue-600 bg-blue-50 p-2 rounded">📘 Darslar</p>
+                <p class="hover:text-blue-500 p-2 cursor-pointer">👨‍🏫 Ustozlar</p>
+                <p class="hover:text-blue-500 p-2 cursor-pointer">🎓 Talabalar</p>
+                <p class="hover:text-blue-500 p-2 cursor-pointer">📅 Jadval</p>
+                <p class="hover:text-blue-500 p-2 cursor-pointer">📊 Hisobotlar</p>
+            </nav>
+        </aside>
 
-function StatusBadge({ status }) {
-  const color =
-    status === "Active"
-      ? "bg-green-100 text-green-700"
-      : status === "Yaqin"
-      ? "bg-yellow-100 text-yellow-700"
-      : "bg-red-100 text-red-700";
+        <main class="flex-1 p-4 md:p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Darslar jadvali</h2>
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">+ Yangi dars qo'shish</button>
+            </div>
 
-  return <Badge className={color}>{status}</Badge>;
-}
+            <input type="text" placeholder="Fan nomi bo'yicha qidirish..." class="mb-8 w-full max-w-md p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
 
-export default function Dashboard() {
-  const [search, setSearch] = useState("");
-
-  const filtered = lessons.filter((l) =>
-    l.title.toLowerCase().includes(search.toLowerCase())
-  );
-
-  return (
-    <div className="flex min-h-screen bg-gray-50 text-gray-900">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-lg p-6 space-y-4">
-        <h1 className="text-2xl font-bold text-blue-700 mb-8">EduManager</h1>
-        <nav className="space-y-4 cursor-pointer">
-          <p className="font-bold text-blue-600 bg-blue-50 p-2 rounded">📘 Darslar</p>
-          <p className="hover:text-blue-500 p-2">👨‍🏫 Ustozlar</p>
-          <p className="hover:text-blue-500 p-2">🎓 Talabalar</p>
-          <p className="hover:text-blue-500 p-2">📅 Jadval</p>
-          <p className="hover:text-blue-500 p-2">📊 Hisobotlar</p>
-          <p className="hover:text-blue-500 p-2">⚙️ Sozlamalar</p>
-        </nav>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 p-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Darslar jadvali</h2>
-          <Button className="bg-blue-600 text-white">+ Yangi dars қўшиш</Button>
-        </div>
-
-        {/* Қидирув */}
-        <Input 
-          placeholder="Fan nomi bo'yicha qidirish..." 
-          className="mb-8 w-full max-w-md bg-white shadow-sm"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        {/* Жадвал карточкалари */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((lesson) => (
-            <Card key={lesson.id} className="bg-white border-none shadow-md hover:shadow-xl transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="font-bold text-lg">{lesson.title}</h3>
-                  <StatusBadge status={lesson.status} />
+            <div id="lessons-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow border border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-bold text-lg">Iqtisodiyot nazariyasi 2</h3>
+                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Active</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-4">Iqtisodiy nazariyaning asosiy tushunchalari</p>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <p>👤 <strong>Ustoz:</strong> B. Karimov</p>
+                        <p>📅 <strong>Sana:</strong> 2026-04-24</p>
+                        <p>⏰ <strong>Vaqt:</strong> 20:52</p>
+                        <p>📍 <strong>Xona:</strong> 101-xona</p>
+                    </div>
+                    <div class="mt-6 flex gap-2">
+                        <button class="flex-1 py-2 border border-gray-300 rounded text-xs hover:bg-gray-50">Yangilash</button>
+                        <button class="flex-1 py-2 bg-red-500 text-white rounded text-xs hover:bg-red-600">O'chirish</button>
+                    </div>
                 </div>
-                <p className="text-gray-600 text-sm mb-4">{lesson.desc}</p>
-                <div className="space-y-2 text-sm text-gray-500">
-                  <p>👤 <strong>Ustoz:</strong> {lesson.teacher}</p>
-                  <p>📅 <strong>Sana:</strong> {lesson.date}</p>
-                  <p>⏰ <strong>Vaqt:</strong> {lesson.time}</p>
-                  <p>📍 <strong>Xona:</strong> {lesson.room}</p>
+
+                <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow border border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-bold text-lg">Xorijiy til 2</h3>
+                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Active</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-4">Ingliz tili grammatikasi va amaliy mashg‘ulot</p>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <p>👤 <strong>Ustoz:</strong> A. Rahimova</p>
+                        <p>📅 <strong>Sana:</strong> 2026-04-24</p>
+                        <p>⏰ <strong>Vaqt:</strong> 20:25</p>
+                        <p>📍 <strong>Xona:</strong> 202-xona</p>
+                    </div>
+                    <div class="mt-6 flex gap-2">
+                        <button class="flex-1 py-2 border border-gray-300 rounded text-xs hover:bg-gray-50">Yangilash</button>
+                        <button class="flex-1 py-2 bg-red-500 text-white rounded text-xs hover:bg-red-600">O'chirish</button>
+                    </div>
                 </div>
-                <div className="mt-6 flex gap-2">
-                  <Button variant="outline" className="flex-1 text-xs">Yangilash</Button>
-                  <Button variant="destructive" className="flex-1 text-xs bg-red-500">O'chirish</Button>
+
+                <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow border border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-bold text-lg">Matematika</h3>
+                        <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">Yaqin</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-4">Differensial va integral hisob</p>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <p>👤 <strong>Ustoz:</strong> S. Abdouazizov</p>
+                        <p>📅 <strong>Sana:</strong> 2026-04-25</p>
+                        <p>⏰ <strong>Vaqt:</strong> 09:00</p>
+                        <p>📍 <strong>Xona:</strong> 303-xona</p>
+                    </div>
+                    <div class="mt-6 flex gap-2">
+                        <button class="flex-1 py-2 border border-gray-300 rounded text-xs hover:bg-gray-50">Yangilash</button>
+                        <button class="flex-1 py-2 bg-red-500 text-white rounded text-xs hover:bg-red-600">O'chirish</button>
+                    </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </main>
+
+            </div>
+        </main>
     </div>
-  );
-}
+
+</body>
+</html>
