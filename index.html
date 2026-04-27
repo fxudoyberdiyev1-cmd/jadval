@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SARBON - Тизим v5.0</title>
+    <title>SARBON - Тизим v6.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@300;600;900&display=swap" rel="stylesheet">
     <style>
@@ -23,10 +23,13 @@
 </head>
 <body>
 
-    <aside class="w-72 h-screen sticky top-0 p-8 flex flex-col">
+    <aside class="w-72 h-screen sticky top-0 p-8 flex flex-col shadow-2xl">
         <div class="mb-12 text-center">
-            <h1 class="orbitron text-3xl font-black tracking-widest text-white">SARBON</h1>
-            <p class="text-[9px] text-cyan-400 font-bold tracking-[5px] uppercase mt-1">Universiteti</p>
+            <div class="w-20 h-20 bg-white rounded-2xl mx-auto mb-4 flex items-center justify-center p-2">
+                <img src="https://i.ibb.co/F4pYf6T/sarbon-logo.png" alt="Logo" class="w-full h-auto">
+            </div>
+            <h1 class="orbitron text-2xl font-black tracking-widest text-white">SARBON</h1>
+            <p class="text-[8px] text-cyan-400 font-bold tracking-[4px] uppercase">Universiteti</p>
         </div>
         <nav class="flex-1">
             <div onclick="showPage('dashboard')" id="nav-dashboard" class="nav-item active">📡 Boshqaruv</div>
@@ -69,14 +72,14 @@
                         <input id="in-sana" type="date">
                         <input id="in-image" type="file" accept="image/*">
                     </div>
-                    <button onclick="saveAll()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-5 rounded-2xl uppercase tracking-widest transition-all">Saqlash</button>
+                    <button onclick="saveAll()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-5 rounded-2xl uppercase tracking-widest transition-all">Tizimga saqlash</button>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('sarbon_final_v5')) || [];
+        let db = JSON.parse(localStorage.getItem('sarbon_final_v6')) || [];
 
         function updateClock() {
             const now = new Date();
@@ -115,26 +118,32 @@
             let dNum = dObj.getDay(); if(dNum === 0) dNum = 7;
 
             db.push({ id: Date.now(), ifsh, fan, sana, img, day: dNum, vaqt: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }) });
-            localStorage.setItem('sarbon_final_v5', JSON.stringify(db));
+            localStorage.setItem('sarbon_final_v6', JSON.stringify(db));
             showPage('dashboard');
         }
 
         function renderDashboard() {
             const grid = document.getElementById('teacher-grid');
             grid.innerHTML = db.slice().reverse().map(t => `
-                <div class="glass-card p-6 flex items-center gap-6">
-                    <div class="w-24 h-24 rounded-2xl bg-white flex items-center justify-center overflow-hidden flex-shrink-0 shadow-lg">
-                        ${t.img ? 
-                            `<img src="${t.img}" class="w-full h-full object-cover">` : 
-                            `<img src="https://i.ibb.co/F4pYf6T/sarbon-logo.png" class="w-[85%] h-auto">`
-                        }
+                <div class="glass-card p-6 flex items-center gap-6 border-white/5 hover:border-cyan-500/30">
+                    <div class="relative w-24 h-24 flex-shrink-0">
+                        <div class="w-full h-full bg-white rounded-2xl flex items-center justify-center overflow-hidden shadow-lg border border-white/20">
+                            ${t.img ? 
+                                `<img src="${t.img}" class="w-full h-full object-cover">` : 
+                                `<img src="https://i.ibb.co/F4pYf6T/sarbon-logo.png" class="w-[80%] h-auto">`
+                            }
+                        </div>
+                        <div class="absolute -bottom-2 -right-2 w-8 h-8 bg-white rounded-full p-1 shadow-md border border-cyan-500/50">
+                            <img src="https://i.ibb.co/F4pYf6T/sarbon-logo.png" class="w-full h-full object-contain">
+                        </div>
                     </div>
+
                     <div class="flex-1 overflow-hidden">
                         <div class="flex justify-between items-start">
                             <p class="text-[10px] font-black text-cyan-500 uppercase tracking-widest truncate">${t.ifsh}</p>
-                            <button onclick="deleteItem(${t.id})" class="text-[9px] font-bold text-red-500 uppercase hover:underline">O'chirish</button>
+                            <button onclick="deleteItem(${t.id})" class="text-[9px] font-bold text-red-500 uppercase hover:text-red-400">O'chirish</button>
                         </div>
-                        <h4 class="text-2xl font-black text-white italic uppercase truncate">${t.fan}</h4>
+                        <h4 class="text-2xl font-black text-white italic uppercase truncate leading-tight">${t.fan}</h4>
                         <div class="flex gap-4 text-[10px] font-bold text-gray-500 border-t border-white/5 mt-3 pt-2">
                             <span>${t.sana}</span>
                             <span class="text-cyan-400">${t.vaqt}</span>
@@ -162,9 +171,11 @@
         }
 
         function deleteItem(id) {
-            db = db.filter(t => t.id !== id);
-            localStorage.setItem('sarbon_final_v5', JSON.stringify(db));
-            renderDashboard();
+            if(confirm("O'chirilsinmi?")) {
+                db = db.filter(t => t.id !== id);
+                localStorage.setItem('sarbon_final_v6', JSON.stringify(db));
+                renderDashboard();
+            }
         }
 
         renderDashboard();
