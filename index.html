@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SARBON UNIVERSITY | Portal v5.5</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
+    
     <style>
         :root { 
             --accent-cyan: #00f2ff; 
@@ -32,61 +34,57 @@
             border-right: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
-            padding: 2.5rem 1.5rem;
+            padding: 2rem 1.2rem;
         }
 
-        /* --- INTEGRATSIYA: SARBON LOGO ICON --- */
+        /* Logo Integratsiyasi */
         .logo-wrapper { 
-            position: relative; 
-            margin-bottom: 3.5rem; 
+            margin-bottom: 3rem; 
             text-align: center; 
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        
         .sarbon-logo-svg {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 12px;
-            filter: drop-shadow(0 10px 20px rgba(44, 71, 101, 0.5));
+            width: 75px;
+            height: 75px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 10px 15px rgba(59, 130, 246, 0.3));
         }
 
-        /* Nav Items */
+        /* Nav Items & Icons */
         .nav-link {
-            display: flex; align-items: center; gap: 15px;
-            padding: 14px 20px; margin-bottom: 8px;
-            border-radius: 18px; color: #94a3b8;
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 18px; margin-bottom: 6px;
+            border-radius: 16px; color: #94a3b8;
             font-weight: 500; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid transparent;
         }
+        .nav-link i { width: 18px; height: 18px; stroke-width: 2px; }
         .nav-link:hover {
             background: rgba(255, 255, 255, 0.03);
             color: #fff;
-            transform: translateX(8px);
+            transform: translateX(5px);
         }
         .nav-link.active {
             background: linear-gradient(135deg, rgba(44, 71, 101, 0.4), rgba(0, 242, 255, 0.05));
             color: #fff;
             border: 1px solid rgba(0, 242, 255, 0.2);
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
         }
 
-        /* Content Styles */
+        /* Main Content */
         main { flex: 1; padding: 3rem; overflow-y: auto; }
         .glass-panel {
             background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 32px;
-            transition: 0.5s;
         }
         .btn-action {
             background: linear-gradient(135deg, var(--sarbon-blue), #1e2e42);
             padding: 16px 32px; border-radius: 20px;
             font-weight: 800; letter-spacing: 1px;
             box-shadow: 0 10px 25px rgba(44, 71, 101, 0.3);
-            transition: 0.3s;
         }
         .page-entry { animation: fadeInScale 0.6s ease-out forwards; }
         @keyframes fadeInScale {
@@ -100,33 +98,55 @@
     <aside>
         <div class="logo-wrapper">
             <svg class="sarbon-logo-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M200 0H30C30 0 30 170 200 170V0Z" fill="#3B82F6" fill-opacity="0.9"/>
+                <path d="M200 0H30C30 0 30 170 200 170V0Z" fill="#3B82F6"/>
                 <path d="M0 200V120C0 120 80 120 80 200H0Z" fill="#3B82F6"/>
             </svg>
-            <h1 class="text-3xl font-black tracking-tighter text-white uppercase italic">Sarbon</h1>
-            <p class="text-[10px] font-bold tracking-[6px] uppercase mt-1" style="color: var(--accent-cyan);">Universiteti</p>
+            <h1 class="text-2xl font-black tracking-tighter text-white uppercase italic">Sarbon</h1>
+            <p class="text-[9px] font-bold tracking-[5px] uppercase mt-1 text-cyan-400">Universiteti</p>
         </div>
 
-        <nav class="flex-1 space-y-2">
-            <p class="px-5 text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-4">Asosiy</p>
+        <nav class="flex-1 space-y-1">
+            <p class="px-5 text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-3">Asosiy Menyu</p>
             <div onclick="showPage('dashboard')" id="nav-dashboard" class="nav-link active cursor-pointer">
-                <span class="text-xl">🏠</span> Boshqaruv
+                <i data-lucide="layout-dashboard"></i> Boshqaruv
             </div>
             <div onclick="showPage('weekly')" id="nav-weekly" class="nav-link cursor-pointer">
-                <span class="text-xl">📅</span> Jadval
+                <i data-lucide="calendar-range"></i> Jadval
             </div>
             <div onclick="showPage('add')" id="nav-add" class="nav-link cursor-pointer">
-                <span class="text-xl">✨</span> Qo'shish
+                <i data-lucide="plus-circle"></i> Qo'shish
             </div>
 
-            <p class="px-5 text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-10 mb-4">Talaba</p>
+            <p class="px-5 text-[9px] font-bold text-gray-600 uppercase tracking-widest mt-8 mb-3">Talaba Xizmatlari</p>
             <div onclick="showPage('kundalik')" id="nav-kundalik" class="nav-link cursor-pointer">
-                <span class="text-xl">📖</span> Kundalik
+                <i data-lucide="book-open"></i> Kundalik
+            </div>
+            <div onclick="showPage('kontrakt')" id="nav-kontrakt" class="nav-link cursor-pointer">
+                <i data-lucide="credit-card"></i> Kontrakt
             </div>
         </nav>
 
-        <div class="mt-auto p-4 bg-white/5 rounded-3xl border border-white/5">
-            <p class="text-[10px] font-bold text-center text-gray-500">SYSTEM STABLE V5.5</p>
+        <div class="mt-auto space-y-4">
+            <div class="group flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/5 hover:border-cyan-500/30 transition-all cursor-pointer">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-xs font-bold text-white">AD</div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-[11px] font-black text-white truncate uppercase tracking-wider">Admin Panel</p>
+                    <p class="text-[8px] text-gray-500 font-bold uppercase tracking-widest">Super User</p>
+                </div>
+                <i data-lucide="settings" class="w-4 h-4 text-gray-600 group-hover:text-cyan-400"></i>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="alert('Sozlamalar...')" class="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 text-[9px] font-bold text-gray-400 uppercase tracking-widest transition-all">
+                    <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5"></i> Sozlash
+                </button>
+                <button onclick="confirm('Chiqasizmi?')" class="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 text-[9px] font-bold text-red-400 uppercase tracking-widest transition-all">
+                    <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Chiqish
+                </button>
+            </div>
+            <div class="pt-2 border-t border-white/5 text-center">
+                <p class="text-[8px] font-black text-gray-700 tracking-[3px] uppercase">Sarbon OS v5.5.0</p>
+            </div>
         </div>
     </aside>
 
@@ -139,7 +159,7 @@
             
             <div class="bg-black/20 p-5 rounded-[28px] border border-white/5 flex gap-10 items-center backdrop-blur-md">
                 <div>
-                    <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1">Hozirgi vaqt</p>
+                    <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1">Vaqt</p>
                     <p id="live-time" class="text-3xl font-black space-font text-cyan-400">00:00</p>
                 </div>
                 <div class="w-[1px] h-10 bg-white/10"></div>
@@ -151,21 +171,20 @@
         </header>
 
         <div id="dashboard" class="page-entry">
-            <div id="teacher-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-10">
-                </div>
+            <div id="teacher-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-8"></div>
         </div>
 
         <div id="add" class="hidden page-entry">
-            <div class="max-w-3xl mx-auto glass-panel p-16 shadow-2xl">
-                <h3 class="text-3xl font-black text-white mb-10 border-b border-white/5 pb-6 italic">Yangi ma'lumot kiritish</h3>
-                <div class="space-y-8">
-                    <input id="in-ifsh" class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-cyan-500 text-white" placeholder="O'qituvchi F.I.Sh">
-                    <input id="in-fan" class="w-full bg-white/5 border border-white/10 p-5 rounded-2xl outline-none focus:border-cyan-500 text-white" placeholder="Fan nomi">
-                    <div class="grid grid-cols-2 gap-8">
-                        <input id="in-sana" type="date" class="bg-white/5 border border-white/10 p-5 rounded-2xl outline-none text-white">
-                        <input id="in-image" type="file" class="bg-white/5 border border-white/10 p-4 rounded-2xl text-xs text-gray-400">
+            <div class="max-w-2xl mx-auto glass-panel p-12 shadow-2xl">
+                <h3 class="text-2xl font-black text-white mb-8 border-b border-white/5 pb-4 italic uppercase">Ma'lumot qo'shish</h3>
+                <div class="space-y-6">
+                    <input id="in-ifsh" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-cyan-500 text-white" placeholder="O'qituvchi F.I.Sh">
+                    <input id="in-fan" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl outline-none focus:border-cyan-500 text-white" placeholder="Fan nomi">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input id="in-sana" type="date" class="bg-white/5 border border-white/10 p-4 rounded-xl outline-none text-white">
+                        <input id="in-image" type="file" class="bg-white/5 border border-white/10 p-3 rounded-xl text-[10px] text-gray-400">
                     </div>
-                    <button onclick="saveAll()" class="btn-action w-full text-white uppercase mt-4">Tizimga saqlash</button>
+                    <button onclick="saveAll()" class="btn-action w-full text-white uppercase">Saqlash</button>
                 </div>
             </div>
         </div>
@@ -174,6 +193,7 @@
     <script>
         let db = JSON.parse(localStorage.getItem('sarbon_v55')) || [];
 
+        // Soat va sana
         function updateClock() {
             const now = new Date();
             document.getElementById('live-time').innerText = now.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
@@ -181,25 +201,29 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
+        // Sahifalar navigatsiyasi
         function showPage(id) {
             document.querySelectorAll('main > div').forEach(p => p.classList.add('hidden'));
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             
             const target = document.getElementById(id);
             if(target) target.classList.remove('hidden');
-            document.getElementById('nav-' + id).classList.add('active');
+            
+            const navLink = document.getElementById('nav-' + id);
+            if(navLink) navLink.classList.add('active');
+            
             document.getElementById('page-title').innerText = id;
-
             if(id === 'dashboard') renderDashboard();
         }
 
+        // Ma'lumot saqlash
         async function saveAll() {
             const ifsh = document.getElementById('in-ifsh').value;
             const fan = document.getElementById('in-fan').value;
             const sana = document.getElementById('in-sana').value;
             const imgFile = document.getElementById('in-image').files[0];
             
-            if(!ifsh || !fan || !sana) return alert("Маълумотни тўлиқ киритинг!");
+            if(!ifsh || !fan || !sana) return alert("Barcha maydonlarni to'ldiring!");
 
             let img = "";
             if(imgFile) {
@@ -214,21 +238,28 @@
             showPage('dashboard');
         }
 
+        // Dashboardni chizish
         function renderDashboard() {
             const grid = document.getElementById('teacher-grid');
             grid.innerHTML = db.slice().reverse().map(t => `
-                <div class="glass-panel p-6 flex items-center gap-8 group hover:bg-white/5 transition-all">
-                    <div class="w-24 h-24 rounded-3xl bg-black/40 border border-white/5 overflow-hidden flex-shrink-0">
-                        ${t.img ? `<img src="${t.img}" class="w-full h-full object-cover">` : `<div class="p-6 opacity-20"><svg viewBox="0 0 200 200" fill="white"><path d="M200 0H30C30 0 30 170 200 170V0Z"/><path d="M0 200V120C0 120 80 120 80 200H0Z"/></svg></div>`}
+                <div class="glass-panel p-5 flex items-center gap-6 group hover:bg-white/5 transition-all">
+                    <div class="w-20 h-20 rounded-2xl bg-black/40 border border-white/5 overflow-hidden flex-shrink-0">
+                        ${t.img ? `<img src="${t.img}" class="w-full h-full object-cover">` : `<div class="p-4 opacity-10"><svg viewBox="0 0 200 200" fill="white"><path d="M200 0H30C30 0 30 170 200 170V0Z"/><path d="M0 200V120C0 120 80 120 80 200H0Z"/></svg></div>`}
                     </div>
                     <div class="flex-1">
-                        <span class="text-[10px] font-black uppercase text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">${t.ifsh}</span>
-                        <h4 class="text-2xl font-black text-white mt-2 uppercase italic">${t.fan}</h4>
-                        <p class="text-[11px] text-gray-500 mt-2 font-bold uppercase tracking-widest">📅 ${t.sana} | 🕒 ${t.vaqt}</p>
+                        <span class="text-[9px] font-black uppercase text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-cyan-500/20">${t.ifsh}</span>
+                        <h4 class="text-xl font-black text-white mt-1 uppercase italic">${t.fan}</h4>
+                        <div class="flex gap-4 mt-2">
+                             <p class="text-[10px] text-gray-500 font-bold uppercase">📅 ${t.sana}</p>
+                             <p class="text-[10px] text-cyan-600 font-bold uppercase">🕒 ${t.vaqt}</p>
+                        </div>
                     </div>
                 </div>
             `).join('');
         }
+
+        // Иконкаларни фаоллаштириш
+        lucide.createIcons();
         renderDashboard();
     </script>
 </body>
