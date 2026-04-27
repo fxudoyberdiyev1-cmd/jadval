@@ -5,175 +5,227 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduManager Pro - Sarbon Universiteti</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .sidebar-item:hover, .active-nav { background-color: #eff6ff; color: #1e40af; border-left: 4px solid #2563eb; font-weight: 700; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        .sidebar-item:hover, .active-nav { background-color: #eff6ff; color: #2563eb; font-weight: 800; border-right: 4px solid #2563eb; }
         .page { display: none; }
         .page.active { display: block; }
-        .student-bg { background-image: url('image_19.png'); background-size: cover; background-position: center; }
+        .library-bg { 
+            background-image: url('photo_2026-04-26_12-32-31.jpg'); 
+            background-size: cover; background-position: center; opacity: 0.04; position: fixed; inset: 0; z-index: -1; 
+        }
+        .calendar-day.has-data { background-color: #dbeafe; border: 2px solid #2563eb; color: #1e40af; font-weight: bold; cursor: pointer; }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body>
 
-    <div class="fixed inset-0 student-bg opacity-10 z-[-1]"></div>
+    <div class="library-bg"></div>
 
-    <div class="flex min-h-screen relative z-10">
-        <aside class="w-64 bg-white shadow-xl border-r border-gray-100 sticky top-0 h-screen p-4 flex flex-col justify-between">
-            <div>
-                <div class="p-6 mb-8 text-center border-b border-gray-100">
-                    <img src="image_20.png" alt="Sarbon Universiteti Logo" class="w-20 mx-auto mb-2">
-                    <h1 class="text-xl font-extrabold text-blue-900 tracking-tight">EduManager</h1>
-                </div>
-                <nav class="space-y-2">
-                    <div onclick="showPage('dashboard')" id="nav-dashboard" class="sidebar-item active-nav px-6 py-4 cursor-pointer flex items-center gap-3 text-gray-700 rounded-lg transition"><span>🏠</span> Bosh sahifa</div>
-                    <div onclick="showPage('darslar')" id="nav-darslar" class="sidebar-item px-6 py-4 cursor-pointer flex items-center gap-3 text-gray-700 rounded-lg transition"><span>📘</span> Darslar</div>
-                    <div onclick="showPage('talabalar')" id="nav-talabalar" class="sidebar-item px-6 py-4 cursor-pointer flex items-center gap-3 text-gray-700 rounded-lg transition"><span>🎓</span> Talabalar</div>
-                    <div onclick="showPage('jadval')" id="nav-jadval" class="sidebar-item px-6 py-4 cursor-pointer flex items-center gap-3 text-gray-700 rounded-lg transition"><span>📅</span> Jadval</div>
-                    <div onclick="showPage('chat')" id="nav-chat" class="sidebar-item px-6 py-4 cursor-pointer flex items-center gap-3 text-gray-700 rounded-lg transition"><span>💬</span> Savol-Javob</div>
-                </nav>
+    <div class="flex min-h-screen">
+        <aside class="w-72 bg-white border-r border-gray-200 sticky top-0 h-screen flex flex-col shadow-sm">
+            <div class="p-8 text-center">
+                <img src="photo_2025-02-07_09-59-36.jpg" alt="Logo" class="w-20 mx-auto mb-4 rounded-xl shadow-md border border-gray-100">
+                <h1 class="text-xl font-black text-blue-900 tracking-tighter uppercase">EduManager</h1>
             </div>
-            <div id="activeTeachers" class="bg-green-50 p-4 rounded-xl border border-green-200 text-sm text-green-800">
-                <p class="font-bold flex items-center gap-2"><span class="w-3 h-3 bg-green-500 rounded-full"></span> Online Ustozlar:</p>
-                <p id="activeTeachersList" class="mt-1 text-gray-600">Tekshirilmoqda...</p>
+            
+            <nav class="flex-1 px-4 space-y-1">
+                <div onclick="showPage('dashboard')" id="nav-dashboard" class="sidebar-item active-nav px-6 py-4 cursor-pointer flex items-center gap-3 rounded-xl transition">🏠 Bosh sahifa</div>
+                <div onclick="showPage('talabalar')" id="nav-talabalar" class="sidebar-item px-6 py-4 cursor-pointer flex items-center gap-3 rounded-xl transition">🎓 Talabalar (IFSH)</div>
+                <div onclick="showPage('jadval')" id="nav-jadval" class="sidebar-item px-6 py-4 cursor-pointer flex items-center gap-3 rounded-xl transition">📅 Kalendar Tarixi</div>
+            </nav>
+
+            <div class="p-6 border-t bg-green-50/40">
+                <div class="flex items-center gap-2 mb-2 text-green-700 font-bold text-xs uppercase tracking-widest">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Online Ustozlar:
+                </div>
+                <p class="text-[11px] text-gray-500 font-medium">B. Karimov, A. Rahimova</p>
             </div>
         </aside>
 
-        <main class="flex-1 p-8">
-            <div class="flex justify-between items-center mb-10 pb-6 border-b border-gray-100 bg-white/50 backdrop-blur-sm sticky top-0 px-8 rounded-3xl">
-                <div>
-                    <h2 id="pageTitle" class="text-3xl font-extrabold text-gray-900">EduManager Pro</h2>
-                    <p class="text-gray-500">Sarbon Universiteti boshqaruv tizimi</p>
-                </div>
+        <main class="flex-1 p-10">
+            <div class="flex justify-between items-center mb-10 bg-white/60 p-4 rounded-3xl border border-white shadow-sm backdrop-blur-md">
+                <h2 id="page-title" class="text-3xl font-black text-gray-800 tracking-tight">Dashboard</h2>
                 <div class="flex items-center gap-4">
-                    <button class="text-gray-400 hover:text-blue-600 p-2">🔔</button>
-                    <div class="w-12 h-12 bg-blue-100 rounded-full border-2 border-white shadow-md overflow-hidden cursor-pointer hover:border-blue-500 transition" title="Profil rasmini o'zgartirish">
-                        <img src="https://avatar.iran.liara.run/public/boy?username=Admin" alt="Admin Profile" class="w-full h-full object-cover">
-                    </div>
+                    <img id="profile-img" src="https://avatar.iran.liara.run/public/31" class="w-12 h-12 rounded-full border-2 border-blue-500 cursor-pointer shadow-md" onclick="document.getElementById('upload-img').click()">
+                    <input type="file" id="upload-img" class="hidden" onchange="updatePhoto(this)">
+                    <span class="font-extrabold text-gray-800 uppercase text-sm tracking-tighter">Admin Control</span>
                 </div>
             </div>
 
             <div id="dashboard" class="page active">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-bold">Darslar</h3>
-                    <button class="bg-blue-600 text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg hover:bg-blue-700 transition">+ Yangi dars qo'shish</button>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div id="lesson1" class="lesson-card bg-white p-6 rounded-[32px] border border-gray-100 shadow-sm transition-all hover:shadow-xl hover:border-blue-100">
-                        <div class="flex justify-between items-start mb-6">
-                            <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl font-bold italic">I</div>
-                            <span class="bg-green-100 text-green-700 text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-wider">Active</span>
-                        </div>
-                        <h3 class="text-xl font-extrabold text-gray-900 mb-1">Iqtisodiyot nazariyasi 2</h3>
-                        <p class="text-blue-500 text-sm font-semibold mb-6">B. Karimov</p>
-                        <div class="space-y-3 text-sm text-gray-500 border-t pt-6">
-                            <p class="flex items-center gap-2">📅 2026-04-24</p>
-                            <p class="flex items-center gap-2 font-bold text-gray-800">📍 101-xona</p>
-                        </div>
-                        <button onclick="editLesson('lesson1')" class="mt-8 w-full py-3 bg-blue-50 text-blue-700 rounded-xl font-bold hover:bg-blue-100 transition">Yangilash</button>
+                <div class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-100 mb-10">
+                    <h3 class="text-xl font-black mb-6 text-blue-900 italic">Yangi ma'lumot kiritish</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <input id="in-fan" type="text" placeholder="Fan nomi (м-н: Matematika)" class="p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 font-semibold">
+                        <input id="in-mavzu" type="text" placeholder="Bugungi mavzu" class="p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 font-semibold">
+                        <input id="in-sana" type="date" class="p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 font-semibold">
+                        <button onclick="saveData()" class="bg-blue-600 text-white rounded-2xl font-black hover:bg-blue-700 shadow-xl shadow-blue-200 transition tracking-widest">TASDIQLASH</button>
                     </div>
+                </div>
 
-                    <div id="lesson2" class="lesson-card bg-white p-6 rounded-[32px] border border-gray-100 shadow-sm transition-all hover:shadow-xl hover:border-blue-100">
-                        <div class="flex justify-between items-start mb-6">
-                            <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl font-bold">X</div>
-                            <span class="bg-green-100 text-green-700 text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-wider">Active</span>
-                        </div>
-                        <h3 class="text-xl font-extrabold text-gray-900 mb-1">Xorijiy til 2</h3>
-                        <p class="text-blue-500 text-sm font-semibold mb-6">A. Rahimova</p>
-                        <div class="space-y-3 text-sm text-gray-500 border-t pt-6">
-                            <p class="flex items-center gap-2">📅 2026-04-24</p>
-                            <p class="flex items-center gap-2 font-bold text-gray-800">📍 202-xona</p>
-                        </div>
-                        <button onclick="editLesson('lesson2')" class="mt-8 w-full py-3 bg-blue-50 text-blue-700 rounded-xl font-bold hover:bg-blue-100 transition">Yangilash</button>
+                <div id="lessons-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     </div>
-                </div>
-            </div>
-
-            <div id="darslar" class="page">
-                <h2 class="text-2xl font-bold mb-6">Darslar Batafsil (Kiritilgan Vaqtlar)</h2>
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
-                    <div class="p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition cursor-pointer">
-                        <h3 class="font-bold text-lg">Iqtisodiyot nazariyasi 2</h3>
-                        <p class="text-sm text-gray-600 mb-1">Ustoz: B. Karimov</p>
-                        <p class="text-xs text-blue-500">Mavzu: Kirish, asosiy tushunchalar</p>
-                        <p class="text-xs text-gray-400 mt-2">⏱ Kiritilgan vaqt: 2026-yil, 24-aprel, 10:30</p>
-                    </div>
-                    <div class="p-4 border border-gray-100 rounded-lg hover:bg-gray-50 transition cursor-pointer">
-                        <h3 class="font-bold text-lg">Xorijiy til 2</h3>
-                        <p class="text-sm text-gray-600 mb-1">Ustoz: A. Rahimova</p>
-                        <p class="text-xs text-blue-500">Mavzu: Ingliz tili grammatikasi - 3-mavzu</p>
-                        <p class="text-xs text-gray-400 mt-2">⏱ Kiritilgan vaqt: 2026-yil, 24-aprel, 08:15</p>
-                    </div>
-                </div>
             </div>
 
             <div id="talabalar" class="page">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold">Talabalar Ruyxati (IFSH Kiritish)</h2>
-                    <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-medium hover:bg-gray-200">+ IFSH orqali kiritish</button>
-                </div>
-                <div class="bg-white rounded-xl shadow-sm border p-6 space-y-4">
-                    <input type="text" placeholder="IFSH kodi bo'yicha qidirish..." class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none mb-4">
-                    <div class="bg-gray-50 p-3 rounded-md text-sm border flex items-center gap-3"><span>🎓</span> 123456789 (B. Aliyev)</div>
-                    <div class="bg-gray-50 p-3 rounded-md text-sm border flex items-center gap-3"><span>🎓</span> 987654321 (D. Usmonov)</div>
+                <div class="bg-white p-10 rounded-[40px] shadow-sm border">
+                    <h3 class="text-2xl font-black mb-8 italic tracking-tighter">Talabalarni IFSH orqali boshqarish</h3>
+                    <div class="flex gap-4 mb-10">
+                        <input id="in-ifsh" type="number" placeholder="IFSH kodi" class="flex-1 p-4 bg-gray-50 border rounded-2xl outline-none font-bold">
+                        <input id="in-ism" type="text" placeholder="Talaba F.I.SH" class="flex-1 p-4 bg-gray-50 border rounded-2xl outline-none font-bold">
+                        <button onclick="saveStudent()" class="bg-gray-900 text-white px-10 rounded-2xl font-black uppercase text-sm tracking-widest hover:bg-black transition">Qo'shish</button>
+                    </div>
+                    <div id="student-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 </div>
             </div>
 
             <div id="jadval" class="page">
-                <h2 class="text-2xl font-bold mb-6">Jadval Tarixi (Taqvim Ko'rinishi)</h2>
-                <div class="grid grid-cols-7 gap-1 border border-gray-100 rounded-xl bg-white p-6 shadow-sm">
-                    <div class="p-2 text-center text-xs text-gray-400">DS</div>
-                    <div class="p-2 text-center text-xs text-gray-400">CS</div>
-                    <div class="p-2 text-center text-xs text-gray-400">CH</div>
-                    <div class="p-2 text-center text-xs text-gray-400">PA</div>
-                    <div class="p-2 text-center text-xs text-gray-400">JU</div>
-                    <div class="p-2 text-center text-xs text-gray-400">SH</div>
-                    <div class="p-2 text-center text-xs text-gray-400">YA</div>
-                    <div class="p-3 text-center text-sm border rounded hover:bg-blue-50 cursor-pointer">1</div>
-                    <div class="p-3 text-center text-sm border rounded hover:bg-blue-50 cursor-pointer">2</div>
-                    <div class="p-3 text-center text-sm border rounded hover:bg-blue-50 cursor-pointer bg-blue-50 font-bold">24 (Faol)</div>
-                    <div class="p-3 text-center text-sm border rounded hover:bg-blue-50 cursor-pointer">25</div>
-                </div>
-            </div>
-
-            <div id="chat" class="page">
-                <h2 class="text-2xl font-bold mb-6">Устозга Савол Бериш (Chat)</h2>
-                <div class="bg-white rounded-xl shadow-sm border p-6 space-y-4">
-                    <div id="chatMessages" class="h-64 overflow-y-auto space-y-3 p-3 bg-gray-50 rounded-lg text-sm border">
-                        <div class="flex items-start gap-3"><span class="text-blue-500">🎓</span><p><b class="text-gray-900">Talaba B.Aliev:</b> Iqtisodiyotdagi inflyatsiya mavzusiga tushunmadim, tushuntirib berasizmi?</p></div>
-                        <div class="flex items-start gap-3 justify-end text-right"><p><b class="text-blue-900">Устоз B.Karimov:</b> Albatta, keyingi darsda inflyatsiya turlarini batafsil ko'rib chiqamiz.</p><span class="text-blue-700">👨‍🏫</span></div>
-                    </div>
-                    <div class="flex gap-2">
-                        <input type="text" placeholder="Устозга савол беринг..." class="flex-1 p-3 border border-gray-200 rounded-lg outline-none">
-                        <button class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition">Yuborish</button>
+                <div class="bg-white p-10 rounded-[40px] shadow-sm border">
+                    <h3 class="text-2xl font-black mb-10 text-center italic tracking-tighter">Mavzular Tarixi (Kalendar)</h3>
+                    <div class="grid grid-cols-7 gap-3 mb-10" id="calendar-grid"></div>
+                    <div id="history-detail" class="bg-blue-50 p-8 rounded-[32px] hidden border border-blue-100 shadow-inner">
+                        <h4 class="font-black text-blue-800 mb-6 text-xl" id="history-date"></h4>
+                        <div id="history-content" class="space-y-4"></div>
                     </div>
                 </div>
             </div>
-
         </main>
     </div>
 
     <script>
-        // Саҳифаларни кўрсатиш/яшириш
-        function showPage(pageId) {
+        let db = JSON.parse(localStorage.getItem('edu_db')) || [];
+        let students = JSON.parse(localStorage.getItem('edu_students')) || [];
+
+        function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active-nav'));
-
-            document.getElementById(pageId).classList.add('active');
-            document.getElementById('nav-' + pageId).classList.add('active-nav');
+            document.getElementById(id).classList.add('active');
+            document.getElementById('nav-' + id).classList.add('active-nav');
+            if(id === 'dashboard') renderDashboard();
+            if(id === 'jadval') renderCalendar();
+            if(id === 'talabalar') renderStudents();
         }
 
-        // Дарсни таҳрирлаш функцияси (Янгилаш)
-        function editLesson(lessonId) {
-            alert(lessonId + " ni tahrirlash (Yangilash) muloqot oynasi ochiladi.");
+        // 1. Dashboard - Fan va Mavzu Qo'shish
+        function saveData() {
+            const fan = document.getElementById('in-fan').value;
+            const mavzu = document.getElementById('in-mavzu').value;
+            const sana = document.getElementById('in-sana').value;
+
+            if(!fan || !sana) return alert("Fan nomi ва Sanani kiriting!");
+
+            db.push({ id: Date.now(), fan, mavzu, sana, time: new Date().toLocaleTimeString() });
+            localStorage.setItem('edu_db', JSON.stringify(db));
+            
+            // Inputlarni tozalash
+            document.getElementById('in-fan').value = '';
+            document.getElementById('in-mavzu').value = '';
+            renderDashboard();
         }
 
-        // Фаол Устозларни Модель Қилиш (Active Status)
-        const onlineTeachers = ["B. Karimov", "A. Rahimova"];
-        document.getElementById('activeTeachersList').textContent = onlineTeachers.join(', ');
+        function removeData(id) {
+            if(confirm("Ushbu fanni o'chirib tashlamoqchimisiz?")) {
+                db = db.filter(item => item.id !== id);
+                localStorage.setItem('edu_db', JSON.stringify(db));
+                renderDashboard();
+            }
+        }
 
-        // Саҳифа юкланганда автоматикDashboardни кўрсатиш
-        showPage('dashboard');
+        function renderDashboard() {
+            const grid = document.getElementById('lessons-grid');
+            grid.innerHTML = db.map(item => `
+                <div class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-50 relative group hover:shadow-2xl transition-all hover:-translate-y-2">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-14 h-14 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center text-2xl font-black italic shadow-inner">${item.fan.charAt(0)}</div>
+                        <button onclick="removeData(${item.id})" class="text-red-400 hover:text-red-600 font-bold p-2">O'chirish</button>
+                    </div>
+                    <h3 class="text-2xl font-black text-gray-900 mb-2 tracking-tighter uppercase">${item.fan}</h3>
+                    <p class="text-blue-600 font-bold text-sm mb-6 underline decoration-2 decoration-blue-200">${item.mavzu || 'Mavzu kiritilmagan'}</p>
+                    <div class="flex justify-between text-xs font-black text-gray-400 border-t pt-6 uppercase tracking-widest">
+                        <span>📅 ${item.sana}</span>
+                        <span>⏰ ${item.time}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 2. Talabalar Boshqaruvi
+        function saveStudent() {
+            const ifsh = document.getElementById('in-ifsh').value;
+            const ism = document.getElementById('in-ism').value;
+            if(!ifsh || !ism) return alert("Ma'lumotlarni to'ldiring!");
+
+            students.push({ id: Date.now(), ifsh, ism });
+            localStorage.setItem('edu_students', JSON.stringify(students));
+            renderStudents();
+        }
+
+        function removeStudent(id) {
+            students = students.filter(s => s.id !== id);
+            localStorage.setItem('edu_students', JSON.stringify(students));
+            renderStudents();
+        }
+
+        function renderStudents() {
+            const list = document.getElementById('student-list');
+            list.innerHTML = students.map(s => `
+                <div class="p-5 bg-white rounded-2xl border flex justify-between items-center shadow-sm">
+                    <div class="flex flex-col">
+                        <span class="text-blue-600 font-black text-xs uppercase tracking-tighter">IFSH: ${s.ifsh}</span>
+                        <span class="font-bold text-gray-800">${s.ism}</span>
+                    </div>
+                    <button onclick="removeStudent(${s.id})" class="text-red-500 font-bold text-xs hover:underline">O'chirish</button>
+                </div>
+            `).join('');
+        }
+
+        // 3. Kalendar Tarixi
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            grid.innerHTML = '';
+            ["Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba", "Yakshanba"].forEach(d => {
+                grid.innerHTML += `<div class="font-black text-blue-900/30 text-[10px] uppercase text-center p-2 tracking-widest">${d}</div>`;
+            });
+
+            for(let i=1; i<=31; i++) {
+                const dateStr = `2026-04-${i < 10 ? '0'+i : i}`;
+                const hasData = db.some(l => l.sana === dateStr);
+                grid.innerHTML += `<div onclick="showHistory('${dateStr}')" class="calendar-day p-6 border rounded-[20px] text-center font-bold transition-all ${hasData ? 'has-data shadow-lg shadow-blue-100' : 'bg-white text-gray-300'}">${i}</div>`;
+            }
+        }
+
+        function showHistory(sana) {
+            const detail = document.getElementById('history-detail');
+            const content = document.getElementById('history-content');
+            const filtered = db.filter(l => l.sana === sana);
+
+            if(filtered.length > 0) {
+                detail.classList.remove('hidden');
+                document.getElementById('history-date').innerText = sana + " kungi mavzular тарихи:";
+                content.innerHTML = filtered.map(f => `
+                    <div class="p-6 bg-white rounded-3xl shadow-sm border-l-8 border-blue-500">
+                        <h5 class="font-black text-lg text-gray-900 uppercase tracking-tighter">${f.fan}</h5>
+                        <p class="text-gray-600 font-medium">Mavzu: ${f.mavzu}</p>
+                        <p class="text-[10px] text-gray-400 mt-2 font-bold uppercase tracking-widest">Kiritilgan vaqt: ${f.time}</p>
+                    </div>
+                `).join('');
+            } else {
+                alert("Ushbu kunda darslar kiritilmagan.");
+                detail.classList.add('hidden');
+            }
+        }
+
+        function updatePhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => document.getElementById('profile-img').src = e.target.result;
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Dastlabki render
+        renderDashboard();
     </script>
 </body>
 </html>
