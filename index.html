@@ -6,302 +6,316 @@
     <title>SARBON UNIVERSITY | Portal v6.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     
     <style>
         :root { 
             --accent-cyan: #00f2ff; 
-            --bg-body: radial-gradient(circle at top right, #0d1621, #080a0c);
-            --text-color: #f1f5f9;
-            --panel-bg: rgba(255, 255, 255, 0.02);
-            --sidebar-bg: rgba(13, 18, 23, 0.8);
-            --radius: 4px; /* Тўртбурчак дизайн */
+            --bg-body: #05070a;
+            --radius: 0px; 
         }
-        .light-mode {
-            --bg-body: radial-gradient(circle at top right, #f8fafc, #e2e8f0);
-            --text-color: #0f172a;
-            --panel-bg: rgba(0, 0, 0, 0.04);
-            --sidebar-bg: rgba(255, 255, 255, 0.9);
-        }
-        .ocean-mode {
-            --bg-body: linear-gradient(135deg, #1e3a8a, #1e40af);
-            --text-color: #ffffff;
-            --panel-bg: rgba(255, 255, 255, 0.1);
-            --sidebar-bg: rgba(30, 58, 138, 0.9);
-            --accent-cyan: #fbbf24;
-        }
+        
         body { 
             font-family: 'Outfit', sans-serif; 
-            background: var(--bg-body);
-            color: var(--text-color); 
+            background-color: var(--bg-body);
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(0, 242, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+            color: #f1f5f9; 
             min-height: 100vh; margin: 0; display: flex; overflow: hidden;
-            transition: all 0.3s ease;
         }
-        .glass-panel { 
-            background: var(--panel-bg); 
-            backdrop-filter: blur(15px); 
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            border-radius: var(--radius); 
+
+        /* ЗАМОНАВИЙ КАТАКЛАР */
+        .modern-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
-        .rounded-xl, .rounded-2xl, .rounded-3xl { border-radius: var(--radius) !important; }
+        .modern-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 15px 35px -15px rgba(0, 242, 255, 0.25);
+        }
+
+        aside { 
+            width: 280px; 
+            background: rgba(8, 10, 12, 0.98); 
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex; flex-direction: column; padding: 2.5rem 1.2rem;
+        }
+
+        .nav-link {
+            padding: 1.2rem;
+            margin-bottom: 0.6rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 11px;
+            color: #64748b;
+            transition: 0.3s;
+            border: 1px solid transparent;
+        }
+        .nav-link:hover { color: #fff; background: rgba(255,255,255,0.03); }
+        .nav-link.active { 
+            background: rgba(0, 242, 255, 0.06); 
+            color: var(--accent-cyan); 
+            border: 1px solid rgba(0, 242, 255, 0.3);
+        }
+
+        main { flex: 1; padding: 4rem; overflow-y: auto; }
         
-        aside { width: 300px; background: var(--sidebar-bg); backdrop-filter: blur(25px); display: flex; flex-direction: column; padding: 2rem 1.2rem; border-right: 1px solid rgba(255, 255, 255, 0.05); }
-        main { flex: 1; padding: 3rem; overflow-y: auto; }
-        .nav-link.active { background: rgba(255, 255, 255, 0.05); color: var(--accent-cyan); border: 1px solid rgba(0, 242, 255, 0.2); }
-        
-        /* Жадвал устунлари */
-        .day-column { min-height: 500px; background: rgba(255, 255, 255, 0.02); padding: 10px; border: 1px solid rgba(255, 255, 255, 0.05); }
-        .lesson-card { padding: 15px; margin-bottom: 10px; font-weight: bold; border-radius: var(--radius); }
+        .logo-box {
+            background: var(--accent-cyan);
+            width: 48px; height: 48px;
+            display: flex; align-items: center; justify-content: center;
+            clip-path: polygon(15% 0%, 85% 0%, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0% 85%, 0% 15%);
+        }
+
+        input {
+            background: rgba(255,255,255,0.03) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            color: white !important;
+            padding: 1.2rem !important;
+            border-radius: 0px !important;
+            outline: none !important;
+            font-weight: 600;
+        }
+        input:focus { border-color: var(--accent-cyan) !important; box-shadow: 0 0 15px rgba(0,242,255,0.1); }
+
+        .btn-primary {
+            background: var(--accent-cyan);
+            color: #000;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            padding: 1.2rem;
+            transition: 0.4s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary:hover { opacity: 0.85; letter-spacing: 5px; transform: scale(1.02); }
     </style>
 </head>
 <body>
 
-    <div id="login-screen" class="fixed inset-0 z-[1000] bg-[#080a0c] flex items-center justify-center">
-        <div class="glass-panel p-10 w-96 text-center border border-white/10">
-            <h2 class="text-3xl font-black italic text-white mb-8 uppercase">Sarbon OS</h2>
-            <div class="space-y-4">
-                <input id="login-user" type="text" placeholder="Логин" class="w-full bg-white/5 border border-white/10 p-4 text-white outline-none focus:border-cyan-500">
-                <input id="login-pass" type="password" placeholder="Пароль" class="w-full bg-white/5 border border-white/10 p-4 text-white outline-none focus:border-cyan-500">
-                <button onclick="checkAuth()" class="w-full bg-blue-600 p-4 font-black text-white uppercase tracking-widest hover:bg-blue-500 transition-all">Кириш</button>
+    <div id="login-screen" class="fixed inset-0 z-[1000] bg-[#05070a] flex items-center justify-center">
+        <div class="modern-card p-14 w-[420px] text-center border-t-4 border-t-cyan-400">
+            <div class="flex justify-center mb-8">
+                <div class="logo-box"><i data-lucide="lock" class="text-black w-6 h-6"></i></div>
             </div>
-            <p id="error-msg" class="text-red-500 text-[10px] mt-4 font-bold hidden uppercase">Хато!</p>
+            <h2 class="text-3xl font-black uppercase tracking-[12px] mb-10 italic">Sarbon OS</h2>
+            <div class="space-y-5">
+                <input id="login-user" type="text" placeholder="LOGIN" class="w-full">
+                <input id="login-pass" type="password" placeholder="PASSWORD" class="w-full">
+                <button onclick="checkAuth()" class="w-full btn-primary">Sign In</button>
+            </div>
+            <p id="error-msg" class="text-red-500 text-[10px] mt-6 font-bold hidden tracking-widest uppercase">System: Access Denied</p>
         </div>
     </div>
 
     <aside id="main-aside" style="display: none;">
-        <div class="text-center mb-10">
-            <h1 class="text-2xl font-black italic uppercase">Sarbon</h1>
-            <p class="text-[9px] font-bold tracking-[5px] text-cyan-400 uppercase">Universiteti</p>
+        <div class="flex items-center gap-4 px-4 mb-16">
+            <div class="logo-box text-black"><i data-lucide="graduation-cap"></i></div>
+            <div>
+                <h1 class="text-2xl font-black uppercase leading-tight italic">Sarbon</h1>
+                <p class="text-[8px] tracking-[5px] text-cyan-400 uppercase font-black">University</p>
+            </div>
         </div>
-        <nav class="flex-1 space-y-2">
-            <div onclick="showPage('dashboard')" id="nav-dashboard" class="nav-link flex items-center gap-3 p-4 cursor-pointer hover:bg-white/5 transition-all"><i data-lucide="layout-dashboard"></i> Boshqaruv</div>
-            <div onclick="showPage('students')" id="nav-students" class="nav-link flex items-center gap-3 p-4 cursor-pointer hover:bg-white/5 transition-all"><i data-lucide="users"></i> Talabalar</div>
-            <div onclick="showPage('weekly')" id="nav-weekly" class="nav-link flex items-center gap-3 p-4 cursor-pointer hover:bg-white/5 transition-all"><i data-lucide="calendar-range"></i> Jadval</div>
-            <div onclick="showPage('add')" id="nav-add" class="nav-link flex items-center gap-3 p-4 cursor-pointer hover:bg-white/5 transition-all"><i data-lucide="plus-circle"></i> Qo'shish</div>
-            <div onclick="showPage('admin')" id="nav-admin" class="nav-link flex items-center gap-3 p-4 cursor-pointer hover:bg-white/5 transition-all text-cyan-400"><i data-lucide="shield-check"></i> Admin</div>
+        
+        <nav class="flex-1">
+            <div onclick="showPage('dashboard')" id="nav-dashboard" class="nav-link active"><i data-lucide="grid"></i> O'qituvchilar</div>
+            <div onclick="showPage('students')" id="nav-students" class="nav-link"><i data-lucide="users"></i> Talabalar</div>
+            <div onclick="showPage('weekly')" id="nav-weekly" class="nav-link"><i data-lucide="calendar"></i> Jadval</div>
+            <div onclick="showPage('add')" id="nav-add" class="nav-link"><i data-lucide="plus-square"></i> Qo'shish</div>
+            <div onclick="showPage('admin')" id="nav-admin" class="nav-link text-cyan-400"><i data-lucide="shield"></i> Admin</div>
         </nav>
-        <div class="mt-auto border-t border-white/5 pt-6 space-y-4">
-            <button onclick="cycleTheme()" class="w-full flex items-center justify-center gap-2 p-3 bg-white/5 text-[10px] font-bold uppercase tracking-widest transition-all hover:bg-white/10">
-                <i data-lucide="palette"></i> Режим
-            </button>
-            <button onclick="location.reload()" class="w-full p-3 bg-red-500/10 text-red-400 text-[10px] font-bold uppercase transition-all">Чиқиш</button>
+
+        <div class="pt-8 border-t border-white/5">
+            <button onclick="location.reload()" class="w-full p-4 bg-red-500/5 text-red-500 text-[10px] font-black uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all">Exit Portal</button>
         </div>
     </aside>
 
     <main id="main-content" style="display: none;">
-        <header class="flex justify-between items-center mb-12">
-            <div class="flex flex-col">
-                <h2 id="page-title" class="text-5xl font-black italic uppercase">Boshqaruv</h2>
-                <p id="admin-name-display" class="text-cyan-400 font-bold uppercase text-[12px] tracking-widest mt-2"></p>
+        <header class="flex justify-between items-end mb-20">
+            <div>
+                <h2 id="page-title" class="text-8xl font-black italic uppercase tracking-tighter leading-none">O'qituvchilar</h2>
+                <div class="h-1.5 w-32 bg-cyan-400 mt-6"></div>
             </div>
-            <div class="bg-black/20 p-4 border border-white/5 text-right">
-                <p id="live-time" class="text-2xl font-black text-cyan-400">00:00</p>
-                <p id="live-date" class="text-[10px] font-bold text-gray-500 uppercase">-- -- --</p>
+            <div class="text-right bg-white/5 p-6 border-l-4 border-cyan-400">
+                <p id="live-time" class="text-5xl font-black tracking-tighter text-white leading-none mb-2">00:00:00</p>
+                <p id="live-date" class="text-[11px] font-black text-cyan-400 uppercase tracking-[4px]">-- -- --</p>
             </div>
         </header>
 
-        <div id="dashboard" class="space-y-6">
-            <div id="teacher-grid" class="grid grid-cols-1 xl:grid-cols-2 gap-6"></div>
+        <div id="dashboard" class="grid grid-cols-1 xl:grid-cols-2 gap-10"></div>
+
+        <div id="students" class="hidden grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+
+        <div id="weekly" class="hidden grid grid-cols-7 gap-4">
+            <div class="text-center p-4 bg-cyan-400 text-black font-black uppercase text-xs">Du</div>
+            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs opacity-40">Se</div>
+            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs opacity-40">Ch</div>
+            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs opacity-40">Pa</div>
+            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs opacity-40">Ju</div>
+            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs opacity-40">Sh</div>
+            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs opacity-40">Ya</div>
         </div>
 
-        <div id="students" class="hidden space-y-6">
-            <div id="student-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
-        </div>
-
-        <div id="weekly" class="hidden">
-            <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-7 gap-4">
-                <div class="day-column"><div class="bg-blue-600 p-3 text-center text-white font-black uppercase text-xs mb-4">Dushanba</div></div>
-                <div class="day-column"><div class="bg-gray-700 p-3 text-center text-white font-black uppercase text-xs mb-4">Seshanba</div></div>
-                <div class="day-column"><div class="bg-gray-800 p-3 text-center opacity-50 text-xs font-bold uppercase">Chorshanba</div></div>
-                <div class="day-column"><div class="bg-gray-800 p-3 text-center opacity-50 text-xs font-bold uppercase">Payshanba</div></div>
-                <div class="day-column"><div class="bg-gray-800 p-3 text-center opacity-50 text-xs font-bold uppercase">Juma</div></div>
-                <div class="day-column"><div class="bg-gray-800 p-3 text-center opacity-50 text-xs font-bold uppercase">Shanba</div></div>
-                <div class="day-column"><div class="bg-gray-800 p-3 text-center opacity-50 text-xs font-bold uppercase">Yakshanba</div></div>
-            </div>
-        </div>
-
-        <div id="add" class="hidden space-y-12">
-            <div class="max-w-xl mx-auto glass-panel p-10 border border-blue-500/20">
-                <h3 class="text-2xl font-black mb-6 uppercase italic text-cyan-400">O'qituvchi Qo'shish</h3>
-                <div class="space-y-4">
-                    <input id="in-ifsh" class="w-full bg-white/5 border border-white/10 p-4 text-white outline-none" placeholder="O'qituvchi F.I.Sh">
-                    <input id="in-fan" class="w-full bg-white/5 border border-white/10 p-4 text-white outline-none" placeholder="Fan nomi">
-                    <div class="grid grid-cols-2 gap-4">
-                        <input id="in-sana" type="date" class="w-full bg-white/5 border border-white/10 p-4 text-white outline-none">
-                        <input id="in-image" type="file" accept="image/*" class="w-full bg-white/5 border border-white/10 p-3 text-[10px] text-gray-400">
-                    </div>
-                    <button onclick="saveTeacher()" class="w-full bg-blue-600 p-4 font-black uppercase text-white hover:bg-blue-500">Saqlash</button>
+        <div id="add" class="hidden grid grid-cols-1 md:grid-cols-2 gap-16">
+            <div class="modern-card p-10 border-t-2 border-cyan-400">
+                <h3 class="text-2xl font-black uppercase mb-10 italic tracking-widest">O'qituvchi Panel</h3>
+                <div class="space-y-5">
+                    <input id="in-ifsh" placeholder="F.I.SH" class="w-full">
+                    <input id="in-fan" placeholder="FAN NOMI" class="w-full">
+                    <input id="in-sana" type="date" class="w-full">
+                    <button onclick="saveTeacher()" class="w-full btn-primary">Saqlash</button>
                 </div>
             </div>
-
-            <div class="max-w-xl mx-auto glass-panel p-10 border border-green-500/20">
-                <h3 class="text-2xl font-black mb-6 uppercase italic text-green-400">Talaba Qo'shish</h3>
-                <div class="space-y-4">
-                    <input id="st-name" class="w-full bg-white/5 border border-white/10 p-4 text-white outline-none" placeholder="Talaba F.I.Sh">
-                    <input id="st-group" class="w-full bg-white/5 border border-white/10 p-4 text-white outline-none" placeholder="Guruhi">
-                    <button onclick="saveStudent()" class="w-full bg-green-600 p-4 font-black uppercase text-white hover:bg-green-500">Talabani Saqlash</button>
+            <div class="modern-card p-10 border-t-2 border-green-500">
+                <h3 class="text-2xl font-black uppercase mb-10 italic tracking-widest">Talaba Panel</h3>
+                <div class="space-y-5">
+                    <input id="st-name" placeholder="TALABA ISMI" class="w-full">
+                    <input id="st-group" placeholder="GURUHI" class="w-full">
+                    <button onclick="saveStudent()" class="w-full btn-primary" style="background: #22c55e;">Qo'shish</button>
                 </div>
             </div>
         </div>
 
-        <div id="admin" class="hidden space-y-8">
-            <div class="max-w-2xl mx-auto glass-panel p-10 border border-cyan-500/30">
-                <h3 class="text-3xl font-black mb-8 uppercase text-white flex items-center gap-3">
-                    <i data-lucide="user-cog" class="text-cyan-400"></i> Admin Sozlamalari
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="space-y-4">
-                        <input id="adm-f" class="w-full bg-white/5 border border-white/10 p-4 text-white outline-none" placeholder="Familiya">
-                        <input id="adm-i" class="w-full bg-white/5 border border-white/10 p-4 text-white outline-none" placeholder="Ism">
-                        <input id="adm-o" class="w-full bg-white/5 border border-white/10 p-4 text-white outline-none" placeholder="Otasining ismi">
+        <div id="admin" class="hidden">
+            <div class="modern-card p-12 max-w-3xl mx-auto border-t-2 border-cyan-400">
+                <h3 class="text-3xl font-black uppercase mb-12 italic">Tizim Ma'muri</h3>
+                <div class="grid grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <input id="adm-user" placeholder="YANGI LOGIN" class="w-full">
+                        <input id="adm-pass" type="password" placeholder="YANGI PAROL" class="w-full">
                     </div>
-                    <div class="space-y-4">
-                        <input id="adm-user" class="w-full bg-white/5 border border-white/10 p-4 text-white outline-none" placeholder="Login">
-                        <input id="adm-pass" type="password" class="w-full bg-white/5 border border-white/10 p-4 text-white outline-none" placeholder="Parol">
+                    <div class="bg-cyan-400/5 p-6 flex flex-col justify-center">
+                        <p class="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">Eslatma:</p>
+                        <p class="text-xs text-gray-500 mt-2">Маълумотларни ўзгартиргандан сўнг тизимга қайта киришингиз керак бўлади.</p>
                     </div>
                 </div>
-                <button onclick="updateAdminSettings()" class="w-full mt-8 bg-cyan-600 p-4 font-black uppercase text-white hover:bg-cyan-500 transition-all">Yangilash</button>
+                <button onclick="updateAdmin()" class="w-full btn-primary mt-10">Sozlamalarni Yangilash</button>
             </div>
         </div>
     </main>
 
     <script>
-        // 1. DATABASE ВА СОЗЛАМАЛАР
-        let adminSettings = JSON.parse(localStorage.getItem('sarbon_admin')) || {
-            user: "admin", pass: "sarbon2026", f: "Sarbon", i: "Admin", o: "Universiteti"
-        };
-        let db = JSON.parse(localStorage.getItem('sarbon_v55')) || [];
-        let studentsDb = JSON.parse(localStorage.getItem('sarbon_students')) || [];
+        // БАЗАЛАРНИ ТЕКШИРИШ
+        let admin = JSON.parse(localStorage.getItem('sarbon_admin')) || { user: "admin", pass: "sarbon2026" };
+        let teachers = JSON.parse(localStorage.getItem('sarbon_teachers')) || [];
+        let students = JSON.parse(localStorage.getItem('sarbon_students')) || [];
 
-        // 2. AUTH ВА ТЕМА
+        // АУТЕНТИФИКАЦИЯ
         function checkAuth() {
             const u = document.getElementById('login-user').value;
             const p = document.getElementById('login-pass').value;
-            if(u === adminSettings.user && p === adminSettings.pass) {
+            if(u === admin.user && p === admin.pass) {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('main-aside').style.display = 'flex';
                 document.getElementById('main-content').style.display = 'block';
-                document.getElementById('admin-name-display').innerText = `${adminSettings.f} ${adminSettings.i} ${adminSettings.o}`;
-                lucide.createIcons();
                 showPage('dashboard');
-            } else { document.getElementById('error-msg').classList.remove('hidden'); }
+                lucide.createIcons();
+            } else {
+                document.getElementById('error-msg').classList.remove('hidden');
+                setTimeout(() => document.getElementById('error-msg').classList.add('hidden'), 2000);
+            }
         }
 
-        let currentTheme = 0;
-        function cycleTheme() {
-            const themes = ['', 'light-mode', 'ocean-mode'];
-            document.body.classList.remove('light-mode', 'ocean-mode');
-            currentTheme = (currentTheme + 1) % themes.length;
-            if(themes[currentTheme]) document.body.classList.add(themes[currentTheme]);
-        }
-
-        // 3. САҲИФАЛАРНИ БОШҚАРИШ
+        // САҲИФАЛАРНИ БОШҚАРИШ
         function showPage(id) {
-            document.querySelectorAll('main > div').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
             document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.remove('hidden');
             document.getElementById('nav-' + id).classList.add('active');
-            document.getElementById('page-title').innerText = id === 'dashboard' ? 'Boshqaruv' : id.toUpperCase();
             
-            if(id === 'dashboard') renderDashboard();
+            if(id === 'dashboard') {
+                document.getElementById('page-title').innerText = "O'qituvchilar";
+                renderTeachers();
+            } else {
+                document.getElementById('page-title').innerText = id;
+            }
+            
             if(id === 'students') renderStudents();
-            if(id === 'admin') loadAdminForm();
             lucide.createIcons();
         }
 
-        // 4. ТАЛАБАЛАРНИ РЕНДЕР ҚИЛИШ (СИЗ СЎРАГАН ЖОЙ)
-        function renderStudents() {
-            const grid = document.getElementById('student-grid');
-            if (studentsDb.length === 0) {
-                grid.innerHTML = '<p class="text-gray-500 p-4">Ҳозирча талабалар йўқ.</p>';
-                return;
-            }
-            grid.innerHTML = studentsDb.slice().reverse().map(s => `
-                <div class="glass-panel p-5 border border-white/5 flex items-center gap-4">
-                    <div class="w-10 h-10 bg-green-500/20 flex items-center justify-center text-green-400">
-                        <i data-lucide="user"></i>
+        // ЎҚИТУВЧИЛАРНИ ЧИҚАРИШ (ЗАМОНАВИЙ КАТАКЛАР)
+        function renderTeachers() {
+            const grid = document.getElementById('dashboard');
+            grid.innerHTML = teachers.length ? teachers.map(t => `
+                <div class="modern-card p-8 flex items-center gap-8 group">
+                    <div class="w-24 h-24 bg-cyan-400/10 flex items-center justify-center text-cyan-400 font-black text-4xl border border-cyan-400/20 group-hover:bg-cyan-400 group-hover:text-black transition-all">
+                        ${t.ifsh[0]}
                     </div>
-                    <div>
-                        <h4 class="font-bold text-white uppercase text-sm">${s.name}</h4>
-                        <p class="text-[10px] text-gray-500 uppercase tracking-wider">${s.group}</p>
+                    <div class="flex-1">
+                        <p class="text-[11px] font-black text-cyan-400 uppercase tracking-[4px] mb-2">${t.ifsh}</p>
+                        <h4 class="text-3xl font-black italic uppercase leading-none text-white">${t.fan}</h4>
+                        <div class="flex justify-between items-center mt-6 pt-4 border-t border-white/5">
+                            <p class="text-[10px] text-gray-500 font-bold uppercase">Sana: ${t.sana}</p>
+                            <i data-lucide="arrow-up-right" class="w-4 h-4 text-cyan-400 opacity-0 group-hover:opacity-100 transition-all"></i>
+                        </div>
                     </div>
                 </div>
-            `).join('');
+            `).join('') : '<p class="text-gray-500 uppercase font-bold tracking-widest p-10">Ma\'lumotlar mavjud emas...</p>';
             lucide.createIcons();
         }
 
-        // 5. МАЪЛУМОТЛАРНИ САҚЛАШ
+        // ТАЛАБАЛАРНИ ЧИҚАРИШ
+        function renderStudents() {
+            const grid = document.getElementById('students');
+            grid.innerHTML = students.length ? students.map(s => `
+                <div class="modern-card p-6 border-l-4 border-l-cyan-400">
+                    <h4 class="font-black uppercase text-base text-white tracking-tight">${s.name}</h4>
+                    <p class="text-[10px] text-gray-500 font-black mt-2 uppercase tracking-[2px]">${s.group}</p>
+                </div>
+            `).join('') : '<p class="text-gray-500 p-10 uppercase font-bold">Talabalar yo\'q</p>';
+            lucide.createIcons();
+        }
+
+        // САҚЛАШ ФУНКЦИЯЛАРИ
         function saveTeacher() {
             const ifsh = document.getElementById('in-ifsh').value;
             const fan = document.getElementById('in-fan').value;
             const sana = document.getElementById('in-sana').value;
-            const file = document.getElementById('in-image').files[0];
-            if(!ifsh || !fan) return alert("To'ldiring!");
-
-            const reader = new FileReader();
-            if(file) {
-                reader.onloadend = function() {
-                    db.push({ id: Date.now(), ifsh, fan, sana, img: reader.result });
-                    localStorage.setItem('sarbon_v55', JSON.stringify(db));
-                    showPage('dashboard');
-                };
-                reader.readAsDataURL(file);
-            } else {
-                db.push({ id: Date.now(), ifsh, fan, sana, img: null });
-                localStorage.setItem('sarbon_v55', JSON.stringify(db));
-                showPage('dashboard');
-            }
+            if(!ifsh || !fan) return alert("To'liq kiriting!");
+            teachers.push({ ifsh, fan, sana });
+            localStorage.setItem('sarbon_teachers', JSON.stringify(teachers));
+            showPage('dashboard');
         }
 
         function saveStudent() {
             const name = document.getElementById('st-name').value;
             const group = document.getElementById('st-group').value;
-            if(!name || !group) return alert("Ma'lumotlarni to'ldiring!");
-            studentsDb.push({ id: Date.now(), name, group });
-            localStorage.setItem('sarbon_students', JSON.stringify(studentsDb));
-            alert("Talaba saqlandi!");
+            if(!name || !group) return alert("To'ldiring!");
+            students.push({ name, group });
+            localStorage.setItem('sarbon_students', JSON.stringify(students));
             showPage('students');
         }
 
-        function updateAdminSettings() {
-            adminSettings.f = document.getElementById('adm-f').value;
-            adminSettings.i = document.getElementById('adm-i').value;
-            adminSettings.o = document.getElementById('adm-o').value;
-            adminSettings.user = document.getElementById('adm-user').value;
-            adminSettings.pass = document.getElementById('adm-pass').value;
-            localStorage.setItem('sarbon_admin', JSON.stringify(adminSettings));
-            document.getElementById('admin-name-display').innerText = `${adminSettings.f} ${adminSettings.i} ${adminSettings.o}`;
-            alert("Sozlamalar yangilandi!");
+        function updateAdmin() {
+            const u = document.getElementById('adm-user').value;
+            const p = document.getElementById('adm-pass').value;
+            if(!u || !p) return alert("Login ва парол бўш бўлмаслиги керак!");
+            admin.user = u;
+            admin.pass = p;
+            localStorage.setItem('sarbon_admin', JSON.stringify(admin));
+            alert("Tizim ma'lumotlari yangilandi! Qayta kiring.");
+            location.reload();
         }
 
-        function loadAdminForm() {
-            document.getElementById('adm-f').value = adminSettings.f;
-            document.getElementById('adm-i').value = adminSettings.i;
-            document.getElementById('adm-o').value = adminSettings.o;
-            document.getElementById('adm-user').value = adminSettings.user;
-            document.getElementById('adm-pass').value = adminSettings.pass;
-        }
-
-        function renderDashboard() {
-            const grid = document.getElementById('teacher-grid');
-            grid.innerHTML = db.slice().reverse().map(t => `
-                <div class="glass-panel p-6 flex items-center gap-6 border border-white/5">
-                    ${t.img ? `<img src="${t.img}" class="w-16 h-16 object-cover border border-cyan-500/30">` : 
-                    `<div class="w-16 h-16 bg-blue-600/20 flex items-center justify-center text-blue-400 font-bold text-2xl uppercase">${t.ifsh[0]}</div>`}
-                    <div>
-                        <span class="text-[10px] font-black text-cyan-400 uppercase tracking-widest">${t.ifsh}</span>
-                        <h4 class="text-xl font-black italic uppercase text-white">${t.fan}</h4>
-                        <p class="text-[10px] font-bold text-white/50 mt-1 uppercase">📅 ${t.sana}</p>
-                    </div>
-                </div>
-            `).join('');
-            lucide.createIcons();
-        }
-
+        // СОАТ ВА САНА
         function updateClock() {
             const now = new Date();
-            document.getElementById('live-time').innerText = now.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('live-date').innerText = now.toLocaleDateString('uz-UZ', { day: 'numeric', month: 'long' });
+            document.getElementById('live-time').innerText = now.toLocaleTimeString('uz-UZ', { hour12: false });
+            document.getElementById('live-date').innerText = now.toLocaleDateString('uz-UZ', { day: 'numeric', month: 'long', year: 'numeric' });
         }
         setInterval(updateClock, 1000); updateClock();
     </script>
