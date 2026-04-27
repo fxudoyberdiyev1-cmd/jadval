@@ -3,144 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sarbon EduManager - Integrated System</title>
+    <title>Sarbon - Integrated Dark System</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
-        .sidebar-item:hover, .active-nav { background-color: #f1f5f9; color: #2D4363; font-weight: 800; border-right: 4px solid #7A2E32; }
+        :root {
+            --neon-maroon: #ff2e3d;
+            --dark-navy: #0a0f18;
+            --card-bg: #131a27;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--dark-navy); color: #ffffff; overflow-x: hidden; }
         .page { display: none; }
         .page.active { display: block; }
         
-        /* Branding */
-        .brand-navy { color: #2D4363; }
-        .brand-maroon { color: #7A2E32; }
-        .bg-brand-navy { background-color: #2D4363; }
+        /* Neon Effects */
+        .neon-text { text-shadow: 0 0 10px var(--neon-maroon); }
+        .neon-border { border: 1px solid rgba(255, 46, 61, 0.2); transition: all 0.3s; }
+        .neon-border:hover { border-color: var(--neon-maroon); box-shadow: 0 0 15px rgba(255, 46, 61, 0.1); }
+        
+        /* Sidebar Navigation */
+        .sidebar { background: #070b11; border-right: 1px solid rgba(255, 255, 255, 0.05); }
+        .nav-link { cursor: pointer; transition: all 0.3s; border-radius: 12px; margin-bottom: 8px; border-left: 0 solid transparent; }
+        .nav-link:hover, .nav-link.active { background: linear-gradient(90deg, rgba(255, 46, 61, 0.1) 0%, transparent 100%); color: var(--neon-maroon); border-left: 4px solid var(--neon-maroon); }
 
-        /* Input styling */
-        .custom-input {
-            width: 100%; padding: 16px 20px; background-color: #f8fafc;
-            border: 1px solid #e2e8f0; border-radius: 20px; outline: none;
-            font-weight: 600; transition: all 0.3s;
+        /* Cyber Inputs */
+        .cyber-input {
+            width: 100%; padding: 16px 20px; background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; outline: none;
+            color: white; font-weight: 600; transition: all 0.3s;
         }
-        .custom-input:focus { border-color: #7A2E32; background-color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .cyber-input:focus { border-color: var(--neon-maroon); background: rgba(255,46,61,0.05); }
 
-        /* File Upload */
-        .file-upload-box {
-            display: flex; align-items: center; background-color: #f8fafc;
-            border: 1px solid #e2e8f0; border-radius: 20px; padding: 10px 15px;
+        /* Schedule Styling */
+        .day-column { background: rgba(255,255,255,0.02); border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); min-height: 500px; padding: 10px; }
+        .day-header { font-family: 'Orbitron', sans-serif; text-align: center; padding: 10px; border-radius: 12px; margin-bottom: 15px; font-size: 10px; background: rgba(255,255,255,0.05); color: #64748b; letter-spacing: 2px; }
+        .day-header.active { background: var(--neon-maroon); color: white; box-shadow: 0 0 10px var(--neon-maroon); }
+        
+        .lesson-card { border-radius: 15px; padding: 12px; margin-bottom: 10px; border-left: 3px solid var(--neon-maroon); background: rgba(255,255,255,0.03); }
+        .teacher-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--neon-maroon); margin: 0 auto 15px; box-shadow: 0 0 10px rgba(255,46,61,0.3); }
+
+        .sarbon-logo-core {
+            width: 45px; height: 45px; background: var(--neon-maroon);
+            clip-path: polygon(100% 0, 100% 70%, 70% 100%, 0 100%, 0 0);
+            position: relative;
         }
-        .file-upload-box input[type="file"]::file-selector-button {
-            background: white; border: 1px solid #d1d5db; padding: 8px 16px;
-            border-radius: 8px; cursor: pointer; font-weight: 700; margin-right: 10px;
-        }
-
-        /* Schedule styling */
-        .day-column { background: white; border: 1px solid #eef2f6; border-radius: 24px; min-height: 500px; padding: 10px; }
-        .day-header {
-            text-align: center; padding: 12px 5px; border-radius: 15px; margin-bottom: 15px;
-            font-weight: 800; font-size: 11px; background: #eef2f6; color: #64748b;
-        }
-        .day-header.active { background: #3b82f6; color: white; }
-        .lesson-card { border-radius: 18px; padding: 12px; margin-bottom: 10px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
-
-        /* Teacher Avatar */
-        .teacher-avatar { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 4px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.08); margin: 0 auto 15px; }
-
-        /* Logo shapes */
-        .sarbon-logo-shape-big { width: 50px; height: 50px; background-color: #2D4363; border-bottom-left-radius: 100%; }
-        .sarbon-logo-shape-small { width: 18px; height: 18px; background-color: #2D4363; border-top-right-radius: 100%; position: absolute; bottom: 0; left: 0; }
+        .sarbon-logo-core::after { content: 'S'; color: white; font-weight: 900; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 20px; }
     </style>
 </head>
-<body>
+<body class="flex min-h-screen">
 
-    <div class="flex min-h-screen">
-        <aside class="w-64 bg-white border-r border-gray-100 sticky top-0 h-screen flex flex-col shadow-sm">
-            <div class="p-8 flex flex-col items-center">
-                <div class="relative w-[60px] h-[60px] mb-3">
-                    <div class="sarbon-logo-shape-big ml-auto"></div>
-                    <div class="sarbon-logo-shape-small"></div>
+    <aside class="w-72 sidebar p-8 flex flex-col hidden lg:flex sticky top-0 h-screen">
+        <div class="flex items-center gap-4 mb-16">
+            <div class="sarbon-logo-core"></div>
+            <div>
+                <h1 class="text-2xl font-black tracking-tighter text-white leading-none">SARBON</h1>
+                <p class="text-[10px] font-bold text-[#ff2e3d] tracking-[4px] uppercase mt-1 text-xs">SYSTEMS</p>
+            </div>
+        </div>
+
+        <nav class="space-y-2 flex-1">
+            <div onclick="showPage('dashboard')" id="nav-dashboard" class="nav-link active flex items-center gap-4 px-6 py-4 font-bold text-xs uppercase tracking-widest">
+                <span>⚡</span> Terminal
+            </div>
+            <div onclick="showPage('weekly')" id="nav-weekly" class="nav-link flex items-center gap-4 px-6 py-4 font-bold text-xs uppercase tracking-widest">
+                <span>🗓</span> Schedule
+            </div>
+            <div onclick="showPage('add')" id="nav-add" class="nav-link flex items-center gap-4 px-6 py-4 font-bold text-xs uppercase tracking-widest">
+                <span>➕</span> Deploy New
+            </div>
+        </nav>
+
+        <div class="p-4 rounded-xl bg-white/5 border border-white/10 text-center">
+            <p class="text-[9px] font-bold text-gray-500 uppercase mb-1">Database Status</p>
+            <p class="text-xs text-green-500 font-bold neon-text uppercase">Sync Active</p>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8 lg:p-12 overflow-y-auto">
+        
+        <div id="dashboard" class="page active">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-5xl font-black text-white tracking-tighter uppercase italic">Control Panel</h2>
+                    <div class="h-1 w-20 bg-[#ff2e3d] mt-2"></div>
                 </div>
-                <div class="text-center">
-                    <span class="block text-lg font-extrabold tracking-tighter brand-maroon uppercase">Sarbon</span>
-                    <span class="block text-[10px] font-bold text-gray-400 tracking-[3px] uppercase">Universiteti</span>
+                <div class="text-right">
+                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Total Nodes</p>
+                    <p class="text-3xl font-black text-white italic" id="total-teachers">0</p>
                 </div>
             </div>
-            
-            <nav class="flex-1 px-4 space-y-2">
-                <div onclick="showPage('dashboard')" id="nav-dashboard" class="sidebar-item active-nav px-6 py-4 cursor-pointer flex items-center gap-3 rounded-2xl transition">📊 O'qituvchilar</div>
-                <div onclick="showPage('weekly')" id="nav-weekly" class="sidebar-item px-6 py-4 cursor-pointer flex items-center gap-3 rounded-2xl transition">📅 Haftalik Jadval</div>
-                <div onclick="showPage('add')" id="nav-add" class="sidebar-item px-6 py-4 cursor-pointer flex items-center gap-3 rounded-2xl transition">➕ Yangi Qo'shish</div>
-            </nav>
-        </aside>
+            <div id="teacher-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
 
-        <main class="flex-1 p-10">
-            
-            <div id="dashboard" class="page active">
-                <div class="flex justify-between items-center mb-10">
-                    <h2 class="text-3xl font-black brand-navy tracking-tight">O'qituvchilar Ro'yxati</h2>
-                    <div class="bg-white px-5 py-2 rounded-full border shadow-sm font-bold text-xs text-gray-500">Jami: <span id="total-teachers">0</span></div>
-                </div>
-                <div id="teacher-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        <div id="weekly" class="page">
+            <h2 class="text-4xl font-black text-white uppercase italic mb-10 tracking-tighter">System <span class="text-[#ff2e3d]">Schedule</span></h2>
+            <div class="grid grid-cols-7 gap-3">
+                <div class="day-column" id="col-1"><div class="day-header active">MON</div><div class="container"></div></div>
+                <div class="day-column" id="col-2"><div class="day-header">TUE</div><div class="container"></div></div>
+                <div class="day-column" id="col-3"><div class="day-header">WED</div><div class="container"></div></div>
+                <div class="day-column" id="col-4"><div class="day-header">THU</div><div class="container"></div></div>
+                <div class="day-column" id="col-5"><div class="day-header">FRI</div><div class="container"></div></div>
+                <div class="day-column" id="col-6"><div class="day-header">SAT</div><div class="container"></div></div>
+                <div class="day-column" id="col-7"><div class="day-header">SUN</div><div class="container"></div></div>
             </div>
+        </div>
 
-            <div id="weekly" class="page">
-                <div class="flex justify-between items-center mb-10">
-                    <h2 class="text-3xl font-black brand-navy tracking-tight">📅 Haftalik Jadval</h2>
-                    <div class="text-sm font-bold text-gray-400">2026-yil | Aprel — May</div>
-                </div>
-                <div class="grid grid-cols-7 gap-3">
-                    <div class="day-column" id="col-1"><div class="day-header active">DUSHANBA</div><div class="container"></div></div>
-                    <div class="day-column" id="col-2"><div class="day-header">SESHANBA</div><div class="container"></div></div>
-                    <div class="day-column" id="col-3"><div class="day-header">CHORSHANBA</div><div class="container"></div></div>
-                    <div class="day-column" id="col-4"><div class="day-header">PAYSHANBA</div><div class="container"></div></div>
-                    <div class="day-column" id="col-5"><div class="day-header">JUMA</div><div class="container"></div></div>
-                    <div class="day-column" id="col-6"><div class="day-header">SHANBA</div><div class="container"></div></div>
-                    <div class="day-column" id="col-7"><div class="day-header">YAKSHANBA</div><div class="container"></div></div>
-                </div>
-            </div>
-
-            <div id="add" class="page">
-                <h2 class="text-3xl font-black brand-navy tracking-tight mb-10 uppercase">Yangi dars ва расм қўшиш</h2>
-                <div class="bg-white p-10 rounded-[40px] shadow-sm border border-gray-50 max-w-5xl">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Ustoz ИФШ</label>
-                            <input id="in-ifsh" type="text" placeholder="ID-2045" class="custom-input">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Fan nomi</label>
-                            <input id="in-fan" type="text" placeholder="Informatika" class="custom-input">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Sana</label>
-                            <input id="in-sana" type="date" class="custom-input">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-2">Rasm</label>
-                            <div class="file-upload-box">
-                                <input id="in-image" type="file" accept="image/*">
-                            </div>
-                        </div>
+        <div id="add" class="page">
+            <h2 class="text-4xl font-black text-white uppercase italic mb-10 tracking-tighter">Deploy <span class="text-[#ff2e3d]">New Data</span></h2>
+            <div class="glass-panel p-10 bg-[#131a27] border border-white/5 rounded-[30px] max-w-4xl shadow-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                    <div class="space-y-2">
+                        <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest ml-1">Instructor ID</label>
+                        <input id="in-ifsh" type="text" placeholder="SARBON-001" class="cyber-input">
                     </div>
-                    <div class="flex justify-end">
-                        <button onclick="saveAll()" class="bg-brand-navy text-white px-12 py-4 rounded-2xl font-black hover:bg-[#1a2a3f] transition-all shadow-lg uppercase text-xs tracking-[2px]">SAQLASH</button>
+                    <div class="space-y-2">
+                        <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest ml-1">Subject Module</label>
+                        <input id="in-fan" type="text" placeholder="Advanced Cyber" class="cyber-input">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest ml-1">Execution Date</label>
+                        <input id="in-sana" type="date" class="cyber-input">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest ml-1">Visual Identity (Image)</label>
+                        <input id="in-image" type="file" accept="image/*" class="cyber-input text-xs pt-4">
                     </div>
                 </div>
+                <div class="flex justify-end">
+                    <button onclick="saveAll()" class="bg-[#ff2e3d] text-white px-12 py-4 rounded-xl font-black hover:scale-105 transition-all shadow-[0_0_20px_rgba(255,46,61,0.4)] uppercase text-xs tracking-widest">Execute Save</button>
+                </div>
             </div>
+        </div>
 
-        </main>
-    </div>
+    </main>
 
     <script>
         let db = JSON.parse(localStorage.getItem('sarbon_integrated_db')) || [];
-        const colors = ['#60a5fa', '#fbbf24', '#a78bfa', '#34d399', '#f472b6'];
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active-nav'));
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.getElementById('nav-' + id).classList.add('active-nav');
+            document.getElementById('nav-' + id).classList.add('active');
             if(id === 'dashboard') renderDashboard();
             if(id === 'weekly') renderWeekly();
         }
@@ -152,7 +156,7 @@
             const imgInput = document.getElementById('in-image');
             const vaqt = new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
 
-            if(!ifsh || !fan || !sana) return alert("To'ldiring!");
+            if(!ifsh || !fan || !sana) return alert("System Error: Missing Parameters!");
 
             let base64Img = "";
             if(imgInput.files[0]) {
@@ -168,9 +172,10 @@
             db.push({ id: Date.now(), ifsh, fan, sana, vaqt, img: base64Img, day: normalizedDay });
             localStorage.setItem('sarbon_integrated_db', JSON.stringify(db));
             
-            // Clear
+            // Clear inputs
             document.getElementById('in-ifsh').value = '';
             document.getElementById('in-fan').value = '';
+            imgInput.value = '';
             
             showPage('dashboard');
         }
@@ -179,15 +184,16 @@
             const grid = document.getElementById('teacher-grid');
             document.getElementById('total-teachers').innerText = db.length;
             grid.innerHTML = db.map(t => `
-                <div class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-50 text-center relative group">
-                    <button onclick="deleteItem(${t.id})" class="absolute top-5 right-5 text-gray-300 hover:text-red-500 font-bold">×</button>
-                    ${t.img ? `<img src="${t.img}" class="teacher-avatar">` : `<div class="teacher-avatar bg-gray-50 flex items-center justify-center text-gray-300 text-[10px]">Rasm yo'q</div>`}
-                    <div class="mb-4">
-                        <span class="text-[10px] font-black text-gray-400 uppercase">ID: ${t.ifsh}</span>
-                        <h4 class="text-xl font-black brand-navy uppercase mt-1">${t.fan}</h4>
+                <div class="bg-[#131a27] p-8 rounded-[30px] neon-border text-center relative group overflow-hidden">
+                    <button onclick="deleteItem(${t.id})" class="absolute top-5 right-5 text-gray-600 hover:text-[#ff2e3d] font-bold z-10">×</button>
+                    <div class="absolute -right-4 -top-4 text-6xl opacity-5 font-black italic uppercase">${t.ifsh.slice(-2)}</div>
+                    ${t.img ? `<img src="${t.img}" class="teacher-avatar">` : `<div class="teacher-avatar bg-white/5 flex items-center justify-center text-[10px] text-gray-500 uppercase">No Data</div>`}
+                    <div class="mb-6">
+                        <span class="text-[9px] font-bold text-[#ff2e3d] uppercase tracking-[3px]">Module ID: ${t.ifsh}</span>
+                        <h4 class="text-xl font-black text-white uppercase mt-1 tracking-tight italic">${t.fan}</h4>
                     </div>
-                    <div class="flex items-center justify-between border-t pt-5 mt-2 text-[11px] font-bold text-gray-400">
-                        <span>📅 ${t.sana}</span> <span class="brand-maroon">⏰ ${t.vaqt}</span>
+                    <div class="flex items-center justify-between border-t border-white/5 pt-5 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                        <span>📅 ${t.sana}</span> <span class="text-[#ff2e3d]">⏰ ${t.vaqt}</span>
                     </div>
                 </div>
             `).reverse().join('');
@@ -195,17 +201,16 @@
 
         function renderWeekly() {
             document.querySelectorAll('.day-column .container').forEach(c => c.innerHTML = '');
-            db.forEach((item, idx) => {
+            db.forEach((item) => {
                 const container = document.querySelector(`#col-${item.day} .container`);
                 if(container) {
-                    const color = colors[idx % colors.length];
                     container.innerHTML += `
-                        <div class="lesson-card" style="background: ${color}15; border-left: 4px solid ${color}">
-                            <div class="flex items-center gap-2 mb-1">
-                                ${item.img ? `<img src="${item.img}" class="w-6 h-6 rounded-full object-cover border border-white">` : ''}
-                                <span class="text-[11px] font-extrabold uppercase brand-navy truncate">${item.fan}</span>
+                        <div class="lesson-card">
+                            <div class="flex items-center gap-2 mb-2">
+                                ${item.img ? `<img src="${item.img}" class="w-5 h-5 rounded-full object-cover border border-[#ff2e3d]">` : ''}
+                                <span class="text-[10px] font-black uppercase text-white truncate">${item.fan}</span>
                             </div>
-                            <div class="text-[9px] font-bold text-gray-500">ID: ${item.ifsh} | ${item.vaqt}</div>
+                            <div class="text-[8px] font-bold text-gray-500 uppercase tracking-tighter italic">ID: ${item.ifsh} | ${item.vaqt}</div>
                         </div>
                     `;
                 }
@@ -213,13 +218,14 @@
         }
 
         function deleteItem(id) {
-            if(confirm("O'chirilsinmi?")) {
+            if(confirm("Confirm Deletion?")) {
                 db = db.filter(i => i.id !== id);
                 localStorage.setItem('sarbon_integrated_db', JSON.stringify(db));
                 renderDashboard();
             }
         }
 
+        // Initialize
         renderDashboard();
     </script>
 </body>
