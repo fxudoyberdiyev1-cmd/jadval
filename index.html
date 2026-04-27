@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SARBON - Автоматлаштирилган Тизим</title>
+    <title>SARBON - Тизим v5.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@300;600;900&display=swap" rel="stylesheet">
     <style>
@@ -11,14 +11,11 @@
         body { font-family: 'Montserrat', sans-serif; background-color: var(--main-bg); color: #e2e8f0; min-height: 100vh; display: flex; margin: 0; }
         .orbitron { font-family: 'Orbitron', sans-serif; }
         aside { background-color: var(--sidebar-bg); border-right: 1px solid rgba(255, 255, 255, 0.05); }
-        .glass-card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; }
+        .glass-card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; transition: 0.3s; }
         .nav-item { padding: 1.2rem; margin: 0.5rem 0; border-radius: 15px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 1rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; font-size: 0.8rem; }
         .nav-item.active { background: rgba(0, 242, 255, 0.1); color: var(--accent); border-left: 4px solid var(--accent); }
-        
-        /* Автоматик Вақт Блоки */
         .time-box { background: #1f2937; border: 1px solid rgba(0, 242, 255, 0.15); border-radius: 20px; padding: 12px 30px; display: flex; gap: 40px; align-items: center; }
-        
-        input, select { background: rgba(0, 0, 0, 0.3) !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; color: white !important; padding: 14px; border-radius: 14px; width: 100%; outline: none; }
+        input { background: rgba(0, 0, 0, 0.3) !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; color: white !important; padding: 14px; border-radius: 14px; width: 100%; outline: none; }
         .page { display: none; }
         .page.active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -40,10 +37,7 @@
 
     <main class="flex-1 p-12 overflow-y-auto">
         <header class="flex justify-between items-center mb-12 border-b border-white/5 pb-10">
-            <div>
-                <h2 id="page-title" class="text-4xl font-black uppercase italic text-white tracking-tighter">Asosiy Oyna</h2>
-            </div>
-
+            <h2 id="page-title" class="text-4xl font-black uppercase italic text-white tracking-tighter">Asosiy Oyna</h2>
             <div class="time-box">
                 <div class="text-center">
                     <p class="text-[9px] text-gray-500 font-black uppercase mb-1">Sana</p>
@@ -62,8 +56,7 @@
         </div>
 
         <div id="weekly" class="page">
-            <div class="grid grid-cols-7 gap-3" id="weekly-grid">
-                </div>
+            <div class="grid grid-cols-7 gap-3" id="weekly-grid"></div>
         </div>
 
         <div id="add" class="page">
@@ -76,25 +69,19 @@
                         <input id="in-sana" type="date">
                         <input id="in-image" type="file" accept="image/*">
                     </div>
-                    <button onclick="saveAll()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-5 rounded-2xl uppercase tracking-widest transition-all shadow-lg shadow-cyan-500/20">Saqlash</button>
+                    <button onclick="saveAll()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-5 rounded-2xl uppercase tracking-widest transition-all">Saqlash</button>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('sarbon_auto_db')) || [];
+        let db = JSON.parse(localStorage.getItem('sarbon_final_v5')) || [];
 
-        // 1. АВТОМАТИК ВАҚТ ФУНКЦИЯСИ
         function updateClock() {
             const now = new Date();
-            const d = String(now.getDate()).padStart(2, '0');
-            const m = String(now.getMonth() + 1).padStart(2, '0');
-            const y = now.getFullYear();
-            const time = now.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            
-            document.getElementById('live-date').innerText = `${d}.${m}.${y}`;
-            document.getElementById('live-time').innerText = time;
+            document.getElementById('live-date').innerText = now.toLocaleDateString('uz-UZ');
+            document.getElementById('live-time').innerText = now.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         }
         setInterval(updateClock, 1000);
         updateClock();
@@ -108,14 +95,13 @@
             if(id === 'weekly') renderWeekly();
         }
 
-        // 2. АВТОМАТИК САҚЛАШ ВА КУННИ АНИҚЛАШ
         async function saveAll() {
             const ifsh = document.getElementById('in-ifsh').value;
             const fan = document.getElementById('in-fan').value;
             const sana = document.getElementById('in-sana').value;
             const imgFile = document.getElementById('in-image').files[0];
 
-            if(!ifsh || !fan || !sana) return alert("Маълумотларни тўлдиринг!");
+            if(!ifsh || !fan || !sana) return alert("To'ldiring!");
 
             let img = "";
             if(imgFile) {
@@ -125,20 +111,11 @@
                 });
             }
 
-            // Санадан ҳафта кунини автоматик олиш
-            const dateObj = new Date(sana);
-            let dayNum = dateObj.getDay(); 
-            if(dayNum === 0) dayNum = 7; // Якшанбани 7 қилиш
+            const dObj = new Date(sana);
+            let dNum = dObj.getDay(); if(dNum === 0) dNum = 7;
 
-            db.push({
-                id: Date.now(),
-                ifsh, fan, sana, img,
-                day: dayNum,
-                vaqt: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
-            });
-
-            localStorage.setItem('sarbon_auto_db', JSON.stringify(db));
-            alert("Маълумот сақланди!");
+            db.push({ id: Date.now(), ifsh, fan, sana, img, day: dNum, vaqt: new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }) });
+            localStorage.setItem('sarbon_final_v5', JSON.stringify(db));
             showPage('dashboard');
         }
 
@@ -146,16 +123,22 @@
             const grid = document.getElementById('teacher-grid');
             grid.innerHTML = db.slice().reverse().map(t => `
                 <div class="glass-card p-6 flex items-center gap-6">
-                    <div class="w-24 h-24 rounded-2xl bg-white/5 overflow-hidden flex-shrink-0">
-                        ${t.img ? `<img src="${t.img}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-[10px]">NO IMG</div>`}
+                    <div class="w-24 h-24 rounded-2xl bg-white flex items-center justify-center overflow-hidden flex-shrink-0 shadow-lg">
+                        ${t.img ? 
+                            `<img src="${t.img}" class="w-full h-full object-cover">` : 
+                            `<img src="https://i.ibb.co/F4pYf6T/sarbon-logo.png" class="w-[85%] h-auto">`
+                        }
                     </div>
-                    <div class="flex-1">
-                        <div class="flex justify-between">
-                            <p class="text-[10px] font-black text-cyan-500 uppercase tracking-widest">${t.ifsh}</p>
-                            <button onclick="deleteItem(${t.id})" class="text-[9px] text-red-500 font-bold uppercase">O'chirish</button>
+                    <div class="flex-1 overflow-hidden">
+                        <div class="flex justify-between items-start">
+                            <p class="text-[10px] font-black text-cyan-500 uppercase tracking-widest truncate">${t.ifsh}</p>
+                            <button onclick="deleteItem(${t.id})" class="text-[9px] font-bold text-red-500 uppercase hover:underline">O'chirish</button>
                         </div>
-                        <h4 class="text-2xl font-black text-white italic uppercase">${t.fan}</h4>
-                        <p class="text-[10px] text-gray-500 font-bold mt-2 border-t border-white/5 pt-2">${t.sana} | ${t.vaqt}</p>
+                        <h4 class="text-2xl font-black text-white italic uppercase truncate">${t.fan}</h4>
+                        <div class="flex gap-4 text-[10px] font-bold text-gray-500 border-t border-white/5 mt-3 pt-2">
+                            <span>${t.sana}</span>
+                            <span class="text-cyan-400">${t.vaqt}</span>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -163,28 +146,24 @@
 
         function renderWeekly() {
             const days = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba'];
-            const grid = document.getElementById('weekly-grid');
-            grid.innerHTML = days.map((day, index) => {
-                const dayTasks = db.filter(t => t.day === (index + 1));
-                return `
-                    <div class="flex flex-col gap-3">
-                        <div class="glass-card p-3 text-center text-[10px] font-black text-cyan-500 uppercase">${day}</div>
-                        <div class="space-y-2">
-                            ${dayTasks.map(t => `
-                                <div class="p-3 bg-white/5 rounded-xl border-l-2 border-cyan-500">
-                                    <p class="text-[9px] font-black text-white uppercase truncate">${t.fan}</p>
-                                    <p class="text-[8px] text-gray-500 mt-1">${t.vaqt}</p>
-                                </div>
-                            `).join('')}
-                        </div>
+            document.getElementById('weekly-grid').innerHTML = days.map((day, i) => `
+                <div class="flex flex-col gap-3">
+                    <div class="glass-card p-3 text-center text-[10px] font-black text-cyan-500 uppercase">${day}</div>
+                    <div class="space-y-2">
+                        ${db.filter(t => t.day === (i + 1)).map(t => `
+                            <div class="p-3 bg-white/5 rounded-xl border-l-2 border-cyan-500">
+                                <p class="text-[9px] font-black text-white uppercase truncate">${t.fan}</p>
+                                <p class="text-[8px] text-gray-500 mt-1">${t.vaqt}</p>
+                            </div>
+                        `).join('')}
                     </div>
-                `;
-            }).join('');
+                </div>
+            `).join('');
         }
 
         function deleteItem(id) {
             db = db.filter(t => t.id !== id);
-            localStorage.setItem('sarbon_auto_db', JSON.stringify(db));
+            localStorage.setItem('sarbon_final_v5', JSON.stringify(db));
             renderDashboard();
         }
 
