@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduManager Pro - Sarbon Universiteti</title>
+    <title>Sarbon EduManager - Teacher Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -12,92 +12,104 @@
         .page { display: none; }
         .page.active { display: block; }
         
-        /* Input styling (Siz yuborgan rasmdagi uslub) */
-        .input-field {
-            width: 100%;
-            padding: 16px 24px;
+        /* Sarbon Logo CSS */
+        .sarbon-logo-shape-big { width: 50px; height: 50px; background-color: #2D4363; border-bottom-left-radius: 100%; }
+        .sarbon-logo-shape-small { width: 18px; height: 18px; background-color: #2D4363; border-top-right-radius: 100%; position: absolute; bottom: 0; left: 0; }
+        
+        /* Maxsus: Siz yuborgan rasmdagi uslub (image_931079.png) */
+        .custom-file-container {
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 20px;
-            outline: none;
-            font-weight: 600;
-            color: #2D4363;
-            transition: all 0.3s;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
         }
-        .input-field:focus { border-color: #7A2E32; background-color: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-
-        .btn-save {
+        
+        /* Ustoza rasmi kartochkasi */
+        .teacher-card-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid #fff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin: 0 auto 15px;
+        }
+        
+        .save-btn {
             background-color: #2D4363;
             color: white;
-            padding: 16px 40px;
-            border-radius: 20px;
+            padding: 16px 32px;
+            border-radius: 18px;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             transition: all 0.3s;
         }
-        .btn-save:hover { background-color: #1a2a3f; transform: translateY(-2px); shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        
-        .lesson-card-img { width: 100%; height: 220px; object-fit: cover; border-radius: 25px; }
+        .save-btn:hover { background-color: #1a2a3f; transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
     <div class="flex min-h-screen">
-        <aside class="w-72 bg-white border-r border-gray-100 sticky top-0 h-screen flex flex-col shadow-sm">
-            <div class="p-10 flex flex-col items-center">
-                <img src="photo_2025-02-07_09-59-36.jpg" alt="Logo" class="w-20 h-auto mb-4">
+        <aside class="w-64 bg-white border-r border-gray-100 sticky top-0 h-screen flex flex-col shadow-sm">
+            <div class="p-8 flex flex-col items-center">
+                <div class="relative w-[60px] h-[60px] mb-3">
+                    <div class="sarbon-logo-shape-big ml-auto"></div>
+                    <div class="sarbon-logo-shape-small"></div>
+                </div>
                 <div class="text-center">
-                    <span class="block text-xl font-extrabold text-[#7A2E32]">Sarbon</span>
-                    <span class="block text-sm font-bold text-gray-400 uppercase tracking-widest">Universiteti</span>
+                    <span class="block text-lg font-extrabold tracking-tighter text-[#7A2E32]">Sarbon</span>
+                    <span class="block text-lg font-extrabold tracking-tighter text-[#7A2E32]">Universiteti</span>
                 </div>
             </div>
             
-            <nav class="flex-1 px-4 space-y-2">
-                <div onclick="showPage('dashboard')" id="nav-dashboard" class="sidebar-item active-nav px-6 py-4 cursor-pointer flex items-center gap-3 rounded-2xl transition">📊 Bosh sahifa</div>
-                <div onclick="showPage('add-new')" id="nav-add-new" class="sidebar-item px-6 py-4 cursor-pointer flex items-center gap-3 rounded-2xl transition">➕ Yangi qo'shish</div>
-                <div onclick="showPage('history')" id="nav-history" class="sidebar-item px-6 py-4 cursor-pointer flex items-center gap-3 rounded-2xl transition">📅 Kalendar</div>
+            <nav class="flex-1 px-4 space-y-1">
+                <div onclick="showPage('dashboard')" id="nav-dashboard" class="sidebar-item active-nav px-6 py-4 cursor-pointer flex items-center gap-3 rounded-xl transition">🏠 Dashboard</div>
+                <div onclick="showPage('add-data')" id="nav-add-data" class="sidebar-item px-6 py-4 cursor-pointer flex items-center gap-3 rounded-xl transition">➕ Qo'shish</div>
             </nav>
         </aside>
 
-        <main class="flex-1 p-12">
+        <main class="flex-1 p-10">
             
-            <div id="dashboard" class="page active">
-                <h2 class="text-3xl font-black text-[#2D4363] mb-10">Darslar ro'yxati</h2>
-                <div id="lessons-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    </div>
-            </div>
-
-            <div id="add-new" class="page">
-                <h2 class="text-3xl font-black text-[#2D4363] mb-10">Ma'lumot kiritish</h2>
-                <div class="bg-white p-12 rounded-[40px] shadow-sm border border-gray-50 max-w-5xl">
+            <div id="add-data" class="page active">
+                <h2 class="text-3xl font-black text-[#2D4363] mb-10">Yangi ma'lumot kiritish</h2>
+                
+                <div class="bg-white p-10 rounded-[40px] shadow-sm border border-gray-100 max-w-4xl">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        
                         <div class="space-y-3">
-                            <label class="text-xs font-black text-gray-400 uppercase ml-2">Ustoz ИФШ</label>
-                            <input id="in-ifsh" type="text" placeholder="Masalan: 123456" class="input-field">
+                            <label class="text-[11px] font-black text-[#2D4363] uppercase tracking-widest ml-2">Ustoz ИФШ</label>
+                            <input id="in-ifsh" type="text" placeholder="Masalan: T-4500" class="w-full p-5 bg-gray-50 border-none rounded-[20px] outline-none focus:ring-2 focus:ring-[#7A2E32] font-semibold">
                         </div>
+
                         <div class="space-y-3">
-                            <label class="text-xs font-black text-gray-400 uppercase ml-2">Fan nomi</label>
-                            <input id="in-fan" type="text" placeholder="Informatika" class="input-field">
+                            <label class="text-[11px] font-black text-[#2D4363] uppercase tracking-widest ml-2">Fan nomi</label>
+                            <input id="in-fan" type="text" placeholder="Informatika" class="w-full p-5 bg-gray-50 border-none rounded-[20px] outline-none focus:ring-2 focus:ring-[#7A2E32] font-semibold">
                         </div>
+
                         <div class="space-y-3">
-                            <label class="text-xs font-black text-gray-400 uppercase ml-2">Sana</label>
-                            <input id="in-sana" type="date" class="input-field">
+                            <label class="text-[11px] font-black text-[#2D4363] uppercase tracking-widest ml-2">Sana</label>
+                            <input id="in-sana" type="date" class="w-full p-5 bg-gray-50 border-none rounded-[20px] outline-none focus:ring-2 focus:ring-[#7A2E32] font-semibold text-gray-500">
                         </div>
+
                         <div class="space-y-3">
-                            <label class="text-xs font-black text-gray-400 uppercase ml-2">Dars rasmi</label>
-                            <input id="in-image" type="file" accept="image/*" class="input-field">
+                            <label class="text-[11px] font-black text-[#2D4363] uppercase tracking-widest ml-2">Устоз расми</label>
+                            <div class="custom-file-container">
+                                <input id="in-image" type="file" accept="image/*" class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-sm file:font-bold file:bg-gray-100 file:text-black hover:file:bg-gray-200 cursor-pointer">
+                            </div>
                         </div>
+
                     </div>
-                    <div class="mt-10 flex justify-end">
-                        <button onclick="saveData()" class="btn-save shadow-lg shadow-blue-100">Saqlash ва Tasdiqlash</button>
+
+                    <div class="mt-12 flex justify-end">
+                        <button onclick="saveData()" class="save-btn shadow-xl shadow-blue-100">Saqlash ва Tasdiqlash</button>
                     </div>
                 </div>
             </div>
 
-            <div id="history" class="page">
-                <h2 class="text-3xl font-black text-[#2D4363] mb-10">Darslar taqvimi</h2>
-                <div class="bg-white p-10 rounded-[40px] shadow-sm border" id="calendar-container">
+            <div id="dashboard" class="page">
+                <h2 class="text-3xl font-black text-[#2D4363] mb-10">O'qituvchilar ro'yxati</h2>
+                <div id="lessons-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
                     </div>
             </div>
 
@@ -105,7 +117,7 @@
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('sarbon_final_db')) || [];
+        let db = JSON.parse(localStorage.getItem('sarbon_teacher_db')) || [];
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -120,10 +132,7 @@
             const fan = document.getElementById('in-fan').value;
             const sana = document.getElementById('in-sana').value;
             const imgInput = document.getElementById('in-image');
-            const now = new Date();
-            const timeStr = now.getHours().toString().padStart(2,'0') + ":" + 
-                            now.getMinutes().toString().padStart(2,'0') + ":" + 
-                            now.getSeconds().toString().padStart(2,'0');
+            const vaqt = new Date().toLocaleTimeString('uz-UZ', { hour12: false });
 
             if(!ifsh || !fan || !sana) return alert("Ma'lumotlarni to'ldiring!");
 
@@ -136,44 +145,44 @@
                 });
             }
 
-            db.push({ id: Date.now(), ifsh, fan, sana, time: timeStr, img: base64Img });
-            localStorage.setItem('sarbon_final_db', JSON.stringify(db));
+            db.push({ id: Date.now(), ifsh, fan, sana, vaqt, img: base64Img });
+            localStorage.setItem('sarbon_teacher_db', JSON.stringify(db));
             
-            // Tozalash va Dashboardga qaytish
+            // Tozalash ва ўтиш
             document.getElementById('in-ifsh').value = '';
             document.getElementById('in-fan').value = '';
             document.getElementById('in-image').value = '';
-            
             showPage('dashboard');
         }
 
         function renderDashboard() {
             const grid = document.getElementById('lessons-grid');
             grid.innerHTML = db.map(item => `
-                <div class="bg-white p-6 rounded-[40px] shadow-sm border border-gray-50 group hover:shadow-xl transition-all">
-                    <div class="relative mb-6 overflow-hidden rounded-[30px]">
-                        ${item.img ? `<img src="${item.img}" class="lesson-card-img group-hover:scale-105 transition duration-500">` : 
-                        `<div class="w-full h-[220px] bg-red-50 flex items-center justify-center text-[#7A2E32] font-black">RASM YUKLANMAGAN</div>`}
+                <div class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-50 relative group transition-all hover:shadow-2xl">
+                    <button onclick="deleteItem(${item.id})" class="absolute top-5 right-5 text-gray-300 hover:text-red-500 font-bold text-xl">×</button>
+                    
+                    <div class="teacher-avatar-wrapper">
+                        ${item.img ? `<img src="${item.img}" class="teacher-card-img">` : 
+                        `<div class="teacher-card-img bg-red-50 flex items-center justify-center text-[#7A2E32] font-black text-[10px] px-2">RASM YO'Q</div>`}
                     </div>
-                    <div class="px-2">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">ID: ${item.ifsh}</span>
-                            <button onclick="deleteData(${item.id})" class="text-red-200 hover:text-red-500 font-bold text-xl">×</button>
-                        </div>
-                        <h3 class="text-2xl font-black text-[#2D4363] uppercase tracking-tighter mb-6">${item.fan}</h3>
-                        <div class="flex justify-between items-center border-t border-gray-50 pt-5">
-                            <span class="text-[11px] font-bold text-gray-400">📅 ${item.sana}</span>
-                            <span class="text-[11px] font-black text-[#7A2E32]">⏰ ${item.time}</span>
+
+                    <div class="mt-2">
+                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-[2px]">ID: ${item.ifsh}</span>
+                        <h4 class="text-2xl font-black text-[#2D4363] uppercase tracking-tighter mt-1 mb-6">${item.fan}</h4>
+                        
+                        <div class="flex items-center justify-between border-t border-gray-50 pt-5 mt-4">
+                            <div class="text-gray-400 font-bold text-[11px]">📅 ${item.sana}</div>
+                            <div class="text-[#7A2E32] font-black text-[11px]">⏰ ${item.vaqt}</div>
                         </div>
                     </div>
                 </div>
             `).reverse().join('');
         }
 
-        function deleteData(id) {
-            if(confirm("O'chirilsinmi?")) {
+        function deleteItem(id) {
+            if(confirm("Ma'lumotni o'chirmoqchimisiz?")) {
                 db = db.filter(i => i.id !== id);
-                localStorage.setItem('sarbon_final_db', JSON.stringify(db));
+                localStorage.setItem('sarbon_teacher_db', JSON.stringify(db));
                 renderDashboard();
             }
         }
