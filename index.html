@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
+// МАНА ШУ ЕРДАГИ МАЪЛУМОТЛАРНИ ЎЗГАРТИРСАНГИЗ САЙТДА ЖАДВАЛ ЎЗГАРАДИ
 const lessons = [
   {
     id: 1,
@@ -66,14 +67,60 @@ export default function Dashboard() {
   );
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 text-gray-900">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-lg p-4">
-        <h1 className="text-xl font-bold mb-6">EduManager</h1>
-        <nav className="space-y-3">
-          <p className="font-semibold text-blue-600">📘 Darslar</p>
-          <p>👨‍🏫 Ustozlar</p>
-          <p>🎓 Talabalar</p>
-          <p>📅 Jadval</p>
-          <p>📊 Hisobotlar</p>
+      <aside className="w-64 bg-white shadow-lg p-6 space-y-4">
+        <h1 className="text-2xl font-bold text-blue-700 mb-8">EduManager</h1>
+        <nav className="space-y-4 cursor-pointer">
+          <p className="font-bold text-blue-600 bg-blue-50 p-2 rounded">📘 Darslar</p>
+          <p className="hover:text-blue-500 p-2">👨‍🏫 Ustozlar</p>
+          <p className="hover:text-blue-500 p-2">🎓 Talabalar</p>
+          <p className="hover:text-blue-500 p-2">📅 Jadval</p>
+          <p className="hover:text-blue-500 p-2">📊 Hisobotlar</p>
+          <p className="hover:text-blue-500 p-2">⚙️ Sozlamalar</p>
+        </nav>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 p-8">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">Darslar jadvali</h2>
+          <Button className="bg-blue-600 text-white">+ Yangi dars қўшиш</Button>
+        </div>
+
+        {/* Қидирув */}
+        <Input 
+          placeholder="Fan nomi bo'yicha qidirish..." 
+          className="mb-8 w-full max-w-md bg-white shadow-sm"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        {/* Жадвал карточкалари */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filtered.map((lesson) => (
+            <Card key={lesson.id} className="bg-white border-none shadow-md hover:shadow-xl transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <h3 className="font-bold text-lg">{lesson.title}</h3>
+                  <StatusBadge status={lesson.status} />
+                </div>
+                <p className="text-gray-600 text-sm mb-4">{lesson.desc}</p>
+                <div className="space-y-2 text-sm text-gray-500">
+                  <p>👤 <strong>Ustoz:</strong> {lesson.teacher}</p>
+                  <p>📅 <strong>Sana:</strong> {lesson.date}</p>
+                  <p>⏰ <strong>Vaqt:</strong> {lesson.time}</p>
+                  <p>📍 <strong>Xona:</strong> {lesson.room}</p>
+                </div>
+                <div className="mt-6 flex gap-2">
+                  <Button variant="outline" className="flex-1 text-xs">Yangilash</Button>
+                  <Button variant="destructive" className="flex-1 text-xs bg-red-500">O'chirish</Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </main>
+    </div>
+  );
 }
