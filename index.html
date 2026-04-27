@@ -3,19 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SARBON - Тизим v5.0</title>
+    <title>SARBON - Тизим v5.1</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@300;600;900&display=swap" rel="stylesheet">
     <style>
-        :root { --accent: #00f2ff; --main-bg: #0b0f19; --sidebar-bg: #111827; --card-bg: rgba(31, 41, 55, 0.6); }
+        /* Янги логотип ранглари асосида */
+        :root { 
+            --accent: #00f2ff; /* Логодаги циан ранг */
+            --main-bg: #05080a; /* Янги логодаги қора фон */
+            --sidebar-bg: #0d1217; 
+            --card-bg: rgba(22, 29, 39, 0.7); 
+        }
         body { font-family: 'Montserrat', sans-serif; background-color: var(--main-bg); color: #e2e8f0; min-height: 100vh; display: flex; margin: 0; }
         .orbitron { font-family: 'Orbitron', sans-serif; }
-        aside { background-color: var(--sidebar-bg); border-right: 1px solid rgba(255, 255, 255, 0.05); }
-        .glass-card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; transition: 0.3s; }
-        .nav-item { padding: 1.2rem; margin: 0.5rem 0; border-radius: 15px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 1rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; font-size: 0.8rem; }
-        .nav-item.active { background: rgba(0, 242, 255, 0.1); color: var(--accent); border-left: 4px solid var(--accent); }
-        .time-box { background: #1f2937; border: 1px solid rgba(0, 242, 255, 0.15); border-radius: 20px; padding: 12px 30px; display: flex; gap: 40px; align-items: center; }
-        input { background: rgba(0, 0, 0, 0.3) !important; border: 1px solid rgba(255, 255, 255, 0.1) !important; color: white !important; padding: 14px; border-radius: 14px; width: 100%; outline: none; }
+        aside { background-color: var(--sidebar-bg); border-right: 1px solid rgba(0, 242, 255, 0.05); }
+        .glass-card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; transition: 0.3s; }
+        .nav-item { padding: 1.2rem; margin: 0.5rem 0; border-radius: 15px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 1rem; font-weight: 700; color: #64748b; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+        .nav-item.active { background: rgba(0, 242, 255, 0.08); color: var(--accent); border-right: 3px solid var(--accent); }
+        .time-box { background: #0d1217; border: 1px solid rgba(0, 242, 255, 0.2); border-radius: 20px; padding: 12px 30px; display: flex; gap: 40px; align-items: center; }
+        input { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(0, 242, 255, 0.1) !important; color: white !important; padding: 14px; border-radius: 14px; width: 100%; outline: none; }
+        input:focus { border-color: var(--accent) !important; box-shadow: 0 0 10px rgba(0, 242, 255, 0.1); }
         .page { display: none; }
         .page.active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -25,20 +32,22 @@
 
     <aside class="w-72 h-screen sticky top-0 p-8 flex flex-col">
         <div class="mb-12 text-center">
-            <h1 class="orbitron text-3xl font-black tracking-widest text-white">SARBON</h1>
-            <p class="text-[9px] text-cyan-400 font-bold tracking-[5px] uppercase mt-1">Universiteti</p>
+            <h1 class="orbitron text-4xl font-black tracking-tighter text-white leading-none">SARBON</h1>
+            <div class="h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent mt-2"></div>
+            <p class="orbitron text-[9px] text-cyan-400 font-bold tracking-[0.4em] uppercase mt-1">Universiteti</p>
         </div>
         <nav class="flex-1">
             <div onclick="showPage('dashboard')" id="nav-dashboard" class="nav-item active">📡 Boshqaruv</div>
             <div onclick="showPage('weekly')" id="nav-weekly" class="nav-item">🌀 Haftalik Jadval</div>
             <div onclick="showPage('add')" id="nav-add" class="nav-item">⚡ Yangi Qo'shish</div>
         </nav>
+        <div class="mt-auto text-[10px] text-gray-600 orbitron text-center uppercase tracking-widest opacity-50">TechFix v5.1</div>
     </aside>
 
     <main class="flex-1 p-12 overflow-y-auto">
         <header class="flex justify-between items-center mb-12 border-b border-white/5 pb-10">
             <h2 id="page-title" class="text-4xl font-black uppercase italic text-white tracking-tighter">Asosiy Oyna</h2>
-            <div class="time-box">
+            <div class="time-box shadow-[0_0_20px_rgba(0,242,255,0.05)]">
                 <div class="text-center">
                     <p class="text-[9px] text-gray-500 font-black uppercase mb-1">Sana</p>
                     <p id="live-date" class="orbitron text-xl font-bold text-white tracking-tighter">--.--.----</p>
@@ -60,8 +69,8 @@
         </div>
 
         <div id="add" class="page">
-            <div class="max-w-2xl mx-auto glass-card p-12">
-                <h4 class="text-2xl font-black uppercase italic mb-10 text-white border-l-4 border-cyan-500 pl-4">Yangi dars qo'shish</h4>
+            <div class="max-w-2xl mx-auto glass-card p-12 shadow-2xl">
+                <h4 class="text-2xl font-black uppercase italic mb-10 text-white border-l-4 border-cyan-500 pl-4">Yangi dars қўшиш</h4>
                 <div class="space-y-6">
                     <input id="in-ifsh" type="text" placeholder="O'qituvchi F.I.Sh">
                     <input id="in-fan" type="text" placeholder="Fan nomi">
@@ -69,7 +78,7 @@
                         <input id="in-sana" type="date">
                         <input id="in-image" type="file" accept="image/*">
                     </div>
-                    <button onclick="saveAll()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-5 rounded-2xl uppercase tracking-widest transition-all">Saqlash</button>
+                    <button onclick="saveAll()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-5 rounded-2xl uppercase tracking-widest transition-all shadow-[0_5px_20px_rgba(0,242,255,0.3)] active:scale-95">Saqlash</button>
                 </div>
             </div>
         </div>
@@ -91,6 +100,7 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.getElementById('nav-' + id).classList.add('active');
+            document.getElementById('page-title').innerText = id === 'dashboard' ? 'Asosiy Oyna' : (id === 'weekly' ? 'Haftalik Jadval' : 'Yangi Qo\'shish');
             if(id === 'dashboard') renderDashboard();
             if(id === 'weekly') renderWeekly();
         }
@@ -101,7 +111,7 @@
             const sana = document.getElementById('in-sana').value;
             const imgFile = document.getElementById('in-image').files[0];
 
-            if(!ifsh || !fan || !sana) return alert("To'ldiring!");
+            if(!ifsh || !fan || !sana) return alert("Hamma maydonlarni тўлдиринг!");
 
             let img = "";
             if(imgFile) {
@@ -122,22 +132,25 @@
         function renderDashboard() {
             const grid = document.getElementById('teacher-grid');
             grid.innerHTML = db.slice().reverse().map(t => `
-                <div class="glass-card p-6 flex items-center gap-6">
-                    <div class="w-24 h-24 rounded-2xl bg-white flex items-center justify-center overflow-hidden flex-shrink-0 shadow-lg">
+                <div class="glass-card p-6 flex items-center gap-6 group hover:border-cyan-500/30">
+                    <div class="w-24 h-24 rounded-2xl bg-[#0d1217] border border-white/5 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-lg">
                         ${t.img ? 
                             `<img src="${t.img}" class="w-full h-full object-cover">` : 
-                            `<img src="https://i.ibb.co/F4pYf6T/sarbon-logo.png" class="w-[85%] h-auto">`
+                            `<div class="flex flex-col items-center">
+                                <span class="orbitron text-[8px] font-black text-white">SARBON</span>
+                                <span class="orbitron text-[6px] text-cyan-400 font-bold">UNIV</span>
+                             </div>`
                         }
                     </div>
                     <div class="flex-1 overflow-hidden">
                         <div class="flex justify-between items-start">
                             <p class="text-[10px] font-black text-cyan-500 uppercase tracking-widest truncate">${t.ifsh}</p>
-                            <button onclick="deleteItem(${t.id})" class="text-[9px] font-bold text-red-500 uppercase hover:underline">O'chirish</button>
+                            <button onclick="deleteItem(${t.id})" class="text-[9px] font-bold text-red-500/50 uppercase hover:text-red-500 transition-colors">O'chirish</button>
                         </div>
-                        <h4 class="text-2xl font-black text-white italic uppercase truncate">${t.fan}</h4>
+                        <h4 class="text-2xl font-black text-white italic uppercase truncate tracking-tighter">${t.fan}</h4>
                         <div class="flex gap-4 text-[10px] font-bold text-gray-500 border-t border-white/5 mt-3 pt-2">
-                            <span>${t.sana}</span>
-                            <span class="text-cyan-400">${t.vaqt}</span>
+                            <span>📅 ${t.sana}</span>
+                            <span class="text-cyan-400">🕒 ${t.vaqt}</span>
                         </div>
                     </div>
                 </div>
@@ -148,12 +161,12 @@
             const days = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba'];
             document.getElementById('weekly-grid').innerHTML = days.map((day, i) => `
                 <div class="flex flex-col gap-3">
-                    <div class="glass-card p-3 text-center text-[10px] font-black text-cyan-500 uppercase">${day}</div>
+                    <div class="glass-card p-3 text-center text-[9px] font-black text-cyan-500 uppercase tracking-tighter border-b-2 border-cyan-500/50">${day}</div>
                     <div class="space-y-2">
                         ${db.filter(t => t.day === (i + 1)).map(t => `
-                            <div class="p-3 bg-white/5 rounded-xl border-l-2 border-cyan-500">
+                            <div class="p-3 bg-white/5 rounded-xl border-l-2 border-cyan-500 hover:bg-white/10 transition-all cursor-default">
                                 <p class="text-[9px] font-black text-white uppercase truncate">${t.fan}</p>
-                                <p class="text-[8px] text-gray-500 mt-1">${t.vaqt}</p>
+                                <p class="text-[8px] text-gray-500 mt-1 orbitron">${t.vaqt}</p>
                             </div>
                         `).join('')}
                     </div>
@@ -162,9 +175,11 @@
         }
 
         function deleteItem(id) {
-            db = db.filter(t => t.id !== id);
-            localStorage.setItem('sarbon_final_v5', JSON.stringify(db));
-            renderDashboard();
+            if(confirm("Haqiqatan ham o'chirmoqchimisiz?")) {
+                db = db.filter(t => t.id !== id);
+                localStorage.setItem('sarbon_final_v5', JSON.stringify(db));
+                renderDashboard();
+            }
         }
 
         renderDashboard();
