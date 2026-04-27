@@ -1,173 +1,79 @@
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Smart Jadval Pro v7</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        :root { --primary: #4f46e5; --dark: #1e293b; --accent: #10b981; --bg: #f8fafc; }
-        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: var(--bg); margin: 0; padding: 12px; padding-bottom: 40px; }
-        
-        /* Юқори қисм дизайни */
-        .app-header { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 30px 20px; border-radius: 0 0 30px 30px; color: white; margin: -12px -12px 25px -12px; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.15); text-align: center; }
-        .time-box { font-size: 36px; font-weight: 800; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        .date-box { font-size: 14px; color: #94a3b8; font-weight: 700; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
-        .settings-btn { position: absolute; right: 20px; top: 30px; background: rgba(255,255,255,0.1); border: none; color: white; padding: 12px; border-radius: 15px; font-size: 24px; cursor: pointer; backdrop-filter: blur(5px); }
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
-        /* Фан карточкалари */
-        .card { background: white; border-radius: 24px; margin-bottom: 20px; padding: 22px; box-shadow: 0 8px 16px rgba(0,0,0,0.05); border: 1px solid #edf2f7; position: relative; }
-        .card-top { display: flex; align-items: center; margin-bottom: 12px; }
-        .num { background: var(--primary); color: white; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: 900; font-size: 18px; margin-right: 12px; }
-        .subject-title { font-size: 20px; font-weight: 800; color: var(--dark); }
-        .teacher-name { display: flex; align-items: center; gap: 6px; color: #6366f1; font-weight: 700; font-size: 15px; margin-bottom: 15px; background: #eef2ff; padding: 6px 14px; border-radius: 12px; width: fit-content; }
+const lessons = [
+  {
+    id: 1,
+    title: "Iqtisodiyot nazariyasi 2",
+    teacher: "B. Karimov",
+    status: "Active",
+    date: "2026-04-24",
+    time: "20:52",
+    room: "101-xona",
+    desc: "Iqtisodiy nazariyaning asosiy tushunchalari",
+  },
+  {
+    id: 2,
+    title: "Xorijiy til 2",
+    teacher: "A. Rahimova",
+    status: "Active",
+    date: "2026-04-24",
+    time: "20:25",
+    room: "202-xona",
+    desc: "Ingliz tili grammatikasi va amaliy mashg‘ulot",
+  },
+  {
+    id: 3,
+    title: "Matematika",
+    teacher: "S. Abdouazizov",
+    status: "Yaqin",
+    date: "2026-04-25",
+    time: "09:00",
+    room: "303-xona",
+    desc: "Differensial va integral hisob",
+  },
+  {
+    id: 4,
+    title: "Informatika",
+    teacher: "M. Tursunov",
+    status: "Tugagan",
+    date: "2026-04-23",
+    time: "16:30",
+    room: "Lab-1",
+    desc: "Python dasturlash asoslari",
+  },
+];
 
-        /* Мавзу майдони */
-        .topic-area { background: #f1f5f9; padding: 18px; border-radius: 18px; font-size: 16px; font-weight: 700; color: #0f172a; border-left: 6px solid var(--primary); margin-bottom: 12px; line-height: 1.4; }
-        .meta-info { font-size: 13px; color: #64748b; font-weight: 700; display: flex; gap: 15px; margin-bottom: 18px; padding-left: 5px; }
+function StatusBadge({ status }) {
+  const color =
+    status === "Active"
+      ? "bg-green-100 text-green-700"
+      : status === "Yaqin"
+      ? "bg-yellow-100 text-yellow-700"
+      : "bg-red-100 text-red-700";
 
-        /* Тугмалар */
-        .btn-row { display: flex; gap: 10px; }
-        .btn { flex: 1; border: none; padding: 16px; border-radius: 16px; font-weight: 800; font-size: 13px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-update { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
-        .btn-history { background: #f1f5f9; color: var(--dark); border: 1px solid #e2e8f0; }
-        .btn:active { transform: scale(0.96); }
+  return <Badge className={color}>{status}</Badge>;
+}
 
-        /* Модал ойна */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 9999; }
-        .modal-content { background: white; margin: 10% auto; width: 88%; border-radius: 30px; padding: 25px; max-height: 80vh; overflow-y: auto; }
-        input { width: 100%; padding: 16px; margin: 12px 0; border: 2px solid #e2e8f0; border-radius: 15px; box-sizing: border-box; font-size: 16px; font-weight: 600; outline: none; }
-        input:focus { border-color: var(--primary); }
-    </style>
-</head>
-<body>
+export default function Dashboard() {
+  const [search, setSearch] = useState("");
 
-<div class="app-header">
-    <div id="liveTime" class="time-box">00:00</div>
-    <div id="fullDate" class="date-box">2026-04-24 | JUMA</div>
-    <button class="settings-btn" onclick="openSettings()">⚙️</button>
-</div>
+  const filtered = lessons.filter((l) =>
+    l.title.toLowerCase().includes(search.toLowerCase())
+  );
 
-<div id="mainContainer"></div>
-
-<div id="historyModal" class="modal">
-    <div class="modal-content">
-        <h3 id="historyTitle" style="color:var(--primary); margin-top:0; font-size: 22px;"></h3>
-        <div id="historyList"></div>
-        <button onclick="closeModal('historyModal')" class="btn btn-update" style="width:100%; margin-top:20px; background:var(--dark);">ЁПИШ</button>
-    </div>
-</div>
-
-<div id="settingsModal" class="modal">
-    <div class="modal-content">
-        <h3 style="margin-top:0">⚙️ СОЗЛАМАЛАР</h3>
-        <p style="font-weight:600; color:#64748b">Супер Паролни киритинг:</p>
-        <input type="password" id="adminPass" placeholder="Кодни ёзинг...">
-        <button onclick="checkAdmin()" class="btn btn-update" style="width:100%">КИРИШ</button>
-        <button onclick="closeModal('settingsModal')" class="btn" style="width:100%; margin-top:10px; background:#f1f5f9">ЁПИШ</button>
-    </div>
-</div>
-
-<script>
-    const MASTER_KEY = "admin777"; 
-    let subjects = JSON.parse(localStorage.getItem('my_subjects_v7')) || [
-        { id: 0, n: "Iqtisodiyot nazariyasi 2", t: "S. Karimov", pass: "1111" },
-        { id: 1, n: "Xorijiy til 2", t: "A. Rahimova", pass: "2222" },
-        { id: 2, n: "O‘zbek (rus) tili", t: "M. G'afforov", pass: "3333" },
-        { id: 3, n: "Dinshunoslik", t: "N. Olimov", pass: "4444" },
-        { id: 4, n: "Jismoniy madaniyat", t: "V. Ivanov", pass: "5555" },
-        { id: 5, n: "Akademik ko‘nikmalar", t: "D. Zokirova", pass: "6666" },
-        { id: 6, n: "Amaliy matematika 2", t: "P. Qosimov", pass: "7777" }
-    ];
-
-    function render() {
-        const container = document.getElementById('mainContainer');
-        container.innerHTML = '';
-        subjects.forEach((s) => {
-            const history = JSON.parse(localStorage.getItem('h40_'+s.id)) || [];
-            const last = history[0] || { topic: "Мавзу ҳали киритилмаган", date: "2026-04-24", time: "20:52" };
-            container.innerHTML += `
-                <div class="card">
-                    <div class="card-top">
-                        <span class="num">${s.id + 1}</span>
-                        <span class="subject-title">${s.n}</span>
-                    </div>
-                    <div class="teacher-name">👤 ${s.t}</div>
-                    <div class="topic-area">${last.topic}</div>
-                    <div class="meta-info">
-                        <span>📅 ${last.date}</span>
-                        <span>🕒 ${last.time}</span>
-                    </div>
-                    <div class="btn-row">
-                        <button class="btn btn-update" onclick="editTopic(${s.id})">📝 ЯНГИЛАШ</button>
-                        <button class="btn btn-history" onclick="showHistory(${s.id})">📜 ТАРИХ</button>
-                    </div>
-                </div>`;
-        });
-    }
-
-    function editTopic(id) {
-        const p = prompt("ПАРОЛНИ КИРИТИНГ:");
-        if(p === subjects[id].pass || p === MASTER_KEY) {
-            const val = prompt("ЯНГИ МАВЗУНИ ЁЗИНГ:");
-            if(val) {
-                const now = new Date();
-                const entry = { 
-                    topic: val.trim(), 
-                    date: now.toISOString().split('T')[0], 
-                    time: now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0') 
-                };
-                let history = JSON.parse(localStorage.getItem('h40_'+id)) || [];
-                history.unshift(entry);
-                if(history.length > 40) history.pop();
-                localStorage.setItem('h40_'+id, JSON.stringify(history));
-                render();
-            }
-        } else if (p !== null) alert("❌ Пароль хато!");
-    }
-
-    function showHistory(id) {
-        const history = JSON.parse(localStorage.getItem('h40_'+id)) || [];
-        document.getElementById('historyTitle').innerText = subjects[id].n;
-        const list = document.getElementById('historyList');
-        list.innerHTML = history.map((h, i) => `
-            <div style="padding:15px 0; border-bottom:1px solid #f1f5f9;">
-                <div style="font-weight:800; font-size:15px; color:var(--dark);">${i+1}. ${h.topic}</div>
-                <div style="font-size:12px; color:var(--primary); margin-top:6px; font-weight:bold;">📅 ${h.date} | 🕒 ${h.time}</div>
-            </div>
-        `).join('') || "<center style='padding:20px; color:#94a3b8;'>Архив бўш</center>";
-        document.getElementById('historyModal').style.display = 'block';
-    }
-
-    function openSettings() { document.getElementById('settingsModal').style.display = 'block'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-    function checkAdmin() {
-        if(document.getElementById('adminPass').value === MASTER_KEY) {
-            const num = prompt("Фан рақамини танланг (1-7):");
-            const idx = parseInt(num) - 1;
-            if(subjects[idx]) {
-                subjects[idx].n = prompt("Фан номи:", subjects[idx].n) || subjects[idx].n;
-                subjects[idx].t = prompt("Устоз исми:", subjects[idx].t) || subjects[idx].t;
-                subjects[idx].pass = prompt("Янги пароль:", subjects[idx].pass) || subjects[idx].pass;
-                localStorage.setItem('my_subjects_v7', JSON.stringify(subjects));
-                location.reload();
-            }
-        } else alert("Хато!");
-    }
-
-    function updateTime() {
-        const now = new Date();
-        document.getElementById('liveTime').innerText = now.toLocaleTimeString('uz-UZ', {hour:'2-digit', minute:'2-digit'});
-        const options = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
-        let d = now.toLocaleDateString('uz-UZ', options).toUpperCase();
-        document.getElementById('fullDate').innerText = d.replace(/\//g, '-');
-    }
-
-    setInterval(updateTime, 1000);
-    updateTime();
-    render();
-    window.Telegram.WebApp.expand();
-</script>
-</body>
-</html>
+  return (
+    <div className="flex min-h-screen bg-gray-50">
+      {/* Sidebar */}
+      <aside className="w-64 bg-white shadow-lg p-4">
+        <h1 className="text-xl font-bold mb-6">EduManager</h1>
+        <nav className="space-y-3">
+          <p className="font-semibold text-blue-600">📘 Darslar</p>
+          <p>👨‍🏫 Ustozlar</p>
+          <p>🎓 Talabalar</p>
+          <p>📅 Jadval</p>
+          <p>📊 Hisobotlar</p>
+}
