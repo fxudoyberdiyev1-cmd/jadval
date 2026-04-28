@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8"><script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta charset="UTF-8">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SARBON UNIVERSITY | Portal v7.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -86,15 +87,6 @@
         }
         .modern-card:hover .del-btn { opacity: 1; }
         .del-btn:hover { background: #ef4444; color: white; }
-
-        /* Custom File Input Style */
-        .file-upload-wrapper {
-            position: relative;
-            background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 1rem;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
@@ -132,7 +124,7 @@
             <button onclick="cycleTheme()" class="w-full p-4 bg-white/5 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2">
                 <i data-lucide="palette" class="w-4 h-4"></i> Rejimni o'zgartirish
             </button>
-            <button onclick="location.reload()" class="w-full p-4 bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-widest">Exit Portal</button>
+            <button onclick="logout()" class="w-full p-4 bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-widest">Exit Portal</button>
         </div>
     </aside>
 
@@ -163,12 +155,12 @@
 
         <div id="weekly" class="hidden grid grid-cols-7 gap-4">
             <div class="text-center p-4 bg-cyan-400 text-black font-black uppercase text-xs">Du</div>
-            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs opacity-40 text-gray-500">Se</div>
-            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs opacity-40 text-gray-500">Ch</div>
-            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs opacity-40 text-gray-500">Pa</div>
-            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs opacity-40 text-gray-500">Ju</div>
-            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs opacity-40 text-gray-500">Sh</div>
-            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs opacity-40 text-gray-500">Ya</div>
+            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs">Se</div>
+            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs">Ch</div>
+            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs">Pa</div>
+            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs">Ju</div>
+            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs">Sh</div>
+            <div class="text-center p-4 bg-white/5 font-black uppercase text-xs">Ya</div>
         </div>
 
         <div id="add" class="hidden grid grid-cols-1 md:grid-cols-2 gap-16">
@@ -178,12 +170,10 @@
                     <input id="in-ifsh" placeholder="F.I.SH" class="w-full">
                     <input id="in-fan" placeholder="FAN NOMI" class="w-full">
                     <input id="in-sana" type="date" class="w-full">
-                    
                     <div class="space-y-2">
                         <p class="text-[10px] font-black uppercase opacity-50">Профил расмини танланг:</p>
                         <input id="in-file" type="file" accept="image/*" class="w-full cursor-pointer">
                     </div>
-
                     <button onclick="saveTeacher()" class="w-full btn-primary">Saqlash</button>
                 </div>
             </div>
@@ -213,13 +203,36 @@
         let students = JSON.parse(localStorage.getItem('sarbon_students')) || [];
         let msgs = JSON.parse(localStorage.getItem('sarbon_msgs')) || [];
 
-        function checkAuth() {
-            if(document.getElementById('login-user').value === admin.user && document.getElementById('login-pass').value === admin.pass) {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-aside').style.display = 'flex';
-                document.getElementById('main-content').style.display = 'block';
-                showPage('dashboard');
+        // АВТО-ЛОГИН (Телеграм бот учун муҳим)
+        window.onload = () => {
+            if(localStorage.getItem('sarbon_logged') === 'true') {
+                enterPortal();
             }
+            lucide.createIcons();
+            updateClock();
+        };
+
+        function checkAuth() {
+            const u = document.getElementById('login-user').value;
+            const p = document.getElementById('login-pass').value;
+            if(u === admin.user && p === admin.pass) {
+                localStorage.setItem('sarbon_logged', 'true');
+                enterPortal();
+            } else {
+                alert("Хато!");
+            }
+        }
+
+        function enterPortal() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-aside').style.display = 'flex';
+            document.getElementById('main-content').style.display = 'block';
+            showPage('dashboard');
+        }
+
+        function logout() {
+            localStorage.removeItem('sarbon_logged');
+            location.reload();
         }
 
         let themeIndex = 0;
@@ -257,42 +270,35 @@
             lucide.createIcons();
         }
 
-        function deleteTeacher(index) {
-            if(confirm("Ushbu o'qituvchini o'chirmoqchimisiz?")) {
-                teachers.splice(index, 1);
-                localStorage.setItem('sarbon_teachers', JSON.stringify(teachers));
-                renderTeachers();
-            }
-        }
-
-        // ЯНГИЛАНГАН САҚЛАШ ФУНКЦИЯСИ
         function saveTeacher() {
             const ifsh = document.getElementById('in-ifsh').value;
             const fan = document.getElementById('in-fan').value;
             const sana = document.getElementById('in-sana').value;
             const fileInput = document.getElementById('in-file');
-            
             if(!ifsh || !fan) return alert("To'ldiring!");
 
             if (fileInput.files && fileInput.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const imgData = e.target.result; // Расмни Base64 га ўгиради
-                    teachers.push({ ifsh, fan, sana, img: imgData });
+                    teachers.push({ ifsh, fan, sana, img: e.target.result });
                     localStorage.setItem('sarbon_teachers', JSON.stringify(teachers));
-                    
-                    // Формани тозалаш
                     document.getElementById('in-ifsh').value = '';
                     document.getElementById('in-fan').value = '';
-                    fileInput.value = '';
                     showPage('dashboard');
                 };
                 reader.readAsDataURL(fileInput.files[0]);
             } else {
-                // Агар расм танланмаса
                 teachers.push({ ifsh, fan, sana, img: '' });
                 localStorage.setItem('sarbon_teachers', JSON.stringify(teachers));
                 showPage('dashboard');
+            }
+        }
+
+        function deleteTeacher(index) {
+            if(confirm("O'chirilsinmi?")) {
+                teachers.splice(index, 1);
+                localStorage.setItem('sarbon_teachers', JSON.stringify(teachers));
+                renderTeachers();
             }
         }
 
@@ -307,14 +313,6 @@
             lucide.createIcons();
         }
 
-        function deleteStudent(index) {
-            if(confirm("Ushbu talabani o'chirmoqchimisiz?")) {
-                students.splice(index, 1);
-                localStorage.setItem('sarbon_students', JSON.stringify(students));
-                renderStudents();
-            }
-        }
-
         function saveStudent() {
             const name = document.getElementById('st-name').value;
             const group = document.getElementById('st-group').value;
@@ -324,16 +322,24 @@
             showPage('students');
         }
 
+        function deleteStudent(index) {
+            if(confirm("O'chirilsinmi?")) {
+                students.splice(index, 1);
+                localStorage.setItem('sarbon_students', JSON.stringify(students));
+                renderStudents();
+            }
+        }
+
         function fillTeacherSelect() {
             const sel = document.getElementById('msg-teacher');
-            sel.innerHTML = '<option value="">O\'qituvchini tanlang</option>' + teachers.map(t => `<option value="${t.ifsh}">${t.ifsh} (${t.fan})</option>`).join('');
+            sel.innerHTML = '<option value="">O\'qituvchini tanlang</option>' + teachers.map(t => `<option value="${t.ifsh}">${t.ifsh}</option>`).join('');
         }
 
         function sendMessage() {
             const t = document.getElementById('msg-teacher').value;
             const s = document.getElementById('msg-subject').value;
             const m = document.getElementById('msg-text').value;
-            if(!t || !m) return alert("Xabarni to'liq yozing!");
+            if(!t || !m) return alert("To'liq ёзинг!");
             msgs.push({ t, s, m, time: new Date().toLocaleTimeString() });
             localStorage.setItem('sarbon_msgs', JSON.stringify(msgs));
             renderMessages();
@@ -355,6 +361,7 @@
             admin.user = document.getElementById('adm-user').value;
             admin.pass = document.getElementById('adm-pass').value;
             localStorage.setItem('sarbon_admin', JSON.stringify(admin));
+            alert("Updated!");
             location.reload();
         }
 
@@ -363,8 +370,7 @@
             document.getElementById('live-time').innerText = now.toLocaleTimeString('uz-UZ', { hour12: false });
             document.getElementById('live-date').innerText = now.toLocaleDateString('uz-UZ', { day: 'numeric', month: 'long', year: 'numeric' });
         }
-        setInterval(updateClock, 1000); updateClock();
-        lucide.createIcons();
+        setInterval(updateClock, 1000);
     </script>
 </body>
 </html>
