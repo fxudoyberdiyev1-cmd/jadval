@@ -198,12 +198,17 @@
     </main>
 
     <script>
-        let admin = JSON.parse(localStorage.getItem('sarbon_admin')) || { user: "admin", pass: "sarbon2026" };
+        // АСОСИЙ ПАРОЛ ВА ЛОГИННИ ШУ ЕРДА ЎЗГАРТИРИНГ
+        const INITIAL_ADMIN = { 
+            user: "admin",      // Бу ерга янги логин ёзинг
+            pass: "sarbon2026"  // Бу ерга янги парол ёзинг
+        };
+
+        let admin = JSON.parse(localStorage.getItem('sarbon_admin')) || INITIAL_ADMIN;
         let teachers = JSON.parse(localStorage.getItem('sarbon_teachers')) || [];
         let students = JSON.parse(localStorage.getItem('sarbon_students')) || [];
         let msgs = JSON.parse(localStorage.getItem('sarbon_msgs')) || [];
 
-        // АВТО-ЛОГИН (Телеграм бот учун муҳим)
         window.onload = () => {
             if(localStorage.getItem('sarbon_logged') === 'true') {
                 enterPortal();
@@ -215,7 +220,9 @@
         function checkAuth() {
             const u = document.getElementById('login-user').value;
             const p = document.getElementById('login-pass').value;
-            if(u === admin.user && p === admin.pass) {
+            
+            // Ҳам локал хотирадаги, ҳам коддаги асосий паролни текширади
+            if((u === admin.user && p === admin.pass) || (u === INITIAL_ADMIN.user && p === INITIAL_ADMIN.pass)) {
                 localStorage.setItem('sarbon_logged', 'true');
                 enterPortal();
             } else {
@@ -246,8 +253,11 @@
         function showPage(id) {
             document.querySelectorAll('main > div').forEach(d => d.classList.add('hidden'));
             document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-            document.getElementById(id).classList.remove('hidden');
-            document.getElementById('nav-' + id).classList.add('active');
+            const target = document.getElementById(id);
+            if(target) target.classList.remove('hidden');
+            const nav = document.getElementById('nav-' + id);
+            if(nav) nav.classList.add('active');
+            
             document.getElementById('page-title').innerText = id === 'dashboard' ? "O'qituvchilar" : (id === 'messages' ? "Savol-Javob" : id);
             if(id === 'dashboard') renderTeachers();
             if(id === 'students') renderStudents();
@@ -358,17 +368,23 @@
         }
 
         function updateAdmin() {
-            admin.user = document.getElementById('adm-user').value;
-            admin.pass = document.getElementById('adm-pass').value;
-            localStorage.setItem('sarbon_admin', JSON.stringify(admin));
-            alert("Updated!");
-            location.reload();
+            const u = document.getElementById('adm-user').value;
+            const p = document.getElementById('adm-pass').value;
+            if(u && p) {
+                admin.user = u;
+                admin.pass = p;
+                localStorage.setItem('sarbon_admin', JSON.stringify(admin));
+                alert("Updated!");
+                location.reload();
+            }
         }
 
         function updateClock() {
             const now = new Date();
-            document.getElementById('live-time').innerText = now.toLocaleTimeString('uz-UZ', { hour12: false });
-            document.getElementById('live-date').innerText = now.toLocaleDateString('uz-UZ', { day: 'numeric', month: 'long', year: 'numeric' });
+            const timeEl = document.getElementById('live-time');
+            const dateEl = document.getElementById('live-date');
+            if(timeEl) timeEl.innerText = now.toLocaleTimeString('uz-UZ', { hour12: false });
+            if(dateEl) dateEl.innerText = now.toLocaleDateString('uz-UZ', { day: 'numeric', month: 'long', year: 'numeric' });
         }
         setInterval(updateClock, 1000);
     </script>
