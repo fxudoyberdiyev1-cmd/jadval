@@ -77,7 +77,6 @@
         }
         .btn-primary { background: var(--accent-cyan); color: #fff; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; padding: 1.2rem; cursor: pointer; border: none; }
         
-        /* O'CHIRISH TUGMASI */
         .del-btn {
             position: absolute; top: 10px; right: 10px;
             width: 24px; height: 24px; background: rgba(239, 68, 68, 0.2);
@@ -87,6 +86,15 @@
         }
         .modern-card:hover .del-btn { opacity: 1; }
         .del-btn:hover { background: #ef4444; color: white; }
+
+        /* Custom File Input Style */
+        .file-upload-wrapper {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 1rem;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -170,7 +178,12 @@
                     <input id="in-ifsh" placeholder="F.I.SH" class="w-full">
                     <input id="in-fan" placeholder="FAN NOMI" class="w-full">
                     <input id="in-sana" type="date" class="w-full">
-                    <input id="in-img" placeholder="Rasm URL manzili" class="w-full">
+                    
+                    <div class="space-y-2">
+                        <p class="text-[10px] font-black uppercase opacity-50">Профил расмини танланг:</p>
+                        <input id="in-file" type="file" accept="image/*" class="w-full cursor-pointer">
+                    </div>
+
                     <button onclick="saveTeacher()" class="w-full btn-primary">Saqlash</button>
                 </div>
             </div>
@@ -233,7 +246,7 @@
             document.getElementById('dashboard').innerHTML = teachers.map((t, index) => `
                 <div class="modern-card p-8 flex items-center gap-8 group">
                     <div class="del-btn" onclick="deleteTeacher(${index})"><i data-lucide="x" class="w-4 h-4"></i></div>
-                    <img src="${t.img || 'https://via.placeholder.com/100'}" class="w-24 h-24 object-cover border border-cyan-400/20">
+                    <img src="${t.img || 'https://via.placeholder.com/100'}" class="w-24 h-24 object-cover border border-cyan-400/20 rounded-sm">
                     <div>
                         <p class="text-[11px] font-black text-cyan-400 uppercase tracking-[4px]">${t.ifsh}</p>
                         <h4 class="text-3xl font-black italic uppercase">${t.fan}</h4>
@@ -249,6 +262,37 @@
                 teachers.splice(index, 1);
                 localStorage.setItem('sarbon_teachers', JSON.stringify(teachers));
                 renderTeachers();
+            }
+        }
+
+        // ЯНГИЛАНГАН САҚЛАШ ФУНКЦИЯСИ
+        function saveTeacher() {
+            const ifsh = document.getElementById('in-ifsh').value;
+            const fan = document.getElementById('in-fan').value;
+            const sana = document.getElementById('in-sana').value;
+            const fileInput = document.getElementById('in-file');
+            
+            if(!ifsh || !fan) return alert("To'ldiring!");
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgData = e.target.result; // Расмни Base64 га ўгиради
+                    teachers.push({ ifsh, fan, sana, img: imgData });
+                    localStorage.setItem('sarbon_teachers', JSON.stringify(teachers));
+                    
+                    // Формани тозалаш
+                    document.getElementById('in-ifsh').value = '';
+                    document.getElementById('in-fan').value = '';
+                    fileInput.value = '';
+                    showPage('dashboard');
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                // Агар расм танланмаса
+                teachers.push({ ifsh, fan, sana, img: '' });
+                localStorage.setItem('sarbon_teachers', JSON.stringify(teachers));
+                showPage('dashboard');
             }
         }
 
@@ -269,17 +313,6 @@
                 localStorage.setItem('sarbon_students', JSON.stringify(students));
                 renderStudents();
             }
-        }
-
-        function saveTeacher() {
-            const ifsh = document.getElementById('in-ifsh').value;
-            const fan = document.getElementById('in-fan').value;
-            const sana = document.getElementById('in-sana').value;
-            const img = document.getElementById('in-img').value;
-            if(!ifsh || !fan) return alert("To'ldiring!");
-            teachers.push({ ifsh, fan, sana, img });
-            localStorage.setItem('sarbon_teachers', JSON.stringify(teachers));
-            showPage('dashboard');
         }
 
         function saveStudent() {
