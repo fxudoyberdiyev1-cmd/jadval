@@ -200,21 +200,21 @@
 
     <script>
         // АСОСИЙ ПАРОЛ ВА ЛОГИННИ ШУ ЕРДА ЎЗГАРТИРИНГ
-        // Бу ердаги маълумот ўзгарса, эски сессиялар автоматик ёпилади.
+        // Бу ердаги пароль ўзгарса, эски сессиялар автоматик равишда чиқариб юборилади.
         const INITIAL_ADMIN = { 
             user: "admin",      
             pass: "sarbon2026"  
         };
 
-        let admin = JSON.parse(localStorage.getItem('sarbon_admin')) || INITIAL_ADMIN;
         let teachers = JSON.parse(localStorage.getItem('sarbon_teachers')) || [];
         let students = JSON.parse(localStorage.getItem('sarbon_students')) || [];
         let msgs = JSON.parse(localStorage.getItem('sarbon_msgs')) || [];
 
         window.onload = () => {
-            // Хавфсизлик текшируви: Агар GitHub-даги парол ўзгарган бўлса, чиқариб юборади
-            const loggedPass = localStorage.getItem('sarbon_active_pass');
-            if(localStorage.getItem('sarbon_logged') === 'true' && loggedPass === INITIAL_ADMIN.pass) {
+            // ХАВФСИЗЛИК ТЕКШИРУВИ:
+            // Агар браузердаги пароль GitHub-даги INITIAL_ADMIN.pass га мос келмаса, чиқариб юборади.
+            const savedPass = localStorage.getItem('sarbon_active_pass');
+            if(localStorage.getItem('sarbon_logged') === 'true' && savedPass === INITIAL_ADMIN.pass) {
                 enterPortal();
             } else {
                 logout();
@@ -229,10 +229,10 @@
             
             if(u === INITIAL_ADMIN.user && p === INITIAL_ADMIN.pass) {
                 localStorage.setItem('sarbon_logged', 'true');
-                localStorage.setItem('sarbon_active_pass', INITIAL_ADMIN.pass);
+                localStorage.setItem('sarbon_active_pass', INITIAL_ADMIN.pass); // Жорий паролни сақлаб қўяди
                 enterPortal();
             } else {
-                alert("Хато!");
+                alert("Хато логин ёки парол!");
             }
         }
 
