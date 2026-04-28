@@ -189,6 +189,7 @@
         <div id="admin" class="hidden">
             <div class="modern-card p-12 max-w-3xl mx-auto border-t-2 border-cyan-400">
                 <h3 class="text-3xl font-black uppercase mb-12 italic">Admin Settings</h3>
+                <p class="text-xs text-red-500 mb-4">* Паролни GitHub-да ўзгартириш тавсия этилади.</p>
                 <div class="grid grid-cols-2 gap-8">
                     <input id="adm-user" placeholder="LOGIN" class="w-full"><input id="adm-pass" type="password" placeholder="PASSWORD" class="w-full">
                 </div>
@@ -199,9 +200,10 @@
 
     <script>
         // АСОСИЙ ПАРОЛ ВА ЛОГИННИ ШУ ЕРДА ЎЗГАРТИРИНГ
+        // Бу ердаги маълумот ўзгарса, эски сессиялар автоматик ёпилади.
         const INITIAL_ADMIN = { 
-            user: "admin",      // Бу ерга янги логин ёзинг
-            pass: "sarbon2026"  // Бу ерга янги парол ёзинг
+            user: "admin",      
+            pass: "sarbon2026"  
         };
 
         let admin = JSON.parse(localStorage.getItem('sarbon_admin')) || INITIAL_ADMIN;
@@ -210,8 +212,12 @@
         let msgs = JSON.parse(localStorage.getItem('sarbon_msgs')) || [];
 
         window.onload = () => {
-            if(localStorage.getItem('sarbon_logged') === 'true') {
+            // Хавфсизлик текшируви: Агар GitHub-даги парол ўзгарган бўлса, чиқариб юборади
+            const loggedPass = localStorage.getItem('sarbon_active_pass');
+            if(localStorage.getItem('sarbon_logged') === 'true' && loggedPass === INITIAL_ADMIN.pass) {
                 enterPortal();
+            } else {
+                logout();
             }
             lucide.createIcons();
             updateClock();
@@ -221,9 +227,9 @@
             const u = document.getElementById('login-user').value;
             const p = document.getElementById('login-pass').value;
             
-            // Ҳам локал хотирадаги, ҳам коддаги асосий паролни текширади
-            if((u === admin.user && p === admin.pass) || (u === INITIAL_ADMIN.user && p === INITIAL_ADMIN.pass)) {
+            if(u === INITIAL_ADMIN.user && p === INITIAL_ADMIN.pass) {
                 localStorage.setItem('sarbon_logged', 'true');
+                localStorage.setItem('sarbon_active_pass', INITIAL_ADMIN.pass);
                 enterPortal();
             } else {
                 alert("Хато!");
@@ -239,7 +245,10 @@
 
         function logout() {
             localStorage.removeItem('sarbon_logged');
-            location.reload();
+            localStorage.removeItem('sarbon_active_pass');
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('main-aside').style.display = 'none';
+            document.getElementById('main-content').style.display = 'none';
         }
 
         let themeIndex = 0;
@@ -368,15 +377,7 @@
         }
 
         function updateAdmin() {
-            const u = document.getElementById('adm-user').value;
-            const p = document.getElementById('adm-pass').value;
-            if(u && p) {
-                admin.user = u;
-                admin.pass = p;
-                localStorage.setItem('sarbon_admin', JSON.stringify(admin));
-                alert("Updated!");
-                location.reload();
-            }
+            alert("Хавфсизлик учун паролни GitHub-даги INITIAL_ADMIN қисмидан ўзгартиринг. Шунда ҳамма қурилмаларда автоматик янгиланади.");
         }
 
         function updateClock() {
